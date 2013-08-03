@@ -112,7 +112,7 @@ ClamGenerator.prototype.askFor = function askFor() {
         },
         {
             name: 'port',
-            message: 'HTTP Serve Port:',
+            message: 'HTTP Server Port:',
             default: '80',
             warning: ''
         },
