@@ -1,5 +1,5 @@
 var path = require('path'),
-	fs = require('fs'),
+	fs = require('fs-extra'),
 	os = require('os'),
 	exec = require('child_process').exec;
 
@@ -23,9 +23,7 @@ module.exports = function (grunt) {
 		// 配置默认分支
 		currentBranch: 'master',
 
-        /**
-         * 对页面进行清理
-         */
+        // 对页面进行清理
         clean: {
 
             build: {
@@ -56,7 +54,6 @@ module.exports = function (grunt) {
                 ],
 				map: [/*['<%= pkg.name %>/', '<%= pkg.name %>/<%= currentBranch %>/']*/]
             },
-
             main: {
                 files: [
                     {
@@ -80,9 +77,7 @@ module.exports = function (grunt) {
             }
 			*/
         },
-		/**
-		 * 将css文件中引用的本地图片上传CDN并替换url
-		 */
+		// 将css文件中引用的本地图片上传CDN并替换url
 		mytps: {
 			options: {
 				argv: "--inplace"
@@ -90,10 +85,7 @@ module.exports = function (grunt) {
 			all: [ '**/*.css', '!build/**/*','!node_modules/**/*','!doc/**/*']
 		},
 
-        /**
-         * CSS-Combo
-		 * combo项目中所有css，通过@import "other.css"; 来处理依赖关系
-         */
+		// CSS-Combo: 合并项目中所有css，通过@import "other.css" 来处理CSS的依赖关系
         css_combo: {
             options: {
                 paths: './'
@@ -103,16 +95,16 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        src:files.css, 
+						cwd:'build',
+                        src: ['**/*.css'], 
                         dest: 'build/',
                         ext: '.css'
                     }
                 ]
             }
         },
-		/**
-		 * FlexCombo服务配置
-		 */
+
+		// FlexCombo服务配置: https://npmjs.org/package/grunt-flexcombo
 		flexcombo:{
 			options: {
 				target:'',
@@ -124,38 +116,18 @@ module.exports = function (grunt) {
 			},
 			main:{}
 		},
-		/**
-		 * YUIDoc
-		 * 对build目录中的js文件生成文档，放入doc/中
-		 */
-		 /*
-		yuidoc: {
-			compile: {
-				name: 'generator-clam',
-				description: 'A Clam generator for Yeoman',
-				options: {
-					paths: 'build/',
-					outdir: 'doc/'
-				}
-			}
-		},
-		*/
 
-        /**
-         * 将LESS编译为CSS
-         * @link https://github.com/gruntjs/grunt-contrib-less
-         */
+        // 编译LESS为CSS https://github.com/gruntjs/grunt-contrib-less
         less: {
             options: {
                 paths: './'
             },
-
             main: {
                 files: [
                     {
                         expand: true,
-						cwd:'./',
-                        src: files.less,
+						cwd:'build/',
+                        src: ['**/*.less'],
                         dest: 'build/',
                         ext: '.css'
                     }
@@ -163,10 +135,7 @@ module.exports = function (grunt) {
             }
         },
 
-        /**
-         * 对JS文件进行压缩
-         * @link https://github.com/gruntjs/grunt-contrib-uglify
-         */
+        // 压缩JS https://github.com/gruntjs/grunt-contrib-uglify
         uglify: {
             options: {
 				 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %> */\n',
@@ -187,10 +156,7 @@ module.exports = function (grunt) {
             }
         },
 
-        /**
-         * 对CSS 文件进行压缩
-         * @link https://github.com/gruntjs/grunt-contrib-cssmin
-         */
+        // 压缩CSS https://github.com/gruntjs/grunt-contrib-cssmin
         cssmin: {
             main: {
                 files: [
@@ -205,6 +171,7 @@ module.exports = function (grunt) {
             }
         },
 
+		// 监听JS、CSS、LESS文件的修改
         watch: {
             'js': {
                 files: [ '**/*.js' ],
@@ -220,9 +187,7 @@ module.exports = function (grunt) {
             }
         },
 
-		/**
-		 * 发布命令。
-		 */
+		// 发布命令
 		exec: {
 			tag: {
 				command: 'git tag publish/<%= currentBranch %>'
@@ -276,6 +241,19 @@ module.exports = function (grunt) {
 					}
 				]
 			}
+		},
+		// 替换config中的版本号@@version
+		replace: {
+			dist: {
+				options: {
+					variables: {
+						'version': '<%= pkg.version %>'
+					}
+				},
+				files: [
+					{expand: true, flatten: true, src: ['build/config.js'], dest: 'build/'}
+				]
+			}
 		}
 
 		// 合并文件
@@ -285,6 +263,19 @@ module.exports = function (grunt) {
 				src: ['from.css'],
 				dest: 'build/to.css'
 			
+			}
+		},
+		*/
+		// YUIDoc: 对build目录中的js文件生成文档，放入doc/中
+		 /*
+		yuidoc: {
+			compile: {
+				name: 'generator-clam',
+				description: 'A Clam generator for Yeoman',
+				options: {
+					paths: 'build/',
+					outdir: 'doc/'
+				}
 			}
 		}
 		*/
@@ -303,7 +294,9 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-mytps');
 	grunt.loadNpmTasks('grunt-flexcombo');
+	grunt.loadNpmTasks('grunt-replace');
 
+	// 根据需要打开这些配置
     //grunt.loadNpmTasks('grunt-kissy-template');
     //grunt.loadNpmTasks('grunt-contrib-connect');
 	//grunt.loadNpmTasks('grunt-contrib-concat');
@@ -413,7 +406,7 @@ module.exports = function (grunt) {
 
 		// 构建和发布任务
 		if (!type) {
-			task.run(['clean:build', 'copy', 'mytps','kmc', 'uglify', 'css_combo' ,'less',, 'cssmin'/*'concat','yuidoc', 'copy', 'clean:mobile'*/]);
+			task.run(['clean:build', 'copy','less','mytps', 'css_combo','kmc','replace', 'uglify', 'cssmin'/*'concat','yuidoc'*/]);
 		} else if ('publish' === type || 'pub' === type) {
 			task.run(['exec:tag', 'exec:publish']);
 		} else if ('prepub' === type) {
@@ -519,7 +512,6 @@ module.exports = function (grunt) {
 		}
 		return r;
 	}
-
     
 };
 
