@@ -229,13 +229,18 @@ Grunt中模板中提供`grunt server`方法，开启本地服务，默认开启�
 
 ### 预发和发布
 
-为了限制在daily分支上发布，我们将grunt构建也加了限制，非daily分支上禁止构建，（你当然可以随意修改Gruntfile.js去掉限制），只有build目录中的文件会被发布，所发布的项目中build目录中的文件地址为如下两种，前缀自选
+为了限制在daily分支上发布，我们将grunt构建也加了限制，非daily分支上禁止构建，不建议将此限制去掉，只有build目录中的文件会被发布，所发布的项目中build目录中的文件地址为如下两种，前缀自选
 
 	http://a.tbcdn.cn/g/group-name/project-name/x.y.z/mods.js
 
 对应到 g.tbcdn.cn 的地址：
 
 	http://g.tbcdn.cn/group-name/project-name/x.y.z/mods.js
+
+代码发布命令：
+
+- `grunt prepub` 预发
+- `grunt publish` 发布
 
 ## Q & A
 
