@@ -26,7 +26,6 @@
 - `yo clam:on`:启动web服务，服务支持SSI，推荐使用`grunt server`
 - `yo clam:install <git>`:(TODO)git可以是git地址，也可以是Gallery模块名称，都将对应的git项目源码下载到本地，类似`svn export`
 - `yo clam:search <name>`:(TODO)在Gallery中查找现有的匹配的模块名称
-- `yo clam:build`:(TODO)Build一个Page，将引用到的JS/CSS静态合并，并输出结构化好的HTML
 - `yo clam:page`:生成一个Page
 
 部分子业务线的构建命令(TODO)：
@@ -50,6 +49,35 @@
 - `grunt listen`:监听文件修改，实时编译
 - `grunt server`:开启本地调试模式
 
+### 本地调试
+
+本地调试调用了[flex-combo](https://npmjs.org/flex-combo)，访问绝对路径时和本地目录有一个映射关系，比如绝对地址映射到项目的`src`目录：
+
+	http://g.tbcdn.cn/group/project/ => ./src/
+
+### grunt配置项
+
+`Gruntfile.js`是Grunt脚本配置文件，规则的入口直接修改Gruntfile.js，此外，项目基本参数存放在`abc.json`中，生成好的`abc.json`模样如下：
+
+	{
+		"name": "h5-test",
+		"desc": "description of your app",
+		"type": "clam",
+		"port":"80",
+		"group":"trip",
+		"src":"false",
+		"version":"0.0.1",
+		"config":"http://g.tbcdn.cn/trip/h5-test/0.0.1/config.js",
+		"author": {
+			"name": "",
+			"email": ""
+		},
+		"repository": {
+			"type": "git",
+			"url": "http://gitlab.alibaba-inc.com/trip/h5-test"
+		}
+	}
+
 > ps:grunt构建任务依赖`grunt-mytps`子任务，该子任务（上传本地图片到CDN并替换地址）依赖python，并需要安装[tpsmate](https://github.com/sodabiscuit/tpsmate)。
 
 ## 再多了解一点`Generator-Clam`
@@ -60,7 +88,7 @@ Generator-Clam 的目标是通过`yo clam`来将你引路到Grunt，帮助你更
 
 Generator-Clam 面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
 
-愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒。
+愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充溢阳光沙滩般的气息。
 
 ### CLAM 工具族
 
@@ -177,15 +205,31 @@ clam包含一套完整的模块化开发思想，用来规范结构化越来越�
 
 ### Demo的运行
 
+#### 方法1
+
 Generator-clam 提供一个轻服务（只提供静态文件服务器、[Flex-Combo](http://npmjs.org/flex-combo) 和SSI支持），启动服务后你可以这样访问Demo：
 
 	http://localhost:8888/src/pages/detail.html?ks-debug
 
 > 这里的SSI兼容apache，但这个Server还是功能很弱，且不支持脚本，我们强烈建议您使用更成熟的[apache+php来作为本地demo服务](http://wiki.ued.taobao.net/doku.php?id=ued.bj:f2e:tbcdn)，Clam只作为构建工具使用。
 
+#### 方法2
+
+Grunt中模板中提供`grunt server`方法，开启本地服务，默认开启在80端口，在`abc.json`中修改端口配置。`grunt server`封装了`flexcombo`，提供一种最基本的服务：即线上CDN环境映射到本地目录，直接访问屏幕提示给出的URL即可
+
+	[bachi@yahoo ~/temp/h5-test]> sudo grunt server
+	Running "server" task
+
+	Running "flexcombo:main" (flexcombo) task
+
+	Preview: http://g.tbcdn.cn/trip/h5-test/
+
+	Flex Combo Server running at http://127.0.0.1:80
+
+
 ### 预发和发布
 
-为了限制在daily分支上发布，我们将grunt构建也加了限制，非daily分支上禁止构建，（你当然可以随意修改Gruntfile.js去掉限制），只有build目录中的文件会被发布，所发布的项目中build目录中的文件地址为，前缀自选
+为了限制在daily分支上发布，我们将grunt构建也加了限制，非daily分支上禁止构建，（你当然可以随意修改Gruntfile.js去掉限制），只有build目录中的文件会被发布，所发布的项目中build目录中的文件地址为如下两种，前缀自选
 
 	http://a.tbcdn.cn/g/group-name/project-name/x.y.z/mods.js
 
@@ -247,5 +291,5 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 - include JS和CSS文件的提取合并
 - JSON接口模拟和映射
 - 各条业务线的固定构建脚本
-- `yo clam:install`/`yo clam:list`，安装和查找Gallery模块
+- `yo clam:install`/`yo clam:search`，安装和查找Gallery模块
 

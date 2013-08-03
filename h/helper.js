@@ -16,4 +16,3 @@ function readStr(file){
 
 exports.info = info;
 
-// info();

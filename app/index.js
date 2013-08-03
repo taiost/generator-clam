@@ -9,6 +9,7 @@ var ClamGenerator = module.exports = function ClamGenerator(args, options, confi
 	ABC.UIBase.apply(this, arguments);
 	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 
+	this.on('error',function(){});
     this.on('end', function () {
 		var cb = this.async();
 		var that = this;

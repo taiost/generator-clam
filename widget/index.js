@@ -13,6 +13,8 @@ var AppGenerator = module.exports = function AppGenerator(args, options, config)
 
     }.bind(this));
 
+	this.on('error',function(){});
+
 };
 
 util.inherits(AppGenerator, ABC.UIBase);

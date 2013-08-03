@@ -1,45 +1,38 @@
-  _____ _               __  __ 
- / ____| |        /\   |  \/  |
-| |    | |       /  \  | \  / |
-| |    | |      / /\ \ | |\/| |
-| |____| |____ / ____ \| |  | |
- \_____|______/_/    \_\_|  |_|
-
-CLAM 是淘系前端开发的轻环境和脚手架工具，你需要非常熟练使用 Grunt、KISSY 和 Git
-
 Useage：
-	yo clam		-> 	初始化一个 Project
-	yo clam:h	->	显示帮助
-	yo clam:mod	->	初始化一个模块单元
-	yo clam:page	->	生成一个引用KISSY种子的空页面
-	yo clam:install  <git>	-> <git>可以是Gallery中的模块名，也可以是Git地址，将git项目download到本地，类似svn export
-	yo clam:search <name>	-> 在Gallery中查找匹配的模块
-	yo clam:on	->	启用 Server，使用方法:
-		浏览目录：	http://127.0.0.1:8888/path/to/dir
-		打开文件：	http://127.0.0.1:8888/path/to/file
-		combo:		http://127.0.0.1:8888/path/??a.js,b.js
-		combo:		http://127.0.0.1:8888/??path/a.js,path/b.js
+    yo clam         初始化一个 Project
+    yo clam:h       显示帮助
+    yo clam:mod     初始化一个模块单元
+    yo clam:page    生成一个引用KISSY种子的空页面
+    yo clam:widget  创建标准的Gallery Widget组件
+        Example:    yo clam:widget 2.1
+    yo clam:install 安装一个Gallery模块
+        Example:    yo clam:install slide
+        Example:    yo clam:install git@github.com:a/slide.git
+    yo clam:search  在Gallery中查找匹配的模块
+        Example:    yo clam:search 列出所有可用模块
+        Example:    yo clam:search calendar 列出匹配的模块
+    yo clam:on      在当前目录启用本地 Server
+        浏览目录：  http://127.0.0.1:8888/path/to/dir
+        打开文件：  http://127.0.0.1:8888/path/to/file
+        combo:      http://127.0.0.1:8888/path/??a.js,b.js
+        combo:      http://127.0.0.1:8888/??path/a.js,path/b.js
 
 Grunt命令：
-	grunt 		-> 	在daily分支中构建项目
-	grunt prepub	->	预发
-	grunt publish	->	发布
-	grunt newbranch	->	创建一个新版本分支
-	grunt info	->	打印当前项目的gitlab地址
-	grunt listen	->	监听项目中文件修改并实时编译
+    grunt           在daily分支中构建项目
+    grunt prepub    预发
+    grunt publish   发布
+    grunt newbranch 创建一个新版本分支
+    grunt info      打印当前项目的gitlab地址
+    grunt listen    监听项目中文件修改并实时编译
+    grunt server    使用Grunt开启本地服务，CDN host配向本机即可进入调试
+    grunt build     以Clam方式构建页面（合并页面引用本地JS/CSS）（TODO）
 
 业务相关命令：
-	yo clam:cp		彩票
-	yo clam:trip	旅行
-	yo clam:cph5	彩票h5
-	yo clam:triph5	旅行h5
-	yo clam:wt		网厅
-	yo clam:tcc		充值
+    yo clam:cp      彩票
+    yo clam:trip    旅行
+    yo clam:cph5    彩票h5
+    yo clam:triph5  旅行h5
+    yo clam:wt      网厅
+    yo clam:tcc     充值
 
-创建标准KISSY组件：
-	yo clam:widget
-
-执行 Clam combo（合并页面js/css，生成格式化好的html）：
-	yo clam:build
-	
 Clam 文档：https://github.com/jayli/generator-clam
