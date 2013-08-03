@@ -87,7 +87,8 @@ AppGenerator.prototype.askFor = function askFor() {
 		this.modName = parseName(_tname);//YourModName
 		this.packageName = abcJSON.name;// package-name
         this.groupName = abcJSON.group;
-		this.config = abcJSON.config;
+		//this.config = abcJSON.config;
+		this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+abcJSON.version+'/config.js';
 		this.projectName = parseName(this.packageName); //PackageName
 		this.srcPath = this.modsPagesWidgets? '../../' : '../';
 

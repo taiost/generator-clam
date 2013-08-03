@@ -6,7 +6,6 @@
 	"group":"<%= groupName %>",
 	"src":"<%= srcDir %>",
 	"version":"<%= version %>",
-	"config":"<%= config %>",
     "author": {
         "name": "<%= author %>",
         "email": "<%= email %>"

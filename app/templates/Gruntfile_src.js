@@ -358,7 +358,21 @@ module.exports = function (grunt) {
 			}
 			grunt.log.write(('新分支：daily/' + r).green);
 			grunt.config.set('currentBranch', r);
-			task.run(['exec:new_branch']);
+			task.run(['exec:new_branch']);		
+			// 回写人 abc.json 的 version
+			try {
+				abcJSON = require(path.resolve(process.cwd(), 'abc.json'));
+				abcJSON.version = r;
+				fs.writeJSONFile("abc.json", abcJSON, function(err){
+					if (err) {
+						console.log(err);
+					} else {
+						console.log("update abc.json.");
+					}
+				});
+			} catch (e){
+				console.log('未找到abc.json');
+			}
 			done();
 		});
 	});
