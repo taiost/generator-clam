@@ -205,7 +205,7 @@ ClamGenerator.prototype.app = function app() {
 		*/
 		this.template('config.js');
 	}
-	this.copy('README.md', 'README.md');
+	this.template('README.md');
 	this.mkdir('doc');
 	this.mkdir('build');
 	this.template('abc.json');
