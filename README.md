@@ -1,5 +1,13 @@
 # KISSY 项目构建工具，Generator-clam
 
+## What & Why
+
+目标：是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。
+
+面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
+
+愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充溢阳光沙滩般的气息。
+
 ![](http://img04.taobaocdn.com/tps/i4/T1C5hpXwXeXXbkQf6j-210-45.jpg)
 
 环境依赖：Node、Npm，视频演示：[http://ascii.io/a/4384](http://ascii.io/a/4384)。
@@ -23,10 +31,9 @@
 - `yo clam:mod`:初始化一个模块
 - `yo clam:widget`:初始化一个标准kissy组件，首先创建组件空目录，进入空目录后执行此命令
 - `yo clam:widget x.y`:生成一个标准kissy组件的版本，进入到组件目录后执行。其中x.y是版本号
-- `yo clam:on`:启动web服务，服务支持SSI
+- `yo clam:on`:启动web服务，服务支持SSI，推荐使用`grunt server`
 - `yo clam:install <git>`:(TODO)git可以是git地址，也可以是Gallery模块名称，都将对应的git项目源码下载到本地，类似`svn export`
 - `yo clam:search <name>`:(TODO)在Gallery中查找现有的匹配的模块名称
-- `yo clam:build`:(TODO)Build一个Page，将引用到的JS/CSS静态合并，并输出结构化好的HTML
 - `yo clam:page`:生成一个Page
 
 部分子业务线的构建命令(TODO)：
@@ -48,14 +55,43 @@
 - `grunt info`:查看当前库git地址
 - `grunt newbranch`:创建新daily分支，基于当前版本累加
 - `grunt listen`:监听文件修改，实时编译
+- `grunt server`:开启本地调试模式
+
+### 本地调试
+
+本地调试调用了[flex-combo](https://npmjs.org/flex-combo)，访问绝对路径时和本地目录有一个映射关系，比如绝对地址映射到项目的`src`目录：
+
+	http://g.tbcdn.cn/group/project/ => ./src/
+
+启动本地服务：`grunt server`
+
+### grunt 构建配置项
+
+`Gruntfile.js`是Grunt脚本规则文件，此外项目基本参数存放在`abc.json`中，生成好的`abc.json`格式如下：
+
+	{
+		"name": "h5-test",
+		"desc": "description of your app",
+		"type": "clam",
+		"port":"80",
+		"group":"trip",
+		"src":"false",
+		"version":"0.0.1",
+		"author": {
+			"name": "",
+			"email": ""
+		},
+		"repository": {
+			"type": "git",
+			"url": "http://gitlab.alibaba-inc.com/trip/h5-test"
+		}
+	}
+
+生成一个新的daily分支（`grunt newbranch`）时会自动更新`abc.json`的`version`字段。
 
 > ps:grunt构建任务依赖`grunt-mytps`子任务，该子任务（上传本地图片到CDN并替换地址）依赖python，并需要安装[tpsmate](https://github.com/sodabiscuit/tpsmate)。
 
 ## 再多了解一点`Generator-Clam`
-
-### Generator-Clam 的初衷和目标
-
-Generator-Clam 的目标是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。Generator-Clam 面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
 
 ### CLAM 工具族
 
@@ -69,17 +105,23 @@ clam包含一套完整的模块化开发思想，用来规范结构化越来越�
 
 2，[Clam-Tools](http://gitlab.alibaba-inc.com/jay.li/clam-tools/tree/master)
 
-由于时间仓促，Clam没实现发布、自定义构建和对KISSY的解析，Clam-Tools弥补了这几个空缺，且提供了GUI工具，实现了基于Ant的一键式构建和发布，但前提是你的项目基于SVN发布。另外一个问题在于，实际上没几个前端玩的动Ant。
+由于时间仓促，Clam没实现发布、自定义构建和对KISSY的解析，Clam-Tools弥补了这几个空缺，且提供了GUI工具，实现了基于Ant的一键式构建和发布，但前提是你的项目基于SVN发布。另外一个问题在于，前端工程师真的学不会Ant。
 
 3，[Generator-Clam](http://github.com/jayli/generator-clam)
 
-2013年淘系全面推广基于Gitlab的Assets发布，Generator-Clam与时俱进，延续了Clam模块化的思想，结合Yeoman和Grunt提供了面向淘系前端环境构建脚手架工具，包含前端开发/构建/发布的全流程。Generator-Clam 对代码单元做更自由的定义，根据适用范围，任何代码单元从三个维度管理：
+2013年淘系全面推广基于Gitlab的Assets发布，Generator-Clam 延续了Clam模块化的思想，结合Yeoman和Grunt提供了面向淘系前端环境构建脚手架工具，包含前端开发/构建/发布的全流程。Generator-Clam 对代码单元做更自由的定义，根据适用范围，任何代码单元从三个维度管理：
 
 - 项目（project）（代码集合最大单位）
 - 模块（module）（业务功能单元，部分业务之间可共用）
 - 组件（widget）（可全局共用）
 
 最初Clam独立出了Page，Page本身也是一个模块，这里统一用模块来管理。这里的`yo clam:page`只是生成一个引用了KISSY种子的空页面。
+
+代码单元有自身属性，自身属性只是为了区分其适用范围和生命周期，为了保持约定简单，代码单元在层级上不再做规定，所有模块单元都相互平行，代码之间的依赖和相互引用，取决于你对业务的拆解，不是脚手架的职责。
+
+最重要的，互联网项目的需求是涌现式的，项目的前端架构和设计是在开发中不断调整修改而来，而非开始就设计完成不再动了，这也是代码组织结构尽可能保持和业务弱相关的原因。
+
+最最重要的，组件级（widget）代码从开始就保持标准规范（Kissy Gallery），抽离出项目更方便，这在无常的Web项目中是唯一的促成积累、沉淀代码的方法。
 
 ### 项目目录结构约定
 
@@ -172,21 +214,50 @@ clam包含一套完整的模块化开发思想，用来规范结构化越来越�
 
 ### Demo的运行
 
+#### 方法1
+
 Generator-clam 提供一个轻服务（只提供静态文件服务器、[Flex-Combo](http://npmjs.org/flex-combo) 和SSI支持），启动服务后你可以这样访问Demo：
 
 	http://localhost:8888/src/pages/detail.html?ks-debug
 
 > 这里的SSI兼容apache，但这个Server还是功能很弱，且不支持脚本，我们强烈建议您使用更成熟的[apache+php来作为本地demo服务](http://wiki.ued.taobao.net/doku.php?id=ued.bj:f2e:tbcdn)，Clam只作为构建工具使用。
 
+#### 方法2
+
+Grunt中模板中提供`grunt server`方法，开启本地服务，默认开启在80端口，在`abc.json`中修改端口配置。`grunt server`封装了`flexcombo`，提供一种最基本的服务：即线上CDN环境映射到本地目录，直接访问屏幕提示给出的URL即可（g.tbcdn.cn host指向本地）
+
+	[bachi@yahoo ~/temp/h5-test]> sudo grunt server
+	Running "server" task
+
+	Running "flexcombo:main" (flexcombo) task
+
+	Preview: http://g.tbcdn.cn/trip/h5-test/
+
+	Flex Combo Server running at http://127.0.0.1:80
+
+访问demo时应当带上`?ks-debug`，上线后的项目引用`config.js`的绝对地址即可。
+
+如果想测试build完成后的代码，可以在本地创建软连接，映射线上版本号，通过`grunt server`启动服务来测试：
+
+	ln -s build src/0.1.8
+
+访问`http://g.tbcdn.cn/group/project/0.1.8/.../demo.html`
+
+
 ### 预发和发布
 
-为了限制在daily分支上发布，我们将grunt构建也加了限制，非daily分支上禁止构建，（你当然可以随意修改Gruntfile.js去掉限制），只有build目录中的文件会被发布，所发布的项目中build目录中的文件地址为，前缀自选
+为了限制在daily分支上发布，我们将grunt构建也加了限制，非daily分支上禁止构建，不建议将此限制去掉，只有build目录中的文件会被发布，所发布的项目中build目录中的文件地址为如下两种，前缀自选
 
 	http://a.tbcdn.cn/g/group-name/project-name/x.y.z/mods.js
 
 对应到 g.tbcdn.cn 的地址：
 
 	http://g.tbcdn.cn/group-name/project-name/x.y.z/mods.js
+
+代码发布命令：
+
+- `grunt prepub` 预发
+- `grunt publish` 发布
 
 ## Q & A
 
@@ -195,7 +266,7 @@ Generator-clam 提供一个轻服务（只提供静态文件服务器、[Flex-Co
 	npm ERR! Error: EACCES, mkdir '/usr/local/lib/node_modules/grunt-xx'
 
 - 原因：没有sudo
-- 解决办法：在当前目录执行`sudo npm install --link`
+- 解决办法：在当前目录执行`sudo npm install`
 
 2，tpsmate安装完了还是不能把图片自动上传CDN?
 
@@ -227,12 +298,21 @@ Generator-clam 提供一个轻服务（只提供静态文件服务器、[Flex-Co
 		// your code
 	});
 
+7，`grunt server`启动报错`Error: listen EACCES。`
+
+在Mac/Linux下需要root权限才能启用80端口，加上sudo
+	
+	sudo grunt server
+
+8，`grunt server`为什么会提示Error: listen EADDRINUSE。
+
+Flex Combo所需要使用的端口正在被使用中，如果这个端口是80端口，你需要检查系统中是否有其他web容器，比如Apache、Nginx等是否使用了80端口。如果不是，你需要检查是否系统中有其他Flex Combo正在运行。
+
 ## TODO
 
 - include JS和CSS文件的提取合并
 - JSON接口模拟和映射
+- png 图片的压缩和优化
 - 各条业务线的固定构建脚本
+- `yo clam:install`/`yo clam:search`，安装和查找Gallery模块
 
-> “会不会制造工具，是人和动物的根本区别。”——富兰克林（美）
-> 
-> 共勉

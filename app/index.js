@@ -9,6 +9,7 @@ var ClamGenerator = module.exports = function ClamGenerator(args, options, confi
 	ABC.UIBase.apply(this, arguments);
 	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 
+	this.on('error',function(){});
     this.on('end', function () {
 		var cb = this.async();
 		var that = this;
@@ -109,10 +110,16 @@ ClamGenerator.prototype.askFor = function askFor() {
             default: 'group-name',
             warning: ''
         },
+        {
+            name: 'port',
+            message: 'HTTP Server Port:',
+            default: '80',
+            warning: ''
+        },
 		{
             name: 'version',
             message: 'Version:',
-            default: 'x.y.z',
+            default: '0.0.1',
             warning: ''
 		}
 	];
@@ -131,9 +138,10 @@ ClamGenerator.prototype.askFor = function askFor() {
 		this.projectName = parseMojoName(this.packageName); //ProjectName
         this.author = props.author;
         this.email = props.email;
+		this.port = props.port;
         this.version = props.version;
         this.groupName = props.groupName;
-		this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+this.version+'/config.js';
+		//this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+this.version+'/config.js';
 		this.srcDir = (/^y/i).test(props.srcDir);
 		this.srcPath = '../';
 		this.currentBranch = 'master';
@@ -141,7 +149,7 @@ ClamGenerator.prototype.askFor = function askFor() {
 		if(this.srcDir){
 			this.prompt([{
 				name: 'modsPagesWidgets',
-				message: 'Create "src/mods|widgets|pages"?',
+				message: 'Create "src/mods[widgets|pages]"?',
 				default: 'N/y',
 				warning: ''
 			}], function (err, props) {
@@ -190,11 +198,14 @@ ClamGenerator.prototype.app = function app() {
 		}
 		this.template('config.js','src/config.js');
 	} else {
+		/*
 		this.template('index.js');
 		this.template('index.css');
 		this.template('index.html');
+		*/
+		this.template('config.js');
 	}
-	this.copy('README.md', 'README.md');
+	this.template('README.md');
 	this.mkdir('doc');
 	this.mkdir('build');
 	this.template('abc.json');

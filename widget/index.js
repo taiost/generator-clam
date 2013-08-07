@@ -10,8 +10,10 @@ var AppGenerator = module.exports = function AppGenerator(args, options, config)
 	ABC.UIBase.apply(this, arguments);
 
     this.on('end', function () {
-		console.log(green('done!'));
+
     }.bind(this));
+
+	this.on('error',function(){});
 
 };
 
@@ -23,8 +25,29 @@ AppGenerator.prototype.askFor = function askFor() {
     // welcome message
 	console.log(ClamLogo(this));
 
-	this.invoke('kissy-gallery');
+    var prompts = [{
+        name: '_version',
+        message: 'version?',
+        default: getversion(this.args)
+    }];
 
+    this.prompt(prompts, function (err,props) {
+		if (err) {
+			return this.emit('error', err);
+		}
+        this._version = props._version;
+        cb();
+    }.bind(this));
+
+
+};
+
+AppGenerator.prototype.begin = function begin() {
+	this.invoke('kissy-gallery',{
+		args:[
+			this._version
+		]
+	});
 };
 
 function consoleColor(str,num){
@@ -48,4 +71,15 @@ function red(str){
 
 function blue(str){
 	return consoleColor(str,34);
+}
+
+function getversion(a){
+	if(!a || a.length == 0 ){
+		return '1.0'
+	}
+	if(/^\d+\.\d+$/i.test(a[0])){
+		return a[0].toString();
+	} else {
+		return '1.0';
+	}
 }

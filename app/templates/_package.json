@@ -25,7 +25,10 @@
         "grunt-contrib-watch": "~0.3.1",
         "grunt-kmc": "~0.1.4",
         "grunt-exec": "~0.4.1",
-		"grunt-mytps":""
+        "grunt-flexcombo": "",
+		"grunt-mytps":"",
+		"fs-extra":"",
+		"grunt-replace":""
     },
 
     "dependencies": {

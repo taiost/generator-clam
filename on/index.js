@@ -13,6 +13,7 @@ var AppGenerator = module.exports = function AppGenerator(args, options, config)
 
 	var pwd = process.cwd();
 
+	this.on('error',function(){});
     this.on('end', function () {
 		var that = this;
 		var sName = '/' + this.dirName;

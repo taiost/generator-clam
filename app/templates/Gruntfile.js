@@ -1,5 +1,5 @@
 var path = require('path'),
-	fs = require('fs'),
+	fs = require('fs-extra'),
 	os = require('os'),
 	exec = require('child_process').exec;
 
@@ -12,6 +12,7 @@ module.exports = function (grunt) {
 	// files.js 存储项目中的所有js文件
 	// file.css 存储项目中的所有css文件
 	// file.less 存储项目中所有less文件
+	// file.pic 存储项目中所有图片文件
 
 	// ======================= 配置每个任务 ==========================
 	
@@ -22,9 +23,7 @@ module.exports = function (grunt) {
 		// 配置默认分支
 		currentBranch: 'master',
 
-        /**
-         * 对页面进行清理
-         */
+        // 对页面进行清理
         clean: {
 
             build: {
@@ -38,7 +37,7 @@ module.exports = function (grunt) {
 		 *
          * 		@link https://github.com/daxingplay/grunt-kmc
 		 *
-		 * 如果需要只生成依赖关系表，不做合并，源文件必须指定名称，比如
+		 * 如果需要只生成依赖关系表，不做合并，JS源文件必须指定模块名称，比如
 		 *		KISSY.add('group/project/file',function(S){});
 		 * 并在kmc.options中增加两个参数:
 		 *		depFilePath: 'build/mods.js',
@@ -55,7 +54,6 @@ module.exports = function (grunt) {
                 ],
 				map: [/*['<%= pkg.name %>/', '<%= pkg.name %>/<%= currentBranch %>/']*/]
             },
-
             main: {
                 files: [
                     {
@@ -69,7 +67,7 @@ module.exports = function (grunt) {
             }
 			// 若有新任务，请自行添加
 			/*
-            simple-example: {
+            "simple-example": {
                 files: [
                     {
                         src: "a.js",
@@ -79,9 +77,7 @@ module.exports = function (grunt) {
             }
 			*/
         },
-		/**
-		 * 将css文件中引用的本地图片上传CDN并替换url
-		 */
+		// 将css文件中引用的本地图片上传CDN并替换url
 		mytps: {
 			options: {
 				argv: "--inplace"
@@ -89,10 +85,7 @@ module.exports = function (grunt) {
 			all: [ '**/*.css', '!build/**/*','!node_modules/**/*','!doc/**/*']
 		},
 
-        /**
-         * CSS-Combo
-		 * combo项目中所有css，通过@import "other.css"; 来处理依赖关系
-         */
+		// CSS-Combo: 合并项目中所有css，通过@import "other.css" 来处理CSS的依赖关系
         css_combo: {
             options: {
                 paths: './'
@@ -102,45 +95,39 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        src:files.css, 
+						cwd:'build',
+                        src: ['**/*.css'], 
                         dest: 'build/',
                         ext: '.css'
                     }
                 ]
             }
         },
-		/**
-		 * YUIDoc
-		 * 对build目录中的js文件生成文档，放入doc/中
-		 */
-		 /*
-		yuidoc: {
-			compile: {
-				name: 'generator-clam',
-				description: 'A Clam generator for Yeoman',
-				options: {
-					paths: 'build/',
-					outdir: 'doc/'
-				}
-			}
-		},
-		*/
 
-        /**
-         * 将LESS编译为CSS
-         * @link https://github.com/gruntjs/grunt-contrib-less
-         */
+		// FlexCombo服务配置: https://npmjs.org/package/grunt-flexcombo
+		flexcombo:{
+			options: {
+				target:'',
+				urls:'/<%= pkg.group %>/<%= pkg.name %>',
+				port:'<%= pkg.port %>',
+				servlet:'?',
+				separator:',',
+				charset:'utf8'
+			},
+			main:{}
+		},
+
+        // 编译LESS为CSS https://github.com/gruntjs/grunt-contrib-less
         less: {
             options: {
                 paths: './'
             },
-
             main: {
                 files: [
                     {
                         expand: true,
-						cwd:'./',
-                        src: files.less,
+						cwd:'build/',
+                        src: ['**/*.less'],
                         dest: 'build/',
                         ext: '.css'
                     }
@@ -148,10 +135,7 @@ module.exports = function (grunt) {
             }
         },
 
-        /**
-         * 对JS文件进行压缩
-         * @link https://github.com/gruntjs/grunt-contrib-uglify
-         */
+        // 压缩JS https://github.com/gruntjs/grunt-contrib-uglify
         uglify: {
             options: {
 				 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %> */\n',
@@ -172,10 +156,7 @@ module.exports = function (grunt) {
             }
         },
 
-        /**
-         * 对CSS 文件进行压缩
-         * @link https://github.com/gruntjs/grunt-contrib-cssmin
-         */
+        // 压缩CSS https://github.com/gruntjs/grunt-contrib-cssmin
         cssmin: {
             main: {
                 files: [
@@ -190,6 +171,7 @@ module.exports = function (grunt) {
             }
         },
 
+		// 监听JS、CSS、LESS文件的修改
         watch: {
             'js': {
                 files: [ '**/*.js' ],
@@ -205,9 +187,7 @@ module.exports = function (grunt) {
             }
         },
 
-		/**
-		 * 发布命令。
-		 */
+		// 发布命令
 		exec: {
 			tag: {
 				command: 'git tag publish/<%= currentBranch %>'
@@ -240,6 +220,11 @@ module.exports = function (grunt) {
 			main: {
 				files:[
 					{
+						src: files.pic, 
+						dest: 'build/', 
+						filter: 'isFile'
+					},
+					{
 						src: files.js, 
 						dest: 'build/', 
 						filter: 'isFile'
@@ -256,6 +241,19 @@ module.exports = function (grunt) {
 					}
 				]
 			}
+		},
+		// 替换config中的版本号@@version
+		replace: {
+			dist: {
+				options: {
+					variables: {
+						'version': '<%= pkg.version %>'
+					}
+				},
+				files: [
+					{expand: true, flatten: true, src: ['build/config.js'], dest: 'build/'}
+				]
+			}
 		}
 
 		// 合并文件
@@ -265,6 +263,19 @@ module.exports = function (grunt) {
 				src: ['from.css'],
 				dest: 'build/to.css'
 			
+			}
+		},
+		*/
+		// YUIDoc: 对build目录中的js文件生成文档，放入doc/中
+		 /*
+		yuidoc: {
+			compile: {
+				name: 'generator-clam',
+				description: 'A Clam generator for Yeoman',
+				options: {
+					paths: 'build/',
+					outdir: 'doc/'
+				}
 			}
 		}
 		*/
@@ -278,14 +289,18 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    //grunt.loadNpmTasks('grunt-kissy-template');
     grunt.loadNpmTasks('grunt-kmc');
-    //grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-mytps');
+	grunt.loadNpmTasks('grunt-flexcombo');
+	grunt.loadNpmTasks('grunt-replace');
+
+	// 根据需要打开这些配置
+    //grunt.loadNpmTasks('grunt-kissy-template');
+    //grunt.loadNpmTasks('grunt-contrib-connect');
 	//grunt.loadNpmTasks('grunt-contrib-concat');
 	//grunt.loadNpmTasks('grunt-contrib-yuidoc');
-	grunt.loadNpmTasks('grunt-mytps');
 
 	// =======================  注册Grunt 各个操作 ==========================
 	
@@ -311,6 +326,13 @@ module.exports = function (grunt) {
 	 */
 	grunt.registerTask('listen', 'clam watch ...', function() {
 		task.run('watch');
+	});
+
+	/**
+	 * 启动服务
+	 */
+	grunt.registerTask('server', 'clam server...', function() {
+		task.run(['flexcombo','watch']);
 	});
 
 	/*
@@ -341,7 +363,21 @@ module.exports = function (grunt) {
 			}
 			grunt.log.write(('新分支：daily/' + r).green);
 			grunt.config.set('currentBranch', r);
-			task.run(['exec:new_branch']);
+			task.run(['exec:new_branch']);		
+			// 回写人 abc.json 的 version
+			try {
+				abcJSON = require(path.resolve(process.cwd(), 'abc.json'));
+				abcJSON.version = r;
+				fs.writeJSONFile("abc.json", abcJSON, function(err){
+					if (err) {
+						console.log(err);
+					} else {
+						console.log("update abc.json.");
+					}
+				});
+			} catch (e){
+				console.log('未找到abc.json');
+			}
 			done();
 		});
 	});
@@ -370,7 +406,7 @@ module.exports = function (grunt) {
 
 		// 构建和发布任务
 		if (!type) {
-			task.run(['clean:build', 'mytps','copy', 'kmc', 'uglify', 'css_combo' ,'less', 'cssmin'/*'concat','yuidoc', 'copy', 'clean:mobile'*/]);
+			task.run(['clean:build', 'copy','less','mytps', 'css_combo','kmc','replace', 'uglify', 'cssmin'/*'concat','yuidoc'*/]);
 		} else if ('publish' === type || 'pub' === type) {
 			task.run(['exec:tag', 'exec:publish']);
 		} else if ('prepub' === type) {
@@ -400,6 +436,15 @@ module.exports = function (grunt) {
 				break;
 			case '.scss':
 				files.scss.push(uri);
+				break;
+			case '.png':
+				files.pic.push(uri);
+				break;
+			case '.gif':
+				files.pic.push(uri);
+				break;
+			case '.jpg':
+				files.pic.push(uri);
 				break;
 			default:
 				files.other.push(uri);
@@ -467,7 +512,6 @@ module.exports = function (grunt) {
 		}
 		return r;
 	}
-
     
 };
 
