@@ -1,0 +1,17 @@
+{
+    "name": "<%= packageName %>",
+    "desc": "description of your app",
+    "type": "clam",
+	"group":"<%= groupName %>",
+	"src":"<%= srcDir %>",
+	"version":"<%= version %>",
+	"config":"<%= config %>",
+    "author": {
+        "name": "<%= author %>",
+        "email": "<%= email %>"
+    },
+	"repository": {
+        "type": "git",
+        "url": "http://gitlab.alibaba-inc.com/<%= groupName %>/<%= packageName %>"
+    }
+}
