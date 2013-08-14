@@ -251,7 +251,12 @@ module.exports = function (grunt) {
 					}
 				},
 				files: [
-					{expand: true, flatten: true, src: ['build/config.js'], dest: 'build/'}
+					{
+						expand: true, 
+                        cwd: 'build/',
+                        dest: 'build/',
+						src: ['**/*']
+					}
 				]
 			}
 		}

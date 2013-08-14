@@ -84,7 +84,7 @@ module.exports = function (grunt) {
 			options: {
 				argv: "--inplace"
 			},
-			all: [ 'build/**/*.css']
+			all: [ 'src/**/*.css']
 		},
 
 		// CSS-Combo: 合并项目中所有css，通过@import "other.css" 来处理CSS的依赖关系
@@ -104,6 +104,22 @@ module.exports = function (grunt) {
                 ]
             }
         },
+		combohtml:{
+			options:{
+				encoding:'utf8'
+			},
+			main:{
+                files: [
+                    {
+                        expand: true,
+						cwd:'src',
+                        src: ['**/*.html'], 
+                        dest: 'build/',
+                        ext: '.html'
+                    }
+                ]
+			}
+		},
 
 		// FlexCombo服务配置: https://npmjs.org/package/grunt-flexcombo
 		flexcombo:{
@@ -223,7 +239,7 @@ module.exports = function (grunt) {
 					{
 						// src: files.js, 
 						expand:true,
-						src: ['**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules'], 
+						src: ['**/*.html','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules'], 
 						dest: 'build/', 
 						cwd:'src/',
 						filter: 'isFile'
@@ -237,10 +253,16 @@ module.exports = function (grunt) {
 				options: {
 					variables: {
 						'version': '<%= pkg.version %>'
-					}
+					},
+					prefix:'@@'
 				},
 				files: [
-					{expand: true, flatten: true, src: ['build/config.js'], dest: 'build/'}
+					{
+						expand: true, 
+                        cwd: 'build/',
+                        dest: 'build/',
+						src: ['**/*']
+					}
 				]
 			}
 		}
@@ -286,6 +308,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-mytps');
 	grunt.loadNpmTasks('grunt-flexcombo');
 	grunt.loadNpmTasks('grunt-replace');
+	grunt.loadNpmTasks('grunt-combohtml');
 
 	// 根据需要打开这些配置
     //grunt.loadNpmTasks('grunt-kissy-template');
@@ -303,6 +326,9 @@ module.exports = function (grunt) {
 	});
 	grunt.registerTask('pub', 'clam publish...', function() {
 		task.run('exec:grunt_publish');
+	});
+	grunt.registerTask('build', 'clam publish...', function() {
+		task.run('combohtml');
 	});
 
 	/**
@@ -397,7 +423,7 @@ module.exports = function (grunt) {
 
 		// 构建和发布任务
 		if (!type) {
-			task.run(['clean:build', 'copy','less', 'mytps','css_combo', 'kmc', 'replace', 'uglify','cssmin'/*'concat','yuidoc'*/]);
+			task.run(['clean:build', 'copy','less', 'mytps','css_combo', 'kmc', 'combohtml', 'replace', 'uglify','cssmin'/*'concat','yuidoc'*/]);
 		} else if ('publish' === type || 'pub' === type) {
 			task.run(['exec:tag', 'exec:publish']);
 		} else if ('prepub' === type) {

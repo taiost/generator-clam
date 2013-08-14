@@ -102,6 +102,7 @@ AppGenerator.prototype.files = function files(){
 	this.mkdir(mojoName);
 	this.mkdir(mojoName+'/img');
     this.template('index.html',mojoName + '/index.html');
+    this.template('demo.html',mojoName + '/demo.html');
     this.template('index.js',mojoName+'/index.js');
     this.template('index.css',mojoName+'/index.css');
 };

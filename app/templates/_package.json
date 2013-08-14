@@ -26,6 +26,7 @@
         "grunt-kmc": "~0.1.4",
         "grunt-exec": "~0.4.1",
         "grunt-flexcombo": "",
+		"grunt-combohtml":"",
 		"grunt-mytps":"",
 		"fs-extra":"",
 		"grunt-replace":""
