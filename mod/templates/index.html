@@ -1,13 +1,12 @@
-	<script src="<%= srcPath %><%= modName %>/index.js"></script>
-	<link href="<%= srcPath %><%= modName %>/index.css" rel="stylesheet" />
 
-	<!--#include virtual="other-pages.html" -->
 
-	<script>
-		KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
-			new <%= modName %>();
-		});	
-	</script>
-</body>
-</html>
+<script src="<%= srcPath %><%= mojoName %>/index.js"></script>
+<link href="<%= srcPath %><%= mojoName %>/index.css" rel="stylesheet" />
 
+<!--#include virtual="other-pages.html" -->
+
+<script>
+	KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
+		new <%= modName %>();
+	});	
+</script>
