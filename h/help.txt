@@ -2,8 +2,8 @@ Useage：
     yo clam         初始化一个 Project
     yo clam:h       显示帮助
     yo clam:mod     初始化一个模块单元
-    yo clam:page    生成一个引用KISSY种子的空页面
-    yo clam:widget  创建标准的Gallery Widget组件
+    yo clam:page    生成一个空页面
+    yo clam:widget  创建标准的Gallery Widget组件（需要手动先创建目录）
         Example:    yo clam:widget 2.1
     yo clam:install 安装一个Gallery模块
         Example:    yo clam:install slide
@@ -11,7 +11,7 @@ Useage：
     yo clam:search  在Gallery中查找匹配的模块
         Example:    yo clam:search 列出所有可用模块
         Example:    yo clam:search calendar 列出匹配的模块
-    yo clam:on      在当前目录启用本地 Server
+    yo clam:on      在当前目录启用本地 Server（建议使用"grunt server"）
         浏览目录：  http://127.0.0.1:8888/path/to/dir
         打开文件：  http://127.0.0.1:8888/path/to/file
         combo:      http://127.0.0.1:8888/path/??a.js,b.js
@@ -25,7 +25,7 @@ Grunt命令：
     grunt info      打印当前项目的gitlab地址
     grunt listen    监听项目中文件修改并实时编译
     grunt server    使用Grunt开启本地服务，CDN host配向本机即可进入调试
-    grunt build     以Clam方式构建页面（合并页面引用本地JS/CSS）（TODO）
+    grunt build     以Clam方式构建页面（合并页面引用本地JS/CSS）
 
 业务相关命令：
     yo clam:cp      彩票
@@ -35,4 +35,4 @@ Grunt命令：
     yo clam:wt      网厅
     yo clam:tcc     充值
 
-Clam 文档：https://github.com/jayli/generator-clam
+工具文档：https://github.com/jayli/generator-clam

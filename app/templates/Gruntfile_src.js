@@ -106,16 +106,20 @@ module.exports = function (grunt) {
         },
 		combohtml:{
 			options:{
-				encoding:'utf8'
+				encoding:'utf8',
+				replacement:{
+					from:/src\//,
+					to:'build/'
+				}
 			},
 			main:{
                 files: [
                     {
                         expand: true,
 						cwd:'src',
-                        src: ['**/*.html'], 
+                        src: ['**/*.htm'], 
                         dest: 'build/',
-                        ext: '.html'
+                        ext: '.htm'
                     }
                 ]
 			}

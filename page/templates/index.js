@@ -7,7 +7,7 @@
  *		new <%= modName %>();
  * });
  */
-KISSY.add(function(S,RichBase) {
+KISSY.add('<%= packageName %>/<%= mojoName %>/index',function(S,RichBase) {
 
 	var <%= modName %> = RichBase.extend({
 		initializer:function(){

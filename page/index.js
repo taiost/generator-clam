@@ -101,7 +101,7 @@ AppGenerator.prototype.files = function files(){
 	var mojoName = this.modsPagesWidgets? this.mojoName.replace(/^([^\/]+)\//i,'') : this.mojoName;
 	this.mkdir(mojoName);
 	this.mkdir(mojoName+'/img');
-    this.template('index.html',mojoName + '/index.html');
+    this.template('index.htm',mojoName + '/index.htm');
     this.template('index.js',mojoName+'/index.js');
     this.template('index.css',mojoName+'/index.css');
 };
