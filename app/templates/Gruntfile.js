@@ -174,15 +174,15 @@ module.exports = function (grunt) {
 		// 监听JS、CSS、LESS文件的修改
         watch: {
             'js': {
-                files: [ '**/*.js' ,'!**/*-min.js'],
+                files: [ '**/*.js' ,'!**/*-min.js','!build/**/*'],
                 tasks: [ 'kmc', 'uglify' ]
             },
 			'css':{
-                files: [ '**/*.css' ,'!**/*-min.css'],
+                files: [ '**/*.css' ,'!**/*-min.css','!build/**/*'],
                 tasks: [ 'copy','cssmin' ]
 			},
             'less': {
-                files: [ '**/*.less','!**/*-min.less'],
+                files: [ '**/*.less','!**/*-min.less','!build/**/*'],
                 tasks: ['less', 'cssmin']
             }
         },
