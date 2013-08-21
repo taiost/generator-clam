@@ -8,6 +8,8 @@
 
 愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充溢阳光沙滩般的气息。
 
+工具介绍PPT：[PPT](https://speakerdeck.com/lijing00333/generator-clam)。
+
 ![](http://img04.taobaocdn.com/tps/i4/T1C5hpXwXeXXbkQf6j-210-45.jpg)
 
 环境依赖：Node、Npm，视频演示：[http://ascii.io/a/4384](http://ascii.io/a/4384)。
@@ -213,13 +215,15 @@ clam包含一套完整的模块化开发思想，用来规范结构化越来越�
 
 2，接手项目
 
-如果你要接手一个项目，代码检出后即可进行调试；在运行`grunt`命令之前需要运行`npm install --link`。 
+如果你要接手一个项目，代码检出后即可进行调试；在运行`grunt`命令之前需要运行`npm install`。 
 
 3，标准格式的KISSY组件
 
 [KISSY标准组件](http://gallery.kissyui.com)的构建使用`yo kissy-gallery x.y`，已经被映射为`yo clam:widget`，KISSY标准组件是可以直接构建为可发布到淘宝CDN的代码，并提交至`kissy gallery`中。因此，你的项目中所有widgets都应当和KISSY标准组件格式保持一致，方便被其他项目使用。
 
 ### Demo的运行
+
+推荐使用方法2
 
 #### 方法1
 
@@ -314,6 +318,12 @@ Grunt中模板中提供`grunt server`方法，开启本地服务，默认开启�
 8，`grunt server`为什么会提示Error: listen EADDRINUSE。
 
 Flex Combo所需要使用的端口正在被使用中，如果这个端口是80端口，你需要检查系统中是否有其他web容器，比如Apache、Nginx等是否使用了80端口。如果不是，你需要检查是否系统中有其他Flex Combo正在运行。
+
+9，运行`grunt server`时报错：“Error: EMFILE, too many open files”
+
+运行：
+
+	ulimit -n 10000
 
 ## TODO
 
