@@ -330,7 +330,9 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 
 该程序在yeoman 1.0.0-rc.1.1 版本下测试通过
 
-11，
+11，grunt server 报错：`Fatal error: Cannot read property 'host' of undefined`
+
+是因为你访问的JS或CSS文件在本地不存在，且在线上也不存在，保证本地文件存在即可
 
 ## TODO
 
