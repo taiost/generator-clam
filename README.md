@@ -2,13 +2,13 @@
 
 ## What & Why
 
+工具介绍PPT：[Speakerdeck](https://speakerdeck.com/lijing00333/generator-clam)。
+
 目标：是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。
 
 面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
 
 愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充溢阳光沙滩般的气息。
-
-工具介绍PPT：[PPT](https://speakerdeck.com/lijing00333/generator-clam)。
 
 ![](http://img04.taobaocdn.com/tps/i4/T1C5hpXwXeXXbkQf6j-210-45.jpg)
 
@@ -284,6 +284,8 @@ clam包含一套完整的模块化开发思想，用来规范结构化越来越�
 
 - 原因：需要首先找到`node_modules`中手动执行一次
 - 解决办法：进入`node_modules/grunt-mytps/tasks/lib/tpsmate/src`，执行`python ./cli.py upload`，这时提示你输入TMS用户名和密码，完成即可
+
+详细文档参照：<https://github.com/sodabiscuit/tpsmate>
 
 3，tpsmate安装完成，但执行报错？
 
