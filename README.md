@@ -330,13 +330,20 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 
 该程序在yeoman 1.0.0-rc.1.1 版本下测试通过
 
-11，grunt server 报错：`Fatal error: Cannot read property 'host' of undefined`
+11，grunt server后，访问我的文件报错：`Fatal error: Cannot read property 'host' of undefined`
 
 是因为你访问的JS或CSS文件在本地不存在，且在线上也不存在，保证本地文件存在即可
 
+默认情况下，你需要保证访问地址的host是g.tbcdn.cn或a.tbcdn.cn，如果使用别的域名，需要在`~/.flex-combo/config.json`中修改配置项：
+
+	hosts:{
+		'a.tbcdn.cn':'122.255.67.241',
+		'g.tbcdn.cn':'155.238.23.250',
+		'your.host.name':'155.238.23.250'//ip地址配置到对应的cdn地址
+	}
+
 ## TODO
 
-- include JS和CSS文件的提取合并
 - JSON接口模拟和映射
 - png 图片的压缩和优化
 - 各条业务线的固定构建脚本
