@@ -116,7 +116,7 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-						cwd:'src',
+						cwd:'build',
                         src: ['**/*.htm'], 
                         dest: 'build/',
                         ext: '.htm'
@@ -243,7 +243,7 @@ module.exports = function (grunt) {
 					{
 						// src: files.js, 
 						expand:true,
-						src: ['**/*.html','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules'], 
+						src: ['**/*.html','**/*.htm','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules'], 
 						dest: 'build/', 
 						cwd:'src/',
 						filter: 'isFile'
