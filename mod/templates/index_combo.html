@@ -1,0 +1,12 @@
+
+<!--引用的本地文在构建时件会被抽取和合并-->
+<script src="<%= srcPath %><%= mojoName %>/index.js"></script>
+<link href="<%= srcPath %><%= mojoName %>/index.css" rel="stylesheet" />
+
+<!--#include virtual="other-pages.html" -->
+
+<script>
+	KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
+		new <%= modName %>();
+	});	
+</script>

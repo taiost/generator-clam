@@ -6,6 +6,7 @@
 	"group":"<%= groupName %>",
 	"src":"<%= srcDir %>",
 	"version":"<%= version %>",
+	"combohtml":"<%= combohtml %>",
     "author": {
         "name": "<%= author %>",
         "email": "<%= email %>"

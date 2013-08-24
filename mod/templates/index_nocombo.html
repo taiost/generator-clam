@@ -1,0 +1,10 @@
+
+<link href="<%= srcPath %><%= mojoName %>/index.css" rel="stylesheet" />
+
+<!--#include virtual="other-pages.html" -->
+
+<script>
+	KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
+		new <%= modName %>();
+	});	
+</script>

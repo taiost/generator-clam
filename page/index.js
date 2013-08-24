@@ -55,8 +55,13 @@ AppGenerator.prototype.askFor = function askFor() {
 		abcJSON.group = 'groupName';
 	}
 
+	if(!abcJSON.combohtml){
+		abcJSON.combohtml = 'false';
+	}
+
 	this.modsPagesWidgets = modsPagesWidgets;
 	this.projectName = abcJSON.name;
+	this.combohtml = abcJSON.combohtml;
 
     // welcome message
 	console.log(ClamLogo(this));
@@ -101,7 +106,8 @@ AppGenerator.prototype.files = function files(){
 	var mojoName = this.modsPagesWidgets? this.mojoName.replace(/^([^\/]+)\//i,'') : this.mojoName;
 	this.mkdir(mojoName);
 	this.mkdir(mojoName+'/img');
-    this.template('index.htm',mojoName + '/index.htm');
+	var appendix = (this.combohtml === 'true'? '.htm' : '.html');
+	this.template('index.htm',mojoName + '/index'+appendix);
     this.template('index.js',mojoName+'/index.js');
     this.template('index.css',mojoName+'/index.css');
 };
