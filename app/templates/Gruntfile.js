@@ -358,7 +358,7 @@ module.exports = function (grunt) {
 	 **/
 	grunt.registerTask('newbranch', 'clam newBranch...', function(type) {
 		var done = this.async();
-		exec('git branch -a;git tag', function(err, stdout, stderr, cb) {
+		exec('git branch -a & git tag', function(err, stdout, stderr, cb) {
 			var r = getBiggestVersion(stdout.match(/\d+\.\d+\.\d+/ig));
 			if(!r){
 				r = '0.0.1';
