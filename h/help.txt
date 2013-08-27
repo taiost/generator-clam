@@ -2,7 +2,7 @@ Useage：
     yo clam         初始化一个 Project
     yo clam:h       显示帮助
     yo clam:mod     初始化一个模块单元
-    yo clam:page    生成一个空页面
+    yo clam:page    生成一个Page
     yo clam:widget  创建标准的Gallery Widget组件（需要手动先创建目录）
         Example:    yo clam:widget 2.1
     yo clam:install 安装一个Gallery模块
@@ -36,3 +36,4 @@ Grunt命令：
     yo clam:tcc     充值
 
 工具文档：https://github.com/jayli/generator-clam
+使用说明：https://speakerdeck.com/lijing00333/generator-clam
