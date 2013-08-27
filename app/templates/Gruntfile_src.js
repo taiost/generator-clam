@@ -104,6 +104,7 @@ module.exports = function (grunt) {
                 ]
             }
         },
+		// 静态合并HTML和抽取JS/CSS https://npmjs.org/package/grunt-combohtml
 		combohtml:{
 			options:{
 				encoding:'utf8',
@@ -117,7 +118,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
 						cwd:'build',
-                        src: ['**/*.htm'], 
+                        src: ['**/*.htm'],
                         dest: 'build/',
                         ext: '.htm'
                     }
