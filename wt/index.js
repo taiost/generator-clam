@@ -1,3 +1,13 @@
+/**
+ * 网厅业务线强制建立src目录，src下有lib|mock|page|widget|util
+ * lib存放第三方库
+ * mock存放假接口数据
+ * page存放demo页面
+ * widget存放与业务关联的模块
+ * util存放标准的kissy组件
+ *
+ */
+
 // 'use strict';
 var util = require('util');
 var path = require('path');
@@ -86,12 +96,6 @@ ClamGenerator.prototype.askFor = function askFor() {
             warning: ''
         },
         {
-            name: 'srcDir',
-            message: 'create "src" directory?',
-            default: 'Y/n',
-            warning: ''
-        },
-        {
             name: 'author',
             message: 'Author Name:',
             default: abcJSON.author.name,
@@ -106,7 +110,7 @@ ClamGenerator.prototype.askFor = function askFor() {
         {
             name: 'groupName',
             message: 'Group Name:',
-            default: 'group-name',
+            default: 'wt',
             warning: ''
         },
 		{
@@ -138,37 +142,13 @@ ClamGenerator.prototype.askFor = function askFor() {
 		this.srcPath = '../';
 		this.currentBranch = 'master';
 
-		if(this.srcDir){
-			this.prompt([{
-				name: 'modsPagesWidgets',
-				message: 'Create "src/mods|widgets|pages"?',
-				default: 'N/y',
-				warning: ''
-			}], function (err, props) {
-
-				if (err) {
-					return this.emit('error', err);
-				}
-
-				this.modsPagesWidgets = (/^y/i).test(props.modsPagesWidgets);
-				if(this.modsPagesWidgets){
-					this.srcPath = '../../';
-				}
-				cb();
-			}.bind(this));
-		} else {
-			cb();
-		}
+		cb();
 
     }.bind(this));
 };
 
 ClamGenerator.prototype.gruntfile = function gruntfile() {
-	if(this.srcDir){
-		this.copy('Gruntfile_src.js','Gruntfile.js');
-	} else {
-		this.copy('Gruntfile.js');
-	}
+	this.copy('Gruntfile_src.js','Gruntfile.js');
 };
 
 ClamGenerator.prototype.packageJSON = function packageJSON() {
@@ -180,20 +160,13 @@ ClamGenerator.prototype.git = function git() {
 };
 
 ClamGenerator.prototype.app = function app() {
-	var that = this;
-	if(this.srcDir){
-		this.mkdir('src');
-		if (this.modsPagesWidgets) {
-			that.mkdir('src/pages');
-			that.mkdir('src/mods');
-			that.mkdir('src/widgets');
-		}
-		this.template('config.js','src/config.js');
-	} else {
-		this.template('index.js');
-		this.template('index.css');
-		this.template('index.html');
-	}
+	this.mkdir('src');
+	this.mkdir('src/lib');
+	this.mkdir('src/mock');
+	this.mkdir('src/page');
+	this.mkdir('src/widget');
+	this.mkdir('src/util');
+	this.template('config.js','src/config.js');
 	this.copy('README.md', 'README.md');
 	this.mkdir('doc');
 	this.mkdir('build');
