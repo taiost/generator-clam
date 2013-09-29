@@ -344,6 +344,10 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 		'your.host.name':'155.238.23.250'//ip地址配置到对应的cdn地址
 	}
 
+12，SSI 不起作用？
+
+看你是不是格式写的不对？`<!--#include virtual="path.html" -->`，`#`之前不要有空格
+
 ## TODO
 
 - JSON接口模拟和映射
