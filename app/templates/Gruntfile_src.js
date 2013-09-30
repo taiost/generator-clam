@@ -170,7 +170,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'build/',
-                        src: ['**/*.js', '!*-min.js'],
+                        src: ['**/*.js', '!**/*-min.js'],
                         dest: 'build/',
                         ext: '-min.js'
                     }
@@ -185,7 +185,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'build/',
-                        src: ['**/*.css', '!*-min.css'],
+                        src: ['**/*.css', '!**/*-min.css'],
                         dest: 'build/',
                         ext: '-min.css'
                     }
