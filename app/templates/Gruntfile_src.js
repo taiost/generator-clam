@@ -32,12 +32,12 @@ module.exports = function (grunt) {
         },
 
         /**
-         * 将src目录中的KISSY文件做编译打包，仅做合并，源文件不需要指定名称
-		 * 		KISSY.add(function(S){});
+         * 将src目录中的KISSY文件做编译打包，仅做合并，源文件需要指定名称
+		 * 		KISSY.add('package/path/to/file',function(S){});
 		 *
          * 		@link https://github.com/daxingplay/grunt-kmc
 		 *
-		 * 如果需要只生成依赖关系表，不做合并，必须和补全文件名的功能同时使用
+		 * 如果需要只生成依赖关系表，不做合并
 		 * 在kmc.options中增加两个参数:
 		 *		depFilePath: 'build/mods.js',
 		 *		comboMap: true,
