@@ -40,6 +40,7 @@ module.exports = function (grunt) {
 		 * 如果需要只生成依赖关系表，不做合并
 		 * 在kmc.options中增加两个参数:
 		 *		depFilePath: 'build/mods.js',
+		 *		comboOnly: true,
 		 *		comboMap: true,
          */
         kmc: {
