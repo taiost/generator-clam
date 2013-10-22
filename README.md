@@ -8,7 +8,7 @@
 
 面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
 
-愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充溢阳光沙滩般的气息。
+愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充满幸福。
 
 ![](http://img04.taobaocdn.com/tps/i4/T1C5hpXwXeXXbkQf6j-210-45.jpg)
 
@@ -37,15 +37,6 @@
 - `yo clam:install <git>`:(TODO)git可以是git地址，也可以是Gallery模块名称，都将对应的git项目源码下载到本地，类似`svn export`
 - `yo clam:search <name>`:(TODO)在Gallery中查找现有的匹配的模块名称
 - `yo clam:page`:生成一个Page
-
-部分子业务线的构建命令(TODO)：
-
-- `yo clam:cp` 彩票
-- `yo clam:trip` 旅行
-- `yo clam:cph5` 彩票h5
-- `yo clam:triph5` 旅行h5
-- `yo clam:wt` 网厅
-- `yo clam:tcc` 充值
 
 ## Grunt 内嵌命令
 
@@ -94,6 +85,17 @@
 
 > ps:grunt构建任务依赖`grunt-mytps`子任务，该子任务（上传本地图片到CDN并替换地址）依赖python，并需要安装[tpsmate](https://github.com/sodabiscuit/tpsmate)。
 
+### Clam 生成的项目所依赖的重要npm模块
+
+- [flexcombo](https://npmjs.org/package/flex-combo) FlexCombo，本地服务器的核心
+- [Grunt-combohtml](https://npmjs.org/package/grunt-combohtml)，合并SSI的html，生成合并好的js和css
+- [Grunt-flexcombo](https://npmjs.org/package/grunt-flexcombo)，flexcombo的grunt版本
+- [Grunt-mytps](https://npmjs.org/package/grunt-mytps)，上传本地图片到tps服务器，依赖python
+- [Grunt-toascii](https://npmjs.org/package/grunt-toascii)，把文件中的非英文字符转码成对应的ascii码
+- [Grunt-cssimage](https://npmjs.org/package/grunt-cssimage)，对css文件中的图片进行压缩替换，支持远程图片抓取
+- [jayli-server](https://npmjs.org/package/jayli-server)，Simple-SSI Server，包含flexcombo模块
+- [kissy-gallery](https://npmjs.org/package/generator-kissy-gallery)，kissy gallery 组件构建工具
+
 ### 使用 Generator-Clam 应对这三种基本场景
 
 1，创建新项目
@@ -141,6 +143,38 @@ Grunt中模板中提供`grunt server`方法，开启本地服务，默认开启�
 
 访问`http://g.tbcdn.cn/group/project/0.1.8/.../demo.html`
 
+### 生产环境如何debug
+
+如果你的项目用clam生成，且已经上线了，如何debug其中一个源JS？
+
+1，将项目git源码checkout到本地（比如目录`path/to/local_pro/`）
+
+2，修改Gruntfile.js
+
+`flexcombo`任务修改为
+
+	flexcombo:{
+		options: {
+			target:'build/', // src => build
+			// 增加 <%= pkg.version%>
+			urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
+			port:'<%= pkg.port %>',
+			servlet:'?',
+			separator:',',
+			charset:'utf8',
+			filter:{
+				// 新增
+				'-min\\.js':'.js'
+			}
+		},
+		main:{}
+	}
+
+3，启动本地服务
+
+	sudo grunt server
+
+4，如果频繁修改，可以开启`grunt watch`
 
 ### 预发和发布
 
@@ -158,6 +192,8 @@ Grunt中模板中提供`grunt server`方法，开启本地服务，默认开启�
 - `grunt publish` 发布
 
 ## 再多了解一点`Generator-Clam`
+
+本节无关信息很多，慎读。
 
 ### CLAM 工具族
 
