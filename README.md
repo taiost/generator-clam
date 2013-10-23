@@ -2,13 +2,13 @@
 
 ## What & Why
 
+淘北京前端Assest环境和构建工具
+
 工具介绍PPT：[Speakerdeck](https://speakerdeck.com/lijing00333/generator-clam)。
 
-目标：是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。
-
-面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
-
-愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充满幸福。
+- 目标：是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。
+- 面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
+- 愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充满幸福。
 
 ![](http://img04.taobaocdn.com/tps/i4/T1C5hpXwXeXXbkQf6j-210-45.jpg)
 
@@ -31,25 +31,27 @@
 - `yo clam:h`:打印帮助
 - `yo clam`:初始化一个标准的Project
 - `yo clam:mod`:初始化一个模块
+- `yo clam:page`:初始化一个Page
 - `yo clam:widget`:初始化一个标准kissy组件，首先创建组件空目录，进入空目录后执行此命令
 - `yo clam:widget x.y`:生成一个标准kissy组件的版本，进入到组件目录后执行。其中x.y是版本号
 - `yo clam:on`:启动web服务，服务支持SSI，推荐使用`grunt server`
 - `yo clam:install <git>`:(TODO)git可以是git地址，也可以是Gallery模块名称，都将对应的git项目源码下载到本地，类似`svn export`
 - `yo clam:search <name>`:(TODO)在Gallery中查找现有的匹配的模块名称
-- `yo clam:page`:生成一个Page
 
 ## Grunt 内嵌命令
 
-初始化完成的项目包含Gruntfile.js模板，可以辅助你完成：
+初始化完成的项目包含`Gruntfile.js`模板，可以辅助你完成：
 
 - `grunt`: 执行构建
 - `grunt prepub`:执行预发
 - `grunt publish`:执行发布
 - `grunt info`:查看当前库git地址
 - `grunt newbranch`:创建新daily分支，基于当前版本累加
-- `grunt listen`:监听文件修改，实时编译
-- `grunt server`:开启本地调试模式
-- `grunt build`:构建包含SSI的html，合并页面中的css和js
+- `grunt watch`:监听文件修改，实时编译
+- `grunt server`:开启本地Demo调试模式
+- `grunt debug`:开启生产环境Debug模式
+- `grunt combohtml`:构建包含SSI的html，合并页面中的css和js
+- `grunt build`:默认构建流程
 
 ### 本地调试
 
@@ -95,6 +97,9 @@
 - [Grunt-cssimage](https://npmjs.org/package/grunt-cssimage)，对css文件中的图片进行压缩替换，支持远程图片抓取
 - [jayli-server](https://npmjs.org/package/jayli-server)，Simple-SSI Server，包含flexcombo模块
 - [kissy-gallery](https://npmjs.org/package/generator-kissy-gallery)，kissy gallery 组件构建工具
+- [Grunt-kmc](https://github.com/daxingplay/grunt-kmc)，KISSY 模块构建工具（Grunt版本）
+- [KMC](https://github.com/daxingplay/ModuleCompiler)，KISSY 模块构建工具
+
 
 ### 使用 Generator-Clam 应对这三种基本场景
 
@@ -120,11 +125,11 @@ Generator-clam 提供一个轻服务（只提供静态文件服务器、[Flex-Co
 
 	http://localhost:8888/src/pages/detail.html?ks-debug
 
-> 这里的SSI兼容apache，但这个Server还是功能很弱，且不支持脚本，我们强烈建议您使用更成熟的[apache+php来作为本地demo服务](http://wiki.ued.taobao.net/doku.php?id=ued.bj:f2e:tbcdn)，Clam只作为构建工具使用。
+> 这里的SSI兼容apache，这个Server只提供Demo环境，且不支持脚本，如果需要，可以使用[apache+php来作为本地demo服务](http://wiki.ued.taobao.net/doku.php?id=ued.bj:f2e:tbcdn)，Clam只作为构建工具使用。
 
 #### 方法2
 
-Grunt中模板中提供`grunt server`方法，开启本地服务，默认开启在80端口，在`abc.json`中修改端口配置。`grunt server`封装了`flexcombo`，提供一种最基本的服务：即线上CDN环境映射到本地目录，直接访问屏幕提示给出的URL即可（g.tbcdn.cn host指向本地）
+Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开启在80端口，在`abc.json`中修改端口配置。`grunt server`封装了`flexcombo`，提供一种最基本的服务：即线上CDN环境映射到本地目录，直接访问屏幕提示给出的URL即可（g.tbcdn.cn host指向本地）
 
 	[bachi@yahoo ~/temp/h5-test]> sudo grunt server
 	Running "server" task
@@ -143,38 +148,19 @@ Grunt中模板中提供`grunt server`方法，开启本地服务，默认开启�
 
 访问`http://g.tbcdn.cn/group/project/0.1.8/.../demo.html`
 
+> 本地环境依赖[flexcombo](https://npmjs.org/package/flex-combo)，更多用法参照官方帮助
+
 ### 生产环境如何debug
 
 如果你的项目用clam生成，且已经上线了，如何debug其中一个源JS？
 
 1，将项目git源码checkout到本地（比如目录`path/to/local_pro/`）
 
-2，修改Gruntfile.js
+2，开启Debug模式
 
-`flexcombo`任务修改为
+	sudo grunt debug 
 
-	flexcombo:{
-		options: {
-			target:'build/', // src => build
-			// 增加 <%= pkg.version%>
-			urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
-			port:'<%= pkg.port %>',
-			servlet:'?',
-			separator:',',
-			charset:'utf8',
-			filter:{
-				// 新增
-				'-min\\.js':'.js'
-			}
-		},
-		main:{}
-	}
-
-3，启动本地服务
-
-	sudo grunt server
-
-4，如果频繁修改，可以开启`grunt watch`
+3，在`'src'`目录中给你的js加断点即可
 
 ### 预发和发布
 
