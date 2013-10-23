@@ -215,8 +215,7 @@ module.exports = function (grunt) {
 		// 监听JS、CSS、LESS文件的修改
         watch: {
             'all': {
-				cwd:'src/',
-                files: all_files,
+                files: ['src/**/*.js','src/**/*.css','src/**/*.less'],
                 tasks: [ 'build' ]
             }
 		},
@@ -357,14 +356,14 @@ module.exports = function (grunt) {
 	 * 启动Demo调试时的本地服务
 	 */
 	grunt.registerTask('server', '开启Demo调试模式', function() {
-		task.run(['flexcombo:server','watch']);
+		task.run(['flexcombo:server','watch:all']);
 	});
 
 	/**
 	 * 启动Debug调试时的本地服务
 	 */
 	grunt.registerTask('debug', '开启debug模式', function() {
-		task.run(['flexcombo:debug','watch']);
+		task.run(['flexcombo:debug','watch:all']);
 	});
 
 	// 默认构建任务
