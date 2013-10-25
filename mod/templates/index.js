@@ -7,9 +7,9 @@
  *		new <%= modName %>();
  * });
  */
-KISSY.add(function(S,RichBase) {
+KISSY.add(function(S,Base) {
 
-	var <%= modName %> = RichBase.extend({
+	var <%= modName %> = Base.extend({
 		initializer:function(){
 			var self = this;
 
@@ -18,6 +18,7 @@ KISSY.add(function(S,RichBase) {
 		}
 	},{
 		ATTRS: {
+			// 这里是初始参数和默认值
 			A:{
 				value:'abc'
 			}
@@ -27,5 +28,5 @@ KISSY.add(function(S,RichBase) {
 	return <%= modName %>;
 	
 },{
-	requires:['rich-base']	
+	requires:['base']	
 });
