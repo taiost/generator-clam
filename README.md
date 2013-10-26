@@ -370,6 +370,10 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 
 看你是不是格式写的不对？`<!--#include virtual="path.html" -->`，`#`之前不要有空格
 
+13，在windows下开启服务后，访问`http://localhost`或者`http://127.0.0.1`报错？
+
+需要直接访问你的项目所在的目录`http://localhost/group/pro/`
+
 ## TODO
 
 - JSON接口模拟和映射
