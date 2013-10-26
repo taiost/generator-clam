@@ -119,7 +119,7 @@ ClamGenerator.prototype.askFor = function askFor() {
 		{
             name: 'version',
             message: 'Version:',
-            default: '0.0.1',
+            default: '0.1.0',
             warning: ''
 		},
         {

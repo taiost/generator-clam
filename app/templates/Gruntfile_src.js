@@ -3,6 +3,9 @@ var path = require('path'),
 	os = require('os'),
 	exec = require('child_process').exec;
 
+/**
+ * 本文件是 Gruntfile.js 默认模板，请根据需要和注释提示自行修改
+ */
 module.exports = function (grunt) {
 
 	var file = grunt.file;
@@ -12,8 +15,11 @@ module.exports = function (grunt) {
 
 	// ======================= 配置每个任务 ==========================
 	
+	// 如果 Gruntfile.js 编码为 gbk，打开此注释
+	// grunt.file.defaultEncoding = 'gbk';
     grunt.initConfig({
 
+		// 从 abc.json 中读取配置项
         pkg: grunt.file.readJSON('abc.json'),
 
 		// 配置默认分支
@@ -22,7 +28,6 @@ module.exports = function (grunt) {
         
         // 对build目录进行清理
         clean: {
-
             build: {
                 src: 'build/*'
 			}
@@ -33,7 +38,7 @@ module.exports = function (grunt) {
 		 * 		KISSY.add(<名称留空>,function(S){});
 		 *
          * 		@link https://github.com/daxingplay/grunt-kmc
-		 * 		@link http://docs.kissyui.com/1.4/guideline/kmc.html
+		 * 		@link http://docs.kissyui.com/1.4/docs/html/guideline/kmc.html
 		 *
 		 * 如果需要只生成依赖关系表，不做合并，源文件需要指定名称
 		 * 		KISSY.add('pkg/mod-name',function(S){});
@@ -453,7 +458,6 @@ module.exports = function (grunt) {
 	});
 
 	// =======================  辅助函数  ==========================
-
 
 	// 得到最大的版本号
 	function getBiggestVersion(A){
