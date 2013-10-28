@@ -192,6 +192,7 @@ ClamGenerator.prototype.packageJSON = function packageJSON() {
 
 ClamGenerator.prototype.git = function git() {
     this.copy('_gitignore', '.gitignore');
+    this.copy('bowerrc', '.bowerrc');
 };
 
 ClamGenerator.prototype.app = function app() {

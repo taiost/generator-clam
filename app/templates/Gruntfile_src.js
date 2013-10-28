@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 	var file = grunt.file;
 	var task = grunt.task;
 	var pathname = path.basename(__dirname);
-	var all_files = ['**/*.html','**/*.htm','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules'];
+	var all_files = ['**/*.eot','**/*.otf','**/*.svg','**/*.ttf','**/*.woff','**/*.html','**/*.htm','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules'];
 
 	// ======================= 配置每个任务 ==========================
 	
