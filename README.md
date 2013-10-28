@@ -38,6 +38,25 @@
 - `yo clam:install <git>`:(TODO)git可以是git地址，也可以是Gallery模块名称，都将对应的git项目源码下载到本地，类似`svn export`
 - `yo clam:search <name>`:(TODO)在Gallery中查找现有的匹配的模块名称
 
+## Bower 内嵌命令（非航旅前端团队，请掠过）
+
+依赖Bower
+
+	sudo npm install -g bower
+
+安装最新包
+
+	bower install tpi/button
+
+使用老的包
+
+	bower install tpi/button#publish/0.1.0
+
+更新包
+
+	bower update tpi/button
+
+
 ## Grunt 内嵌命令
 
 初始化完成的项目包含`Gruntfile.js`模板，可以辅助你完成：
