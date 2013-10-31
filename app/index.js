@@ -192,7 +192,6 @@ ClamGenerator.prototype.packageJSON = function packageJSON() {
 
 ClamGenerator.prototype.git = function git() {
     this.copy('_gitignore', '.gitignore');
-    this.copy('bowerrc', '.bowerrc');
 };
 
 ClamGenerator.prototype.app = function app() {
@@ -217,6 +216,7 @@ ClamGenerator.prototype.app = function app() {
 	this.mkdir('doc');
 	this.mkdir('build');
 	this.template('abc.json');
+    this.copy('bowerrc', '.bowerrc');
 };
 
 function consoleColor(str,num){
