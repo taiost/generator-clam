@@ -46,7 +46,6 @@ module.exports = function (grunt) {
 		 *		comboOnly: true,
 		 *		fixModuleName:true
 		 *		comboMap: true,
-		 * 
          */
         kmc: {
             options: {
@@ -117,7 +116,9 @@ module.exports = function (grunt) {
 				replacement:{
 					from:/src\//,
 					to:'build/'
-				}
+				},
+				comboJS:false, // 是否静态合并当前页面引用的本地js
+				comboCSS:false // 是否静态合并当前页面引用的css
 			},
 			main:{
                 files: [
@@ -337,7 +338,7 @@ module.exports = function (grunt) {
     //grunt.loadNpmTasks('grunt-kissy-template');
     //grunt.loadNpmTasks('grunt-contrib-connect');
 	//grunt.loadNpmTasks('grunt-contrib-concat');
-	//grunt.loadNpmTasks('grunt-contrib-yuidoc');
+	grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
 	// =======================  注册Grunt 各个操作 ==========================
 	
