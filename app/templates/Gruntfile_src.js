@@ -47,7 +47,6 @@ module.exports = function (grunt) {
 		 *		fixModuleName:true
 		 *		comboMap: true,
 		 * 
-		 * 如果需要补全模块名，需要增加一个参数
          */
         kmc: {
             options: {

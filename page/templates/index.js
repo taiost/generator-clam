@@ -7,9 +7,9 @@
  *		new <%= modName %>();
  * });
  */
-KISSY.add('<%= packageName %>/<%= mojoName %>/index',function(S,RichBase) {
+KISSY.add('<%= packageName %>/<%= mojoName %>/index',function(S,Base) {
 
-	var <%= modName %> = RichBase.extend({
+	var <%= modName %> = Base.extend({
 		initializer:function(){
 			var self = this;
 
@@ -27,5 +27,5 @@ KISSY.add('<%= packageName %>/<%= mojoName %>/index',function(S,RichBase) {
 	return <%= modName %>;
 	
 },{
-	requires:['rich-base']	
+	requires:['base']	
 });
