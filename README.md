@@ -4,7 +4,7 @@
 
 淘北京前端Assest环境和构建工具
 
-工具介绍PPT：[Speakerdeck](https://speakerdeck.com/lijing00333/generator-clam)。
+工具介绍PPT：[Speakerdeck](https://speakerdeck.com/lijing00333/generator-clam2)。
 
 - 目标：是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。
 - 面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
@@ -179,6 +179,8 @@ Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开
 
 	sudo grunt debug 
 
+这时开启了本地服务，并将目录映射到了`build/`下，同时开启了对`src/`中文件修改的监听
+
 3，在`'src'`目录中给你的js加断点即可
 
 ### 预发和发布
@@ -198,23 +200,7 @@ Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开
 
 ## 再多了解一点`Generator-Clam`
 
-本节无关信息很多，慎读。
-
-### CLAM 工具族
-
-`Clam`是 [陶清](http://weibo.com/u/1846621405) 对于前端模块化开的实践和落地项目，它是一个工具，旨在建立标准的模块开发流程，提高代码共享和项目构建效率，同时提供一个本地轻服务，让我们“可以坐在美丽的沙滩上写代码”。
-
-`Clam`之后有两个衍生版本，`Clam-tools`和`Generator-Clam`。
-
-1，[Clam](http://gitlab.alibaba-inc.com/clam/tree/master)
-
-clam包含一套完整的模块化开发思想，用来规范结构化越来越强的前端页面，Clam创建之初还没有Grunt，Clam用Grunt的思路来提供脚手架，用来应对页面结构较为固定的开发场景。
-
-2，[Clam-Tools](http://gitlab.alibaba-inc.com/jay.li/clam-tools/tree/master)
-
-由于时间仓促，Clam没实现发布、自定义构建和对KISSY的解析，Clam-Tools弥补了这几个空缺，且提供了GUI工具，实现了基于Ant的一键式构建和发布，但前提是你的项目基于SVN发布。另外一个问题在于，前端工程师真的学不会Ant。
-
-3，[Generator-Clam](http://github.com/jayli/generator-clam)
+[淘北京前端开发环境/工具建设里程碑](http://work.taobao.net/issues/3830)
 
 2013年淘系全面推广基于Gitlab的Assets发布，Generator-Clam 延续了Clam模块化的思想，结合Yeoman和Grunt提供了面向淘系前端环境构建脚手架工具，包含前端开发/构建/发布的全流程。Generator-Clam 对代码单元做更自由的定义，根据适用范围，任何代码单元从三个维度管理：
 
@@ -234,7 +220,7 @@ clam包含一套完整的模块化开发思想，用来规范结构化越来越�
 
 `yo clam`可以引导你创建三种格式的目录结构，
 
-第一种，`src`目录和`build`目录平行，`src`目录中直接承载代码单元
+第一种，`src`目录和`build`目录平行，`src`目录中直接承载代码单元，推荐第一种
 
 	./
 	├── build/ - 构建完成后发布目录
