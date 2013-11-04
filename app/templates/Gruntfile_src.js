@@ -40,12 +40,14 @@ module.exports = function (grunt) {
          * 		@link https://github.com/daxingplay/grunt-kmc
 		 * 		@link http://docs.kissyui.com/1.4/docs/html/guideline/kmc.html
 		 *
-		 * 如果需要只生成依赖关系表，不做合并，源文件需要指定名称
-		 * 		KISSY.add('pkg/mod-name',function(S){});
-		 * 在kmc.options中增加三个参数:
+		 * 如果需要只生成依赖关系表，不做合并
+		 * 在kmc.options中增加四个参数:
 		 *		depFilePath: 'build/mods.js',
 		 *		comboOnly: true,
+		 *		fixModuleName:true
 		 *		comboMap: true,
+		 * 
+		 * 如果需要补全模块名，需要增加一个参数
          */
         kmc: {
             options: {
