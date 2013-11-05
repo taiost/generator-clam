@@ -9,4 +9,5 @@ npm-debug.log
 .jshintrc
 .travis.yml
 .sass-cache/
+.project
 mods/.sass-cache/
