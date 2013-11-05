@@ -338,7 +338,7 @@ module.exports = function (grunt) {
     //grunt.loadNpmTasks('grunt-kissy-template');
     //grunt.loadNpmTasks('grunt-contrib-connect');
 	//grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-yuidoc');
+	//grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
 	// =======================  注册Grunt 各个操作 ==========================
 	
