@@ -18,6 +18,7 @@ module.exports = function (grunt) {
 	
 	// 如果 Gruntfile.js 编码为 gbk，打开此注释
 	// grunt.file.defaultEncoding = 'gbk';
+	//
     grunt.initConfig({
 
 		// 从 abc.json 中读取配置项
