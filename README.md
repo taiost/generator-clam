@@ -138,7 +138,7 @@
 
 推荐使用方法2
 
-#### 方法1
+#### <del>方法1</del>
 
 Generator-clam 提供一个轻服务（只提供静态文件服务器、[Flex-Combo](http://npmjs.org/flex-combo) 和SSI支持），启动服务后你可以这样访问Demo：
 
@@ -146,7 +146,7 @@ Generator-clam 提供一个轻服务（只提供静态文件服务器、[Flex-Co
 
 > 这里的SSI兼容apache，这个Server只提供Demo环境，且不支持脚本，如果需要，可以使用[apache+php来作为本地demo服务](http://wiki.ued.taobao.net/doku.php?id=ued.bj:f2e:tbcdn)，Clam只作为构建工具使用。
 
-#### 方法2
+#### 方法2：推荐
 
 Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开启在80端口，在`abc.json`中修改端口配置。`grunt server`封装了`flexcombo`，提供一种最基本的服务：即线上CDN环境映射到本地目录，直接访问屏幕提示给出的URL即可（g.tbcdn.cn host指向本地）
 
@@ -169,7 +169,9 @@ Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开
 
 > 本地环境依赖[flexcombo](https://npmjs.org/package/flex-combo)，更多用法参照官方帮助
 
-### 生产环境如何debug
+### 生产环境的 debug
+
+#### 生产环境 debug
 
 如果你的项目用clam生成，且已经上线了，如何debug其中一个源JS？
 
@@ -182,6 +184,30 @@ Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开
 这时开启了本地服务，并将目录映射到了`build/`下，同时开启了对`src/`中文件修改的监听
 
 3，在`'src'`目录中给你的js加断点即可
+
+#### 移动端的代码调试
+
+移动终端不能配host，但是可以配置代理的，我们使用 apache 做正向代理来访问源码，代理配置（例如开启apache的8080端口，Node服务采用80端口）：
+
+	ProxyRequests On
+	ProxyVia On
+
+	<Proxy *>
+		Order deny,allow
+		Deny from all
+		Allow from all
+	</Proxy>
+
+	<VirtualHost *:8080>
+		ProxyPreserveHost On
+		ProxyRequests Off 
+		ServerName g.tbcdn.cn
+		# 如果代理服务器和源码在一台电脑上，指向localhost即可，否则填写源码所在的机器IP
+		ProxyPass / http://localhost/
+		ProxyPassReverse / http://localhost/
+	</VirtualHost>
+
+同时源码直接开启 Debug 模式，调试构建好的代码
 
 ### 预发和发布
 
@@ -379,10 +405,9 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 
 需要直接访问你的项目所在的目录`http://localhost/group/pro/`
 
-## TODO
+## RoadMap
 
 - JSON接口模拟和映射
-- png 图片的压缩和优化
-- 各条业务线的固定构建脚本
+- juicer 模板的各种平台的转换
 - `yo clam:install`/`yo clam:search`，安装和查找Gallery模块
 
