@@ -113,17 +113,25 @@ module.exports = function (grunt) {
 		//
 		// 注意：urls 字段末尾不能有'/'
 		flexcombo:{
-			server:{
+			// 生产模式的combo服务器，访问build目录下的文件，
+			// 此时可以通过在页面url后面带?ks-debug来控制是否访问压缩后的文件和是否combo
+			stage:{
 				options:{
-					target:'src/',
+					target:'build/',
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
 					servlet:'?',
 					separator:',',
-					charset:'utf8'
+					charset:'utf8',
+					filter:{
+						'-min\\.js':'-min.js',
+						'-min\\.css':'-min.css'
+					}
 				}
 			},
-			debug:{
+			// 开发模式的combo服务器，访问src目录下的文件，
+			// 只访问压缩前的源文件，?ks-debug只能控制是否combo
+			dev:{
 				options:{
 					target:'src/',
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
@@ -186,7 +194,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: 'build/',
-                        src: ['**/*.css', '!lib/**/*.js', '!**/*-min.css'],
+                        src: ['**/*.css', '!lib/**/*.css', '!**/*-min.css'],
                         dest: 'build/',
                         ext: '-min.css'
                     }
@@ -194,11 +202,12 @@ module.exports = function (grunt) {
             }
         },
 
-		// 监听JS、CSS、LESS文件的修改
+		// 监听LESS文件的修改
         watch: {
-            'all': {
-                files: ['src/**/*.js','src/**/*.css','src/**/*.less'],
-                tasks: [ 'build' ]
+            'less': {
+                //files: ['src/**/*.js','src/**/*.css','src/**/*.less'],
+                files: ['src/**/*.less'],
+                tasks: [ 'less' ]
             }
 		},
 
@@ -217,22 +226,14 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// 替换config中的版本号@@version
+		// 替换config.js中的版本号
 		replace: {
 			dist: {
 				options: {
-					/*
-					variables: {
-						'version': '<%= pkg.version %>'
-					},
-					prefix:'@@'
-					*/
 					patterns: [
 						{
 							match: /\d+\.\d+\.\d+/g,
-							replacement: function () {
-								return '<%= pkg.version %>';
-							}
+							replacement: '<%= pkg.version %>'
 						}	
 					]
 				},
@@ -253,37 +254,39 @@ module.exports = function (grunt) {
 	
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-css-combo');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-kmc');
-	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-mytps');
 	grunt.loadNpmTasks('grunt-flexcombo');
 	grunt.loadNpmTasks('grunt-replace');
-	grunt.loadNpmTasks('grunt-combohtml');
+	
+	// 这部分根据实际需要打开
+	//grunt.loadNpmTasks('grunt-combohtml');
+    //grunt.loadNpmTasks('grunt-css-combo');
+	//grunt.loadNpmTasks('grunt-exec');
+	//grunt.loadNpmTasks('grunt-mytps');
 
 	// =======================  注册Grunt 各个操作 ==========================
 
 	/**
 	 * 启动Demo调试时的本地服务
 	 */
-	grunt.registerTask('server', '开启Demo调试模式', function() {
-		task.run(['flexcombo:server', 'watch:all']);
-	});
-
-	/**
-	 * 启动Debug调试时的本地服务
-	 */
-	grunt.registerTask('debug', '开启debug模式', function() {
-		task.run(['flexcombo:debug', 'watch:all']);
+	grunt.registerTask('server', '开启Demo调试模式', function(env) {
+		if (!env || env === 'dev') {
+			task.run(['flexcombo:dev', 'watch:less']);
+		} else if (env === 'stage') {
+			task.run(['flexcombo:stage', 'watch:less']);
+		} else {
+			console.log('没有对应模式的server环境');
+			return;
+		}
 	});
 
 	// 默认构建任务
 	grunt.registerTask('build', '默认构建任务', function() {
-		task.run(['clean:build', 'kmc', 'less', 'copy', /*'replace', */'uglify', 'cssmin']);
+		task.run(['clean:build', 'kmc', /*'less', */'copy', /*'replace', */'uglify', 'cssmin']);
 	});
 
 	/*
@@ -303,23 +306,27 @@ module.exports = function (grunt) {
 	 * 设置当前的分支号，x/y/z
 	 * */
 	grunt.registerTask('setbranch', '设置abc.json中的分支号', function(version) {
+		var done = this.async();
 		grunt.log.write(('设置分支为：daily/' + version).green);
 		grunt.config.set('currentBranch', version);
 		// 回写入 abc.json 的 version
 		try {
 			abcJSON = require(path.resolve(process.cwd(), 'abc.json'));
 			abcJSON.version = version;
+			abcJSON.config = abcJSON.config.replace(/\d+\.\d+\.\d+/, version);
 			fs.writeJSONFile("abc.json", abcJSON, function(err){
 				if (err) {
 					console.log(err);
+					return;
 				} else {
 					console.log("update abc.json.");
-					task.run(['replace']);
+					done();
 				}
 			});
 		} catch (e){
 			console.log('未找到abc.json');
 		}
+		task.run(['replace']);
 	});
 
 	// =======================  辅助函数  ==========================

@@ -116,7 +116,7 @@ ClamGenerator.prototype.askFor = function askFor() {
 		{
             name: 'version',
             message: 'Version:',
-            default: 'x.y.z',
+            default: '1.0.0',
             warning: ''
 		}
 	];
@@ -166,6 +166,7 @@ ClamGenerator.prototype.app = function app() {
 	this.mkdir('src/page');
 	this.mkdir('src/widget');
 	this.mkdir('src/util');
+	this.mkdir('src/service');
 	this.template('config.js','src/config.js');
 	this.copy('README.md', 'README.md');
 	this.mkdir('doc');
