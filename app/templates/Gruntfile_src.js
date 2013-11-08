@@ -5,6 +5,7 @@ var path = require('path'),
 
 /**
  * 本文件是 Gruntfile.js 默认模板，请根据需要和注释提示自行修改
+ * @info https://github.com/jayli/generator-clam
  */
 module.exports = function (grunt) {
 
@@ -151,6 +152,9 @@ module.exports = function (grunt) {
 			},
 			debug:{
 				options:{
+					// 无线H5项目调试，可打开host配置，用法参照
+					// https://speakerdeck.com/lijing00333/h5-xiang-mu-kai-fa-huan-jing-pei-zhi
+					// host:'g.tbcdn.cn', 
 					target:'build/',
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
