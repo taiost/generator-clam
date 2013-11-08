@@ -58,8 +58,7 @@ module.exports = function (grunt) {
                 ],
 				depFilePath: 'src/mod.js',
 				comboMap: true,
-				comboOnly: true,
-				fixModuleName: true
+				comboOnly: true
             },
 
             main: {
@@ -124,8 +123,9 @@ module.exports = function (grunt) {
 					separator:',',
 					charset:'utf8',
 					filter:{
-						'-min\\.js':'-min.js',
-						'-min\\.css':'-min.css'
+						// 覆盖掉flex-combo的默认配置
+						'-min\\.js$':'-min.js',
+						'-min\\.css$':'-min.css'
 					}
 				}
 			},
@@ -202,12 +202,12 @@ module.exports = function (grunt) {
             }
         },
 
-		// 监听LESS文件的修改
+		// 监听JS文件和LESS文件的修改
         watch: {
-            'less': {
+            'all': {
                 //files: ['src/**/*.js','src/**/*.css','src/**/*.less'],
-                files: ['src/**/*.less'],
-                tasks: [ 'less' ]
+                files: ['src/**/*.js', 'src/**/*.less', '!src/mod.js'],
+                tasks: [ 'build' ]
             }
 		},
 
@@ -275,9 +275,9 @@ module.exports = function (grunt) {
 	 */
 	grunt.registerTask('server', '开启Demo调试模式', function(env) {
 		if (!env || env === 'dev') {
-			task.run(['flexcombo:dev', 'watch:less']);
+			task.run(['flexcombo:dev', 'watch:all']);
 		} else if (env === 'stage') {
-			task.run(['flexcombo:stage', 'watch:less']);
+			task.run(['flexcombo:stage', 'watch:all']);
 		} else {
 			console.log('没有对应模式的server环境');
 			return;
@@ -286,7 +286,7 @@ module.exports = function (grunt) {
 
 	// 默认构建任务
 	grunt.registerTask('build', '默认构建任务', function() {
-		task.run(['clean:build', 'kmc', /*'less', */'copy', /*'replace', */'uglify', 'cssmin']);
+		task.run(['clean:build', 'kmc', 'less', 'copy', /*'replace', */'uglify', 'cssmin']);
 	});
 
 	/*
