@@ -51,8 +51,8 @@ module.exports = function (grunt) {
             options: {
                 packages: [
                     {
-                        name: '<%= pkg.name %>',
-                        path: '../',
+                        name: '',
+                        path: 'src/',
 						charset:'utf-8'
                     }
                 ],
@@ -226,28 +226,6 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// 替换config.js中的版本号
-		replace: {
-			dist: {
-				options: {
-					patterns: [
-						{
-							match: /\d+\.\d+\.\d+/g,
-							replacement: '<%= pkg.version %>'
-						}	
-					]
-				},
-				files: [
-					{
-						expand: true, 
-                        cwd: 'src/',
-                        dest: 'src/',
-						src: ['config.js']
-					}
-				]
-			}
-		}
-
     });
 
 	// ======================= 载入使用到的通过NPM安装的模块 ==========================
@@ -260,13 +238,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-kmc');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-flexcombo');
-	grunt.loadNpmTasks('grunt-replace');
 	
 	// 这部分根据实际需要打开
 	//grunt.loadNpmTasks('grunt-combohtml');
     //grunt.loadNpmTasks('grunt-css-combo');
 	//grunt.loadNpmTasks('grunt-exec');
 	//grunt.loadNpmTasks('grunt-mytps');
+	//grunt.loadNpmTasks('grunt-replace');
 
 	// =======================  注册Grunt 各个操作 ==========================
 
@@ -307,6 +285,8 @@ module.exports = function (grunt) {
 	 * */
 	grunt.registerTask('setbranch', '设置abc.json中的分支号', function(version) {
 		var done = this.async();
+		var abcJSON = {};
+		var doneFlag = 0;
 		grunt.log.write(('设置分支为：daily/' + version).green);
 		grunt.config.set('currentBranch', version);
 		// 回写入 abc.json 的 version
@@ -319,58 +299,36 @@ module.exports = function (grunt) {
 					console.log(err);
 					return;
 				} else {
-					console.log("update abc.json.");
-					done();
+					grunt.log.writeln("update abc.json.");
+					if (doneFlag === 1) {
+						done();
+					} else {
+						doneFlag++;
+					}
 				}
 			});
 		} catch (e){
 			console.log('未找到abc.json');
 		}
-		task.run(['replace']);
+		try {
+			var content = fs.readFileSync(path.resolve(process.cwd(), 'src', 'config.js'), 'utf8');
+			content = content.replace(/\d+\.\d+\.\d+/g, version);
+			fs.writeFile('src/config.js', content, function(err) {
+				if (err) {
+					console.log(err);
+					return;
+				} else {
+					grunt.log.writeln("update src/config.js.");
+					if (doneFlag === 1) {
+						done();
+					} else {
+						doneFlag++;
+					}
+				}
+			});
+		} catch (e) {
+			console.log('未找到src/config.js');
+			console.log(e);
+		}
 	});
-
-	// =======================  辅助函数  ==========================
-
-	// 得到最大的版本号
-	function getBiggestVersion(A){
-		var a = [];
-		var b = [];
-		var t = [];
-		var r = [];
-		if(!A){
-			return [0,0,0];
-		}
-		for(var i= 0;i< A.length;i++){
-			if(A[i].match(/^\d+\.\d+\.\d+$/)){
-				var sp = A[i].split('.');
-				a.push([
-					Number(sp[0]),Number(sp[1]),Number(sp[2])
-				]);
-			}
-		}
-		
-		var r = findMax(findMax(findMax(a,0),1),2);
-		return r[0];
-	}
-
-	// a：二维数组，index，比较第几个
-	// return：返回保留比较后的结果组成的二维数组
-	function findMax(a,index){
-		var t = [];
-		var b = [];
-		var r = [];
-		for(var i = 0;i<a.length;i++){
-			t.push(Number(a[i][index]));
-		}
-		var max = Math.max.apply(this,t);
-		for(var i = 0;i<a.length;i++){
-			if(a[i][index] === max){
-				b.push(i);
-			}
-		}
-		for(var i = 0;i<b.length;i++){
-			r.push(a[b[i]]);
-		}
-		return r;
-	}
 };

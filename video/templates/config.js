@@ -5,12 +5,10 @@
 (function(){
 	// 如果访问页面带上?ks-debug，则不做combo，同时-min.js映射到.js
 	if (KISSY.Config.debug) {
-		var srcPath = "<%= srcPath %>";
 		KISSY.config({
 			packages:[
 				{
 					name: "<%= packageName %>",
-					//path: srcPath,
 					path: 'http://g.tbcdn.cn/<%= groupName %>/<%= packageName %>/<%= version %>',
 					charset: "utf-8",
 					ignorePackageNameInUri: true,
