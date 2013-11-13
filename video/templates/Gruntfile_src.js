@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 	var task = grunt.task;
 	var pathname = path.basename(__dirname);
 	//var all_files = ['**/*.eot','**/*.otf','**/*.svg','**/*.ttf','**/*.woff','**/*.html','**/*.htm','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules'];
-	var all_files = ['**/*.js', '**/*.css', '!mock'];
+	var all_files = ['**/*.js', '**/*.css', '!mock/**/*'];
 
 	// ======================= 配置每个任务 ==========================
 	
@@ -226,6 +226,34 @@ module.exports = function (grunt) {
 			}
 		},
 
+		//yo clam:page, yo clam:mod, yo clam:widget别名
+		exec: {
+			page: {
+				command: 'yo clam:page'
+			},
+			widget: {
+				command: 'yo clam:mod'
+			},
+			uitl: {
+				command: 'yo clam:widget'
+			}
+		},
+
+		toascii: {
+			main: {
+				files:[
+					{
+						expand:true,
+						src: ['**/*.js', '**/*.css', '!**/*-min.js', '!**/*-min.css'], 
+						dest: 'build/', 
+						cwd:'build/',
+						filter: 'isFile'
+					}
+				]
+			}
+		}
+
+
     });
 
 	// ======================= 载入使用到的通过NPM安装的模块 ==========================
@@ -238,15 +266,29 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-kmc');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-flexcombo');
+	grunt.loadNpmTasks('grunt-exec');
+	grunt.loadNpmTasks('grunt-toascii');
 	
 	// 这部分根据实际需要打开
 	//grunt.loadNpmTasks('grunt-combohtml');
     //grunt.loadNpmTasks('grunt-css-combo');
-	//grunt.loadNpmTasks('grunt-exec');
 	//grunt.loadNpmTasks('grunt-mytps');
 	//grunt.loadNpmTasks('grunt-replace');
 
 	// =======================  注册Grunt 各个操作 ==========================
+
+	
+	grunt.registerTask('page', '生成一个page', function() {
+		task.run(['exec:page']);
+	});
+	
+	grunt.registerTask('widget', '生成一个widget', function() {
+		task.run(['exec:widget']);
+	});
+	
+	grunt.registerTask('util', '生成一个util', function() {
+		task.run(['exec:util']);
+	});
 
 	/**
 	 * 启动Demo调试时的本地服务
@@ -264,7 +306,7 @@ module.exports = function (grunt) {
 
 	// 默认构建任务
 	grunt.registerTask('build', '默认构建任务', function() {
-		task.run(['clean:build', 'kmc', 'less', 'copy', /*'replace', */'uglify', 'cssmin']);
+		task.run(['clean:build', 'kmc', 'less', 'copy', /*'replace', */'toascii', 'uglify', 'cssmin']);
 	});
 
 	/*
