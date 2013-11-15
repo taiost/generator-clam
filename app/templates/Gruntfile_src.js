@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 	var file = grunt.file;
 	var task = grunt.task;
 	var pathname = path.basename(__dirname);
-	var all_files = ['**/*.eot','**/*.otf','**/*.svg','**/*.ttf','**/*.woff','**/*.html','**/*.htm','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules'];
+	var all_files = ['**/*.eot','**/*.otf','**/*.svg','**/*.ttf','**/*.woff','**/*.html','**/*.htm','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules','!**/*/Gruntfile.js','**/*.sass'];
 
 	// ======================= 配置每个任务 ==========================
 	
@@ -142,6 +142,7 @@ module.exports = function (grunt) {
 		flexcombo:{
 			server:{
 				options:{
+					proxyport:8080,
 					target:'src/',
 					urls:'/<%= pkg.group %>/<%= pkg.name %>',
 					port:'<%= pkg.port %>',
@@ -156,6 +157,7 @@ module.exports = function (grunt) {
 					// https://speakerdeck.com/lijing00333/h5-xiang-mu-kai-fa-huan-jing-pei-zhi
 					// host:'g.tbcdn.cn', 
 					target:'build/',
+					proxyport:8080,
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
 					servlet:'?',
