@@ -4,7 +4,12 @@
 
 淘北京前端Assest环境和构建工具
 
-工具介绍PPT：[Speakerdeck](https://speakerdeck.com/lijing00333/generator-clam2)。
+工具介绍PPT：
+
+- [Speakerdeck](https://speakerdeck.com/lijing00333/generator-clam2)
+- [FlexCombo Server](https://speakerdeck.com/lijing00333/grunt-flexcombo)
+
+说明：
 
 - 目标：是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。
 - 面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
