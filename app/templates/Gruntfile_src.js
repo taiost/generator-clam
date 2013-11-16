@@ -154,10 +154,10 @@ module.exports = function (grunt) {
 			debug:{
 				options:{
 					// 无线H5项目调试，可打开host配置，用法参照
-					// https://speakerdeck.com/lijing00333/h5-xiang-mu-kai-fa-huan-jing-pei-zhi
-					// host:'g.tbcdn.cn', 
+					// https://speakerdeck.com/lijing00333/grunt-flexcombo
+					// host:'g.tbcdn.cn',  // 此配置可选
 					target:'build/',
-					proxyport:8080,
+					proxyport:8080, // 反向代理绑定当前主机的 proxyport 端口
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
 					servlet:'?',
