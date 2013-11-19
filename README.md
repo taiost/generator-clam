@@ -225,7 +225,9 @@ Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开
 		ProxyPassReverse / http://localhost/
 	</VirtualHost>
 
-同时源码直接开启 Debug 模式，调试构建好的代码
+同时源码直接开启 Debug 模式，调试构建好的代码。
+
+Grunt-flexcombo 带有本地反向代理，`grunt server`或者`grunt debug`可直接开启反向代理服务（8080）。[理用法参照这里](https://speakerdeck.com/lijing00333/grunt-flexcombo)
 
 ### 预发和发布
 
@@ -260,87 +262,7 @@ Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开
 
 最最重要的，组件级（widget）代码从开始就保持标准规范（Kissy Gallery），抽离出项目更方便，这在无常的Web项目中是唯一的促成积累、沉淀代码的方法。
 
-### 项目目录结构约定
-
-`yo clam`可以引导你创建三种格式的目录结构，
-
-第一种，`src`目录和`build`目录平行，`src`目录中直接承载代码单元，推荐第一种
-
-	./
-	├── build/ - 构建完成后发布目录
-	├── doc/ - 生成的文档目录
-	├── Gruntfile.js
-	└── src/ - 项目源码目录
-		├── ~page1/ - 页面1
-		│   ├── img/
-		│   ├── index.css
-		│   ├── index.html
-		│   ├── demo.html
-		│   └── index.js
-		├── mod1/ - 模块1
-		│   ├── img/
-		│   ├── index.css
-		│   ├── index.html
-		│   └── index.js
-		├── mod2/ - 模块2
-		│   ├── img/
-		│   ├── index.css
-		│   ├── index.html
-		│   └── index.js
-		└── widget1/ - 一个Kissy组件
-			├── 1.0
-			│   ├── build/
-			│   ├── demo/
-			│   │   └── index.html
-			│   ├── guide/
-			│   │   └── index.md
-			│   ├── index.js
-			│   ├── meta/
-			│   │   ├── alias.js
-			│   │   └── modules.js
-			│   ├── plugin/
-			│   └── spec/
-			└── Gruntfile.js
-
-
-第二种，`src`目录中划分出`pages`/`mods`/`widgets`三个目录，主要是为了兼容老的Clam项目
-
-第三种，代码单元和`build`目录平行，即无`src`目录：
-
-	./
-	├── build/
-	├── doc/
-	├── Gruntfile.js
-	├── index.css - 入口css文件样板
-	├── index.html - 入口html文件样板
-	├── index.js - 入口js文件样板
-	├── mod1/ - 模块1
-	│   ├── img/
-	│   ├── index.css
-	│   ├── index.html
-	│   └── index.js
-	├── mod2/ - 模块2
-	│   ├── img
-	│   ├── index.css
-	│   ├── index.html
-	│   └── index.js
-	└── widget1/ - 一个kissy组件
-		├── 1.0/
-		│   ├── build/
-		│   ├── demo/
-		│   │   └── index.html
-		│   ├── guide/
-		│   │   └── index.md
-		│   ├── index.js
-		│   ├── meta/
-		│   │   ├── alias.js
-		│   │   └── modules.js
-		│   ├── plugin/
-		│   └── spec/
-		└── Gruntfile.js
-
-以上三种目录结构中，widget均和KissyGallery标准组件保持一致。
-
+项目目录结构约定参照[PPT](https://speakerdeck.com/lijing00333/generator-clam2)。
 
 ## Q & A
 
