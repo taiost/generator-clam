@@ -6,7 +6,7 @@
 
 工具介绍PPT：
 
-- [Speakerdeck](https://speakerdeck.com/lijing00333/generator-clam2)
+- [Generator-clam](https://speakerdeck.com/lijing00333/generator-clam2)
 - [FlexCombo Server](https://speakerdeck.com/lijing00333/grunt-flexcombo)
 
 说明：
