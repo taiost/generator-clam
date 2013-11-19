@@ -61,6 +61,19 @@
 
 	bower update tpi/button
 
+### 创建PI格式的组件
+
+PI 格式的组件结构和[KISSY Gallery](http://gallery.kissyui.com/guide)完全一样，只是没了版本号
+
+创建PI格式的组件：先创建目录，并进入到这个目录，执行
+	
+	yo clam:pi
+
+PI 组件包含FlexCombo本地服务，需要手动`npm install`，之后启动服务
+
+	sudo grunt server
+
+绑定host或者绑定代理（8080端口）访问：`http://a.tbcdn.cn/s/kissy/gallery/{module-name}`
 
 ## Grunt 内嵌命令
 

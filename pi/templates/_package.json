@@ -1,0 +1,12 @@
+{
+    "name": "<%= folderName %>",
+    "version": "0.0.1",
+	"componentName":"<%= componentName %>",
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-watch": "",
+        "grunt-kmc": "",
+        "grunt-flexcombo": ""
+    }
+
+}

@@ -3,6 +3,8 @@ Useage：
     yo clam:h       显示帮助
     yo clam:mod     初始化一个模块单元
     yo clam:page    生成一个Page
+    yo clam:pi		生成一个PI标准格式组件（需要手动先创建目录）
+		Example:	yo clam:pi
     yo clam:widget  创建标准的Gallery Widget组件（需要手动先创建目录）
         Example:    yo clam:widget 2.1
     yo clam:install 安装一个Gallery模块(TODO)
@@ -11,11 +13,6 @@ Useage：
     yo clam:search  在Gallery中查找匹配的模块(TODO)
         Example:    yo clam:search 列出所有可用模块
         Example:    yo clam:search calendar 列出匹配的模块
-    yo clam:on      在当前目录启用本地 Server（建议使用"grunt server"）
-        浏览目录：  http://127.0.0.1:8888/path/to/dir
-        打开文件：  http://127.0.0.1:8888/path/to/file
-        combo:      http://127.0.0.1:8888/path/??a.js,b.js
-        combo:      http://127.0.0.1:8888/??path/a.js,path/b.js
 
 生成项目的默认Grunt命令：
     grunt           在daily分支中构建项目
@@ -24,10 +21,11 @@ Useage：
     grunt newbranch 创建一个新版本分支
     grunt info      打印当前项目的gitlab地址
     grunt listen    监听项目中文件修改并实时编译
-    grunt server    使用Grunt开启本地DEMO服务，CDN host配向本机即可进入DEMO调试
-    grunt debug		使用Grunt开启本地调试模式，CDN host配向本机即可进入生产环境的调试
+    grunt server    使用Grunt开启本地DEMO服务，（CDN host配向本机，或者代理配向本机器8080端口）
+    grunt debug		使用Grunt开启本地调试模式，（CDN host配向本机，或者代理配向本机器8080端口）
     grunt combohtml	以Clam方式构建页面（合并页面引用本地JS/CSS）
 	grunt build		默认构建流程
 
 工具文档：https://github.com/jayli/generator-clam
-使用说明：https://speakerdeck.com/lijing00333/generator-clam
+使用说明：https://speakerdeck.com/lijing00333/generator-clam2
+Grunt-Flexcombo说明：https://speakerdeck.com/lijing00333/grunt-flexcombo
