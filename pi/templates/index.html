@@ -10,21 +10,18 @@
 
 <script>
     var S = KISSY;
-    if (S.Config.debug) {
-        var srcPath = "../../";
-        S.config({
-            packages:[
-                {
-                    name:"gallery",
-                    path:srcPath,
-                    charset:"utf-8",
-                    ignorePackageNameInUri:true
-                }
-            ]
-        });
-    }
+	S.config({
+		packages:[
+			{
+				name:"pkg",
+				path:'../',
+				charset:"utf-8",
+				ignorePackageNameInUri:true
+			}
+		]
+	});
 
-    S.use('gallery/<%= comConfig.name %>/index', function (S, <%= comConfig.componentClass %>) {
+    S.use('pkg/index', function (S, <%= comConfig.componentClass %>) {
          var <%= comConfig.name %> = new <%= comConfig.componentClass %>();
     })
 </script>
