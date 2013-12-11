@@ -5,6 +5,11 @@
     <title><%= comConfig.name %>的demo</title>
     <script src="http://g.tbcdn.cn/kissy/k/1.4.0/seed-min.js" charset="utf-8"></script>
     <!--<script src="http://g.tbcdn.cn/mpi/libs/0.1.1/seed-min.js" charset="utf-8"></script>-->
+    <style>
+        body{
+            padding:20px 30px;
+        }
+    </style>
 </head>
 <body>
 <h2><%= comConfig.name %></h2>
@@ -23,7 +28,7 @@
 	});
     S.use('pi/<%=comConfig.name%>/index', function (S, <%= comConfig.componentClass %>) {
          var <%= comConfig.name %> = new <%= comConfig.componentClass %>();
-    })
+    });
 </script>
 </body>
 </html>

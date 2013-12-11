@@ -1,13 +1,32 @@
-## <%= componentName %>
+# <%= componentName %>
+作者: <%= gitUserName%>
+## 功能
 
-* 版本：<%= version %>
-* 教程：[http://gallery.kissyui.com/<%= componentName %>/<%= version %>/guide/index.html](http://gallery.kissyui.com/<%= componentName %>/<%= version %>/guide/index.html)
-* demo：[http://gallery.kissyui.com/<%= componentName %>/<%= version %>/demo/index.html](http://gallery.kissyui.com/<%= componentName %>/<%= version %>/demo/index.html)
+
+* ...
+
+## 使用
+
+```
+init code here...
+```
+
+### Config
+
+* attrName
+    - 说明...
+
+### Method
+
+* methodName
+    - 运行....
+
+### Event
+
+* valuechange
+    - 值发生变化时触发
+
 
 ## changelog
 
-### V<%= version %>
-
-    [!]
-
-
+* ...

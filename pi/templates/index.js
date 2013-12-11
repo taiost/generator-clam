@@ -13,7 +13,7 @@ KISSY.add(function(S,Base) {
             var self = this;
             this.renderUI();
             this.bindUI();
-        }
+        },
         renderUI : function(){
 
         },
