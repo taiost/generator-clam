@@ -46,7 +46,8 @@ module.exports = function (grunt) {
          *           {
          *               name: '<%= pkg.name %>',
          *               path: './src/',
-		 *				charset:'utf-8'
+		 *				charset:'utf-8',
+		 *				ignorePackageNameInUri:true
          *           }
          *       ],
 		 *		depFilePath: 'build/mods.js',// 生成的模块依赖表
