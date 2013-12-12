@@ -6,51 +6,54 @@ var ClamLogo = require('./logo').ClamLogo;
 var ABC = require('abc-generator');
 
 var ClamGenerator = module.exports = function ClamGenerator(args, options, config) {
-	ABC.UIBase.apply(this, arguments);
-	this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
+    ABC.UIBase.apply(this, arguments);
+    this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 
-	this.on('error',function(){});
+    this.on('error', function () {
+    });
     this.on('end', function () {
-		var cb = this.async();
-		var that = this;
-		this.prompt([{
-				name: 'npm_install',
-				message: 'Install node_modules for grunt now?',
-				default: 'Y/n',
-				warning: ''
-			}], function (err, props) {
+        var cb = this.async();
+        var that = this;
+        this.prompt([
+            {
+                name   : 'npm_install',
+                message: 'Install node_modules for grunt now?',
+                default: 'Y/n',
+                warning: ''
+            }
+        ], function (err, props) {
 
-				if (err) {
-					return this.emit('error', err);
-				}
+            if (err) {
+                return this.emit('error', err);
+            }
 
-				this.npm_install = (/^y/i).test(props.npm_install);
-				if(this.npm_install){
-					this.npmInstall('', {}, function (err) {
+            this.npm_install = (/^y/i).test(props.npm_install);
+            if (this.npm_install) {
+                this.npmInstall('', {}, function (err) {
 
-						if (err) {
-							return console.log('\n'+yellow('please run "sudo npm install"\n'));
-						}
+                    if (err) {
+                        return console.log('\n' + yellow('please run "sudo npm install"\n'));
+                    }
 
-						console.log(green('\n\nnpm was installed successful. \n\n'));
-					});
-				} else {
-					console.log(yellow('\n\nplease run "npm install" before grunt\n'));
-					console.log(green('\ndone!\n'));
-				}
-			}.bind(this));
+                    console.log(green('\n\nnpm was installed successful. \n\n'));
+                });
+            } else {
+                console.log(yellow('\n\nplease run "npm install" before grunt\n'));
+                console.log(green('\ndone!\n'));
+            }
+        }.bind(this));
 
-		
+
     }.bind(this));
 };
 
 util.inherits(ClamGenerator, ABC.UIBase);
 
 ClamGenerator.prototype.askFor = function askFor() {
-	var cb = this.async();
+    var cb = this.async();
 
     // welcome message
-	console.log(ClamLogo(this));
+    console.log(ClamLogo(this));
 
     var abcJSON = {};
     try {
@@ -60,80 +63,80 @@ ClamGenerator.prototype.askFor = function askFor() {
     }
     if (!abcJSON.author) {
         abcJSON.author = {
-            name: '',
+            name : '',
             email: ''
         }
     }
-	if(!abcJSON.name){
-		abcJSON.name = 'tmp';
-	}
+    if (!abcJSON.name) {
+        abcJSON.name = 'tmp';
+    }
 
-  // have Yeoman greet the user.
-  // console.log(this.yeoman);
-	var folderName = path.basename(process.cwd());
+    // have Yeoman greet the user.
+    // console.log(this.yeoman);
+    var folderName = path.basename(process.cwd());
 
-	// your-mojo-name => YourMojoName
-	function parseMojoName(name){
-		return name.replace(/\b(\w)|(-\w)/g,function(m){
-			return m.toUpperCase().replace('-','');
-		});
-	}
+    // your-mojo-name => YourMojoName
+    function parseMojoName(name) {
+        return name.replace(/\b(\w)|(-\w)/g, function (m) {
+            return m.toUpperCase().replace('-', '');
+        });
+    }
 
     var prompts = [
         {
-            name: 'projectName',
+            name   : 'projectName',
             message: 'Name of Project?',
             default: folderName,
             warning: ''
         },
         {
-            name: 'srcDir',
+            name   : 'srcDir',
             message: 'create "src" directory?',
             default: 'Y/n',
             warning: ''
         },
         {
-            name: 'author',
+            name   : 'author',
             message: 'Author Name:',
             default: abcJSON.author.name,
             warning: ''
         },
         {
-            name: 'email',
+            name   : 'email',
             message: 'Author Email:',
             default: abcJSON.author.email,
             warning: ''
         },
         {
-            name: 'groupName',
+            name   : 'groupName',
             message: 'Group Name:',
             default: 'group-name',
             warning: ''
         },
         {
-            name: 'port',
+            name   : 'port',
             message: 'HTTP Server Port:',
             default: '80',
             warning: ''
         },
-		{
-            name: 'version',
+        {
+            name   : 'version',
             message: 'Version:',
             default: '0.1.0',
             warning: ''
-		},
+        },
         {
-            name: 'combohtml',
+            name   : 'combohtml',
             message: 'do combo html by default:',
             default: 'N/y',
             warning: ''
         }
-	];
+    ];
 
-	/*
-	 * projectName：驼峰名称,比如 ProjectName
-	 * packageName：原目录名称，比如 project-name
-	 **/
+    /*
+     * projectName：驼峰名称,比如 ProjectName
+     * packageName：原目录名称，比如 project-name
+     **/
 
     this.prompt(prompts, function (err, props) {
         if (err) {
@@ -141,49 +144,51 @@ ClamGenerator.prototype.askFor = function askFor() {
         }
 
         this.packageName = props.projectName;// project-name 
-		this.projectName = parseMojoName(this.packageName); //ProjectName
+        this.projectName = parseMojoName(this.packageName); //ProjectName
         this.author = props.author;
         this.email = props.email;
-		this.port = props.port;
+        this.port = props.port;
         this.version = props.version;
         this.groupName = props.groupName;
-		//this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+this.version+'/config.js';
-		this.srcDir = (/^y/i).test(props.srcDir);
-		this.combohtml = (/^y/i).test(props.combohtml);
-		this.srcPath = '../';
-		this.currentBranch = 'master';
+        //this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+this.version+'/config.js';
+        this.srcDir = (/^y/i).test(props.srcDir);
+        this.combohtml = (/^y/i).test(props.combohtml);
+        this.srcPath = '../';
+        this.currentBranch = 'master';
 
-		if(this.srcDir){
-			this.prompt([{
-				name: 'modsPagesWidgets',
-				message: 'Create "src/mods[widgets|pages]"?',
-				default: 'N/y',
-				warning: ''
-			}], function (err, props) {
+        if (this.srcDir) {
+            this.prompt([
+                {
+                    name   : 'modsPagesWidgets',
+                    message: 'Create "src/mods[widgets|pages]"?',
+                    default: 'N/y',
+                    warning: ''
+                }
+            ], function (err, props) {
 
-				if (err) {
-					return this.emit('error', err);
-				}
+                if (err) {
+                    return this.emit('error', err);
+                }
 
-				this.modsPagesWidgets = (/^y/i).test(props.modsPagesWidgets);
-				if(this.modsPagesWidgets){
-					this.srcPath = '../../';
-				}
-				cb();
-			}.bind(this));
-		} else {
-			cb();
-		}
+                this.modsPagesWidgets = (/^y/i).test(props.modsPagesWidgets);
+                if (this.modsPagesWidgets) {
+                    this.srcPath = '../../';
+                }
+                cb();
+            }.bind(this));
+        } else {
+            cb();
+        }
 
     }.bind(this));
 };
 
 ClamGenerator.prototype.gruntfile = function gruntfile() {
-	if(this.srcDir){
-		this.copy('Gruntfile_src.js','Gruntfile.js');
-	} else {
-		this.copy('Gruntfile.js');
-	}
+    if (this.srcDir) {
+        this.copy('Gruntfile_src.js', 'Gruntfile.js');
+    } else {
+        this.copy('Gruntfile.js');
+    }
 };
 
 ClamGenerator.prototype.packageJSON = function packageJSON() {
@@ -195,49 +200,49 @@ ClamGenerator.prototype.git = function git() {
 };
 
 ClamGenerator.prototype.app = function app() {
-	var that = this;
-	if(this.srcDir){
-		this.mkdir('src');
-		if (this.modsPagesWidgets) {
-			that.mkdir('src/pages');
-			that.mkdir('src/mods');
-			that.mkdir('src/widgets');
-		}
-		this.template('config.js','src/config.js');
-	} else {
-		/*
-		this.template('index.js');
-		this.template('index.css');
-		this.template('index.html');
-		*/
-		this.template('config.js');
-	}
-	this.template('README.md');
-	this.mkdir('doc');
-	this.mkdir('build');
-	this.template('abc.json');
+    var that = this;
+    if (this.srcDir) {
+        this.mkdir('src');
+        if (this.modsPagesWidgets) {
+            that.mkdir('src/pages');
+            that.mkdir('src/mods');
+            that.mkdir('src/widgets');
+        }
+        this.template('config.js', 'src/config.js');
+    } else {
+        /*
+         this.template('index.js');
+         this.template('index.css');
+         this.template('index.html');
+         */
+        this.template('config.js');
+    }
+    this.template('README.md');
+    this.mkdir('doc');
+    this.mkdir('build');
+    this.template('abc.json');
     this.copy('bowerrc', '.bowerrc');
 };
 
-function consoleColor(str,num){
-	if (!num) {
-		num = '32';
-	}
-	return "\033[" + num +"m" + str + "\033[0m"
+function consoleColor(str, num) {
+    if (!num) {
+        num = '32';
+    }
+    return "\033[" + num + "m" + str + "\033[0m"
 }
 
-function green(str){
-	return consoleColor(str,32);
+function green(str) {
+    return consoleColor(str, 32);
 }
 
-function yellow(str){
-	return consoleColor(str,33);
+function yellow(str) {
+    return consoleColor(str, 33);
 }
 
-function red(str){
-	return consoleColor(str,31);
+function red(str) {
+    return consoleColor(str, 31);
 }
 
-function blue(str){
-	return consoleColor(str,34);
+function blue(str) {
+    return consoleColor(str, 34);
 }

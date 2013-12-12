@@ -1,30 +1,43 @@
 /**
  * @module <%= comConfig.name %>
  **/
-KISSY.add(function (S, Node,Base) {
-    var EMPTY = '';
-    var $ = Node.all;
+KISSY.add(function(S,Base) {
 
     /**
      * @class <%= comConfig.componentClass %>
      * @constructor
      * @extends Base
      */
-    function <%= comConfig.componentClass %>(comConfig) {
-        var self = this;
-        //调用父类构造函数
-        <%= comConfig.componentClass %>.superclass.constructor.call(self, comConfig);
-    }
+    var <%= comConfig.componentClass %> = Base.extend({
+        initializer:function(){
+            var self = this;
+            this.renderUI();
+            this.bindUI();
+        },
+        renderUI : function(){
 
-    S.extend(<%= comConfig.componentClass %>, Base, /** @lends <%= comConfig.componentClass %>.prototype*/{
+        },
+        bindUI : function(){
 
-    }, {ATTRS : /** @lends <%= comConfig.componentClass %>*/{
+        }
+        //析构
+        destructor : function(){
 
-    }});
+        }
+    },{
+        ATTRS: {
+            // 这里是初始参数和默认值
+            node : {
+                value:null,
+                setter : function(val){
+                    return S.one(val);
+                }
+            }
+        }
+    });
 
     return <%= comConfig.componentClass %>;
-
-}, {requires:['node', 'base']});
-
-
-
+    
+},{
+    requires:['base']
+});

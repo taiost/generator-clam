@@ -2,20 +2,32 @@
 
 ## What & Why
 
-淘北京前端Assest环境和构建工具
+> 淘北京前端Assest环境和构建工具
+
+前端代码天然不成结构、零散在各个角落、难以规整。Generator-Clam工具就是为了解决代码天然不成架构的问题，保持代码和开发环境的整合
 
 工具介绍PPT：
 
-- [Generator-clam](https://speakerdeck.com/lijing00333/generator-clam2)
-- [FlexCombo Server](https://speakerdeck.com/lijing00333/grunt-flexcombo)
+- 脚手架：[Generator-clam](https://speakerdeck.com/lijing00333/generator-clam2)
+- 本地服务：[FlexCombo Server](https://speakerdeck.com/lijing00333/grunt-flexcombo)
 
-说明：
+工具说明：
 
 - 目标：是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。
 - 面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
 - 愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充满幸福。
 
 ![](http://img04.taobaocdn.com/tps/i4/T1C5hpXwXeXXbkQf6j-210-45.jpg)
+
+在看接下来的内容之前，你应当首先搞懂这些东东
+
+![](http://gtms01.alicdn.com/tps/i1/T11RMcFg0cXXaO85U_-560-117.png)
+
+1. [grunt](http://gruntjs.com/)
+1. [yeoman](http://yeoman.io/)
+1. [bower](http://bower.io/)
+1. [kissy](http://docs.kissyui.com)
+1. [grunt-kmc](https://github.com/daxingplay/grunt-kmc)
 
 环境依赖：Node、Npm，视频演示：[http://ascii.io/a/4384](http://ascii.io/a/4384)。
 
@@ -27,7 +39,7 @@
 
 	npm install yo grunt-cli -g
 
- 安装Generator-Clam：
+安装Generator-Clam：
 
 	npm install -g generator-clam generator-kissy-gallery
 
