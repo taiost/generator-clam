@@ -7,7 +7,7 @@
  *		new <%= modName %>();
  * });
  */
-KISSY.add('<%= packageName %>/<%= mojoName %>/index',function(S,Base) {
+KISSY.add(function(S,Base) {
 
 	var <%= modName %> = Base.extend({
 		initializer:function(){

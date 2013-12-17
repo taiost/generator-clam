@@ -1,12 +1,12 @@
+/**
+ * 本文件是 Gruntfile.js 默认模板，请根据需要和注释提示自行修改
+ * @info https://github.com/jayli/generator-clam
+ */
 var path = require('path'),
 	fs = require('fs-extra'),
 	os = require('os'),
 	exec = require('child_process').exec;
 
-/**
- * 本文件是 Gruntfile.js 默认模板，请根据需要和注释提示自行修改
- * @info https://github.com/jayli/generator-clam
- */
 module.exports = function (grunt) {
 
 	var file = grunt.file;
@@ -14,7 +14,9 @@ module.exports = function (grunt) {
 	var pathname = path.basename(__dirname);
 	var all_files = ['**/*.eot','**/*.otf','**/*.svg','**/*.ttf','**/*.woff','**/*.html','**/*.htm','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules','!**/*/Gruntfile.js','**/*.sass'];
 
-	// ======================= 配置每个任务 ==========================
+	// -------------------------------------------------------------
+	// 任务配置
+	// -------------------------------------------------------------
 	
 	// 如果 Gruntfile.js 编码为 gbk，打开此注释
 	// grunt.file.defaultEncoding = 'gbk';
@@ -26,7 +28,6 @@ module.exports = function (grunt) {
 		// 配置默认分支
 		currentBranch: 'master',
 
-        
         // 对build目录进行清理
         clean: {
             build: {
@@ -50,7 +51,7 @@ module.exports = function (grunt) {
 		 *				ignorePackageNameInUri:true
          *           }
          *       ],
-		 *		depFilePath: 'build/mods.js',// 生成的模块依赖表
+		 *		depFilePath: 'build/map.js',// 生成的模块依赖表
 		 *		comboOnly: true,
 		 *		fixModuleName:true,
 		 *		comboMap: true,
@@ -80,7 +81,6 @@ module.exports = function (grunt) {
             main: {
                 files: [
                     {
-						// 这里指定项目根目录下所有文件为入口文件，自定义入口请自行添加
                         expand: true,
 						cwd: 'src/',
                         src: [ '**/*.js', '!Gruntfile.js'],
@@ -157,22 +157,25 @@ module.exports = function (grunt) {
 		//
 		// 注意：urls 字段末尾不能有'/'
 		flexcombo:{
+			// 源码调试服务
 			server:{
 				options:{
+					// proxyHosts:'a.com' // 反向代理时本地服务的域名
 					proxyport:8080,
 					target:'src/',
 					urls:'/<%= pkg.group %>/<%= pkg.name %>',
 					port:'<%= pkg.port %>',
 					servlet:'?',
 					separator:',',
-					charset:'utf8'
+					charset:'utf8',
 				}
 			},
+			// 目标代码调试服务
 			debug:{
 				options:{
 					// 无线H5项目调试，可打开host配置，用法参照
 					// https://speakerdeck.com/lijing00333/grunt-flexcombo
-					// host:'g.tbcdn.cn',  // 此配置可选
+					// proxyHosts:'a.com' // 反向代理时本地服务的域名
 					target:'build/',
 					proxyport:8080, // 反向代理绑定当前主机的 proxyport 端口
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
@@ -341,7 +344,9 @@ module.exports = function (grunt) {
 
     });
 
-	// ======================= 载入使用到的通过NPM安装的模块 ==========================
+	// -------------------------------------------------------------
+	// 载入模块
+	// -------------------------------------------------------------
 	
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -363,7 +368,9 @@ module.exports = function (grunt) {
 	//grunt.loadNpmTasks('grunt-contrib-concat');
 	//grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
-	// =======================  注册Grunt 各个操作 ==========================
+	// -------------------------------------------------------------
+	// 注册Grunt子命令
+	// -------------------------------------------------------------
 	
 	/**
 	 * 正式发布
@@ -448,7 +455,9 @@ module.exports = function (grunt) {
 		});
 	});
 
-	// =======================  注册Grunt主流程  ==========================
+	// -------------------------------------------------------------
+	// 注册Grunt主流程
+	// -------------------------------------------------------------
 	
 	return grunt.registerTask('default', 'Clam 默认流程', function(type) {
 
@@ -463,6 +472,7 @@ module.exports = function (grunt) {
 			if (!match) {
 				grunt.log.error('当前分支为 master 或者名字不合法(daily/x.y.z)，请切换到daily分支'.red);
 				grunt.log.error('创建新daily分支：grunt newbranch'.yellow);
+				grunt.log.error('只执行构建：grunt build'.yellow);
 				return;
 			}
 			grunt.log.write(('当前分支：' + match[1]).green);
@@ -482,7 +492,9 @@ module.exports = function (grunt) {
 
 	});
 
-	// =======================  辅助函数  ==========================
+	// -------------------------------------------------------------
+	// 辅助函数
+	// -------------------------------------------------------------
 
 	// 得到最大的版本号
 	function getBiggestVersion(A){

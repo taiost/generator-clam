@@ -13,13 +13,12 @@
 
 工具说明：
 
-- 目标：是通过`yo clam`来将你引路到Grunt，帮助你更熟练的使用Grunt。
 - 面向人群：面向阿里系前端工程师，帮助你创建标准的KISSY项目结构代码和Widgets代码。
 - 愿景：打造一款无负担的前端开发脚手架工具，打破产品间的代码共享壁垒，让你的代码充满幸福。
 
 ![](http://img04.taobaocdn.com/tps/i4/T1C5hpXwXeXXbkQf6j-210-45.jpg)
 
-在看接下来的内容之前，你应当首先搞懂这些东东
+在看接下来的内容之前，你应当首先熟悉这些东东
 
 ![](http://gtms01.alicdn.com/tps/i1/T11RMcFg0cXXaO85U_-560-117.png)
 
@@ -49,6 +48,7 @@
 - `yo clam`:初始化一个标准的Project
 - `yo clam:mod`:初始化一个模块
 - `yo clam:page`:初始化一个Page
+- `yo clam:pi`:初始化一个Pi组件
 - `yo clam:widget`:初始化一个标准kissy组件，首先创建组件空目录，进入空目录后执行此命令
 - `yo clam:widget x.y`:生成一个标准kissy组件的版本，进入到组件目录后执行。其中x.y是版本号
 - `yo clam:on`:启动web服务，服务支持SSI，推荐使用`grunt server`
@@ -74,6 +74,8 @@
 	bower update tpi/button
 
 ### 创建PI格式的组件
+
+[What is PI?](http://pi.taobao.net/)
 
 PI 格式的组件结构和[KISSY Gallery](http://gallery.kissyui.com/guide)完全一样，只是没了版本号
 
@@ -102,17 +104,11 @@ PI 组件包含FlexCombo本地服务，需要手动`npm install`，之后启动�
 - `grunt combohtml`:构建包含SSI的html，合并页面中的css和js
 - `grunt build`:默认构建流程
 
-### 本地调试
-
-本地调试调用了[flex-combo](https://npmjs.org/flex-combo)，访问绝对路径时和本地目录有一个映射关系，比如绝对地址映射到项目的`src`目录：
-
-	http://g.tbcdn.cn/group/project/ => ./src/
-
-启动本地服务：`grunt server`
-
 ### grunt 构建配置项
 
-`Gruntfile.js`是Grunt脚本规则文件，此外项目基本参数存放在`abc.json`中，生成好的`abc.json`格式如下：
+使用`yo clam`构建好项目后，会在项目根目录下生成`Gruntfile.js`。
+
+`Gruntfile.js`使用到的一些基本参数存放在`abc.json`中，生成好的`abc.json`格式如下：
 
 	{
 		"name": "h5-test",
@@ -134,7 +130,7 @@ PI 组件包含FlexCombo本地服务，需要手动`npm install`，之后启动�
 
 生成一个新的daily分支（`grunt newbranch`）时会自动更新`abc.json`的`version`字段。
 
-> ps:grunt构建任务依赖`grunt-mytps`子任务，该子任务（上传本地图片到CDN并替换地址）依赖python，并需要安装[tpsmate](https://github.com/sodabiscuit/tpsmate)。
+> 注意: grunt构建任务可选`grunt-mytps`子任务，该子任务（上传本地图片到CDN并替换地址）依赖python，并需要安装[tpsmate](https://github.com/sodabiscuit/tpsmate)。该任务默认不开启。
 
 ### Clam 生成的项目所依赖的重要npm模块
 
@@ -147,8 +143,6 @@ PI 组件包含FlexCombo本地服务，需要手动`npm install`，之后启动�
 - [jayli-server](https://npmjs.org/package/jayli-server)，Simple-SSI Server，包含flexcombo模块
 - [kissy-gallery](https://npmjs.org/package/generator-kissy-gallery)，kissy gallery 组件构建工具
 - [Grunt-kmc](https://github.com/daxingplay/grunt-kmc)，KISSY 模块构建工具（Grunt版本）
-- [KMC](https://github.com/daxingplay/ModuleCompiler)，KISSY 模块构建工具
-
 
 ### 使用 Generator-Clam 应对这三种基本场景
 
@@ -158,9 +152,11 @@ PI 组件包含FlexCombo本地服务，需要手动`npm install`，之后启动�
 
 2，接手项目
 
-如果你要接手一个项目，代码检出后即可进行调试；在运行`grunt`命令之前需要运行`npm install`。 
+如果你要接手一个项目，代码检出后执行`grunt debug`（调试目标代码）或`grunt server`（调试源码）即可进行调试；在运行`grunt`命令之前需要运行`npm install`。 
 
-3，标准格式的KISSY组件
+[项目调试手册参考grunt-flexcombo](https://npmjs.org/package/grunt-flexcombo)。
+
+3，创建标准格式的KISSY组件
 
 [KISSY标准组件](http://gallery.kissyui.com)的构建使用`yo kissy-gallery x.y`，已经被映射为`yo clam:widget`，KISSY标准组件是可以直接构建为可发布到淘宝CDN的代码，并提交至`kissy gallery`中。因此，你的项目中所有widgets都应当和KISSY标准组件格式保持一致，方便被其他项目使用。
 
@@ -178,7 +174,7 @@ Generator-clam 提供一个轻服务（只提供静态文件服务器、[Flex-Co
 
 #### 方法2：推荐
 
-Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开启在80端口，在`abc.json`中修改端口配置。`grunt server`封装了`flexcombo`，提供一种最基本的服务：即线上CDN环境映射到本地目录，直接访问屏幕提示给出的URL即可（g.tbcdn.cn host指向本地）
+执行`grunt server`，启动`src`目录的调试
 
 	[bachi@yahoo ~/temp/h5-test]> sudo grunt server
 	Running "server" task
@@ -191,13 +187,7 @@ Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开
 
 访问demo时应当带上`?ks-debug`，上线后的项目引用`config.js`的绝对地址即可。
 
-如果想测试build完成后的代码，可以在本地创建软连接，映射线上版本号，通过`grunt server`启动服务来测试：
-
-	ln -s build src/0.1.8
-
-访问`http://g.tbcdn.cn/group/project/0.1.8/.../demo.html`
-
-> 本地环境依赖[flexcombo](https://npmjs.org/package/flex-combo)，更多用法参照官方帮助
+> 本地环境依赖[grunt-flexcombo](https://npmjs.org/package/grunt-flexcombo)，更多用法参照官方帮助
 
 ### 生产环境的 debug
 
@@ -213,33 +203,16 @@ Grunt中模板中提供`grunt server`方法，开启本地Demo服务，默认开
 
 这时开启了本地服务，并将目录映射到了`build/`下，同时开启了对`src/`中文件修改的监听
 
+3， 客户端环境映射，二选一
+
+1. 配host：`127.0.0.1 g.tbcdn.cn`
+1. 配proxy：[参照这里](https://npmjs.org/package/grunt-flexcombo)
+
 3，在`'src'`目录中给你的js加断点即可
 
-#### 移动端的代码调试
+#### 移动设备的代码调试
 
-移动终端不能配host，但是可以配置代理的，我们使用 apache 做正向代理来访问源码，代理配置（例如开启apache的8080端口，Node服务采用80端口）：
-
-	ProxyRequests On
-	ProxyVia On
-
-	<Proxy *>
-		Order deny,allow
-		Deny from all
-		Allow from all
-	</Proxy>
-
-	<VirtualHost *:8080>
-		ProxyPreserveHost On
-		ProxyRequests Off 
-		ServerName g.tbcdn.cn
-		# 如果代理服务器和源码在一台电脑上，指向localhost即可，否则填写源码所在的机器IP
-		ProxyPass / http://localhost/
-		ProxyPassReverse / http://localhost/
-	</VirtualHost>
-
-同时源码直接开启 Debug 模式，调试构建好的代码。
-
-Grunt-flexcombo 带有本地反向代理，`grunt server`或者`grunt debug`可直接开启反向代理服务（8080）。[理用法参照这里](https://speakerdeck.com/lijing00333/grunt-flexcombo)
+Grunt-flexcombo 带有本地反向代理，`grunt server`或者`grunt debug`可直接开启反向代理服务（8080）。[原理用法参照这里](https://speakerdeck.com/lijing00333/grunt-flexcombo)
 
 ### 预发和发布
 
@@ -255,6 +228,13 @@ Grunt-flexcombo 带有本地反向代理，`grunt server`或者`grunt debug`可�
 
 - `grunt prepub` 预发
 - `grunt publish` 发布
+
+-----------------------------------------------------------
+
+## 最佳实践
+
+1. 生成Map：[Project](http://gitlab.alibaba-inc.com/trip/h5-test/tree/publish/0.1.29)
+1. 静态构建：[Project](http://gitlab.alibaba-inc.com/trip/h5-test/tree/publish/0.1.28)
 
 ## 再多了解一点`Generator-Clam`
 
@@ -273,6 +253,8 @@ Grunt-flexcombo 带有本地反向代理，`grunt server`或者`grunt debug`可�
 最重要的，互联网项目的需求是涌现式的，项目的前端架构和设计是在开发中不断调整修改而来，而非开始就设计完成不再动了，这也是代码组织结构尽可能保持和业务弱相关的原因。
 
 最最重要的，组件级（widget）代码从开始就保持标准规范（Kissy Gallery），抽离出项目更方便，这在无常的Web项目中是唯一的促成积累、沉淀代码的方法。
+
+此外，脚手架除了初始化代码结构，还包括环境，我们的思路是，环境随身携带，随项目走，随项目启动，代码随项目、随环境调试。
 
 项目目录结构约定参照[PPT](https://speakerdeck.com/lijing00333/generator-clam2)。
 
@@ -333,11 +315,7 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 
 	ulimit -n 10000
 
-10，依赖的yeoman工具版本
-
-该程序在yeoman 1.0.0-rc.1.1 版本下测试通过
-
-11，grunt server后，访问我的文件报错：`Fatal error: Cannot read property 'host' of undefined`
+10，grunt server后，访问我的文件报错：`Fatal error: Cannot read property 'host' of undefined`
 
 是因为你访问的JS或CSS文件在本地不存在，且在线上也不存在，保证本地文件存在即可
 
@@ -349,15 +327,22 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 		'your.host.name':'155.238.23.250'//ip地址配置到对应的cdn地址
 	}
 
-12，SSI 不起作用？
+11，SSI 不起作用？
 
 看你是不是格式写的不对？`<!--#include virtual="path.html" -->`，`#`之前不要有空格
 
-13，在windows下开启服务后，访问`http://localhost`或者`http://127.0.0.1`报错？
+12，在windows下开启服务后，访问`http://localhost`或者`http://127.0.0.1`报错？
 
 需要直接访问你的项目所在的目录`http://localhost/group/pro/`
 
-## RoadMap
+## Changelog
+
+- 0.1.27
+	- 本地服务和 gruntfile.js 的bugfix
+	- 新增样例代码
+	- 新增本地虚机域名配置
+
+#### TODO
 
 - JSON接口模拟和映射
 - juicer 模板的各种平台的转换
