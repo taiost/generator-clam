@@ -44,8 +44,8 @@ AppGenerator.prototype.askFor = function askFor() {
             _exec('git config user.name', {cwd: __dirname}),
             _exec('git config user.email', {cwd: __dirname})
         ]).then(function (res) {
-            this.gitUserName = res[0];
-            this.gitUserEmail = res[1];
+            this.gitUserName = this.gitUserName && res[0].match(/\S*/)[0];
+            this.gitUserEmail = res[1].match(/\S*/)[0];
             cb();
         },function (err){
             this.gitUserName = '';
