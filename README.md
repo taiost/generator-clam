@@ -1,12 +1,12 @@
 ## 淘北京Web前端开发基础设施建设
 
+![](http://gtms01.alicdn.com/tps/i1/T1hlJGFwpXXXcSR17F-327-101.png)
+
 ### 什么是 Generator-Clam
 
-![](http://img04.taobaocdn.com/tps/i4/T1C5hpXwXeXXbkQf6j-210-45.jpg)
+Web 前端项目开发需要依赖一揽子辅助工具和约定，来保持代码的快速流转和可维护性。 
 
-Web 前端项目开发必然依赖一揽子辅助工具和约定，来保持代码的快速流转和可维护性。 
-
-一套完整的前端技术基础设施包括六个方向：
+一套完整的前端技术基础设施包括六个方面：
 
 1. 前端框架（Kissy）
 1. 代码骨架（Clam）
@@ -31,7 +31,7 @@ Clam 就是让整个过程简化的脚手架工具，让前端工程师快速进
 
 > 我们不要拿Git当SVN在用，fork、merge、pull request 应该成为最常用的三个命令
 
-#### 1. 业务的特点
+#### 2. 业务的特点
 
 ![](http://gtms01.alicdn.com/tps/i1/T1jDVGFqNXXXbfVq.d-205-266.png)
 
@@ -71,7 +71,7 @@ Combo是淘系CDN提供的基础服务，动态输出CDN里的颗粒文件。比
 
 ### Generator-Clam 遵循的原则
 
-`Clam`志在为前端工程师提供更简单和一致的项目开发体验。Clam 遵循这些易于理解的原则：
+`Generator-Clam`我们简称`Clam`，`Clam`志在为前端工程师提供更简单和一致的项目开发体验。Clam 遵循这些易于理解的原则：
 
 1. Server 服务随源码携带
 1. Assets 的源码和目标代码同时发布，比如`a-min.js`一定存在其源码`a.js`。
@@ -215,7 +215,7 @@ Clam 项目构建基于[Grunt](http://www.gruntjs.net/)，构建任务作为插�
 
 ##### 本地服务的启动
 
-基于Clam生成的项目的源码启动`sudo grunt debug`将会调用flexcombo服务，会在本地启动两个 Server 服务，两个服务分属两个端口`proxyport`（反向代理服务）和`port`（Flexcombo 模拟 CDN 环境）
+基于Clam生成的项目目录运行`sudo grunt debug`，将会启用`flexcombo`服务，会在本地启动两个 Server 服务，两个服务分属两个端口`proxyport`（反向代理服务）和`port`（Flexcombo 模拟 CDN 环境）
 
 - 反向代理服务：用于启用本地虚机
 - [flexcombo](https://npmjs.org/package/flexcombo)服务：映射 CDN Combo 请求中的某个文件到本地：`http://cdn/??a.js,b.js`
@@ -336,13 +336,13 @@ Grunt-Flexcombo 服务支持[juicer模板](http://juicer.name)渲染输出，因
 1. [kissy](http://docs.kissyui.com)
 1. [grunt-kmc](https://github.com/daxingplay/grunt-kmc)
 
-同时理解基于[Gitlab的代码发布机制](http://velocity.alibaba-inc.com/projects/f2e-tools/wiki/Assets_Publish)
+同时要理解基于[Gitlab的代码发布机制](http://velocity.alibaba-inc.com/projects/f2e-tools/wiki/Assets_Publish)
 
 环境依赖：Node、Npm， 使用 Generator-Clam 创建项目骨架的视频演示：[http://ascii.io/a/4384](http://ascii.io/a/4384)。[Generator-Clam 的介绍 PPT](https://speakerdeck.com/lijing00333/generator-clam2)。
 
 #### Generator-Clam 的安装
 
-首先安装[grunt](http://gruntjs.com) 和 [yeoman](http://yeoman.io/)：
+首先安装 [grunt](http://gruntjs.com) 和 [yeoman](http://yeoman.io/)：
 
 	npm install -g yo grunt-cli
 
@@ -352,13 +352,13 @@ Grunt-Flexcombo 服务支持[juicer模板](http://juicer.name)渲染输出，因
 
 安装完成后，命令行新增这些命令：
 
-- `yo clam:h`:打印工具帮助信息
-- `yo clam`:初始化一个标准的Project
-- `yo clam:mod`:初始化一个模块
-- `yo clam:page`:初始化一个Page
-- `yo clam:pi`:初始化一个[Pi](http://pi.taobao.net) 组件
-- `yo clam:widget`:初始化一个标准[kissy组件](http://gallery.kissyui.com)，首先创建组件空目录，进入空目录后执行此命令
-- `yo clam:widget x.y`:生成一个标准kissy组件的版本，进入到组件目录后执行。其中x.y是版本号
+- `yo clam:h`: 打印工具帮助信息
+- `yo clam`: 初始化一个标准的Project
+- `yo clam:mod`: 初始化一个模块
+- `yo clam:page`: 初始化一个Page
+- `yo clam:pi`: 初始化一个[Pi](http://pi.taobao.net) 组件
+- `yo clam:widget`: 初始化一个标准[kissy组件](http://gallery.kissyui.com)，首先创建组件空目录，进入空目录后执行此命令
+- `yo clam:widget x.y`: 生成一个标准kissy组件的版本，进入到组件目录后执行。其中x.y是版本号
 
 #### Bower 内嵌命令
 
@@ -404,7 +404,7 @@ Grunt-Flexcombo 服务支持[juicer模板](http://juicer.name)渲染输出，因
 		"port":"80",
 		"group":"Group名称",
 		"src":"false",
-		"combohtml":'true',
+		"combohtml":"true",
 		"version":"0.0.1",
 		"author": {
 			"name": "",
@@ -432,20 +432,20 @@ Grunt-Flexcombo 服务支持[juicer模板](http://juicer.name)渲染输出，因
 
 如果你的项目用 clam 工具生成，且已经上线了，如何 debug 其中一个源 JS？
 
-1，将项目git源码checkout到本地（比如目录`path/to/local_pro/`）
+Step 1，将项目git源码checkout到本地（比如目录`path/to/local_pro/`）
 
-2，开启Debug模式
+Step 2，开启Debug模式
 
 	sudo grunt debug 
 
 这时开启了本地服务，并将目录映射到了`build/`下，同时开启了对`src/`中文件修改的监听
 
-3， 客户端环境映射，二选一
+Step 3， 客户端环境映射，二选一
 
 1. 配host：`127.0.0.1 g.tbcdn.cn`
 1. 配proxy：[参照这里](https://npmjs.org/package/grunt-flexcombo)
 
-3，给浏览器绑定HTTP代理（IP:8080）后，在`'src'`目录中给你的js加断点，保存即可
+Step 4，给浏览器绑定HTTP代理（IP:8080）后，在`'src'`目录中给你的js加断点，保存即可
 
 #### Assets 的预发和发布
 
@@ -474,10 +474,10 @@ PI 格式的组件结构和[KISSY Gallery](http://gallery.kissyui.com/guide)完�
 
 #### Clam 格式项目代码案例
 
-1. 生成Map：[Project](http://gitlab.alibaba-inc.com/trip/h5-test/tree/publish/0.1.29)
-1. 静态构建：[Project](http://gitlab.alibaba-inc.com/trip/h5-test/tree/publish/0.1.28)
+1. 解析JS依赖并生成Map：[Project](http://gitlab.alibaba-inc.com/trip/h5-test/tree/publish/0.1.29)
+1. 基于JS依赖静态构建：[Project](http://gitlab.alibaba-inc.com/trip/h5-test/tree/publish/0.1.28)
 
-### 再多了解一点`Generator-Clam`
+### 再多了解一点Generator-Clam
 
 [淘北京前端开发环境/工具建设里程碑](http://work.taobao.net/issues/3830)
 
@@ -517,14 +517,9 @@ PI 格式的组件结构和[KISSY Gallery](http://gallery.kissyui.com/guide)完�
 
 6，生成的默认Gruntfile.js只根据入口文件合并JS，我如何生成依赖关系表mods.js ？
 
-修改Gruntfile.js，参照注释修改kmc任务。有一点需要注意，如果要生成依赖关系表，你的JS源文件必须带有模块名定义，比如：
+修改Gruntfile.js，参照注释修改kmc任务即可。
 
-	// 模块名不能省略
-	KISSY.add('grp/header/index',function(S){
-		// your code
-	});
-
-7，`grunt server`启动报错`Error: listen EACCES。`
+7，`grunt server`启动报错`Error: listen EACCES`
 
 在Mac/Linux下需要root权限才能启用80端口，加上sudo
 	
@@ -532,7 +527,7 @@ PI 格式的组件结构和[KISSY Gallery](http://gallery.kissyui.com/guide)完�
 
 8，`grunt server`提示Error: listen EADDRINUSE。
 
-Flex Combo所需要使用的端口正在被使用中，如果这个端口是80端口，你需要检查系统中是否有其他web容器，比如Apache、Nginx等是否使用了80端口。如果不是，你需要检查是否系统中有其他Flex Combo正在运行。
+Flex Combo所需要使用的端口正在被使用中，如果这个端口是80端口，你需要检查系统中是否有其他web容器，比如Apache、Nginx等是否使用了80端口。如果不是，你需要检查是否系统中有其他FlexCombo正在运行。
 
 9，运行`grunt server`时报错：“Error: EMFILE, too many open files”
 
@@ -558,7 +553,12 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 
 12，在windows下开启服务后，访问`http://localhost`或者`http://127.0.0.1`报错？
 
-需要直接访问你的项目所在的目录`http://localhost/group/pro/`
+需要直接访问你的项目所在的目录`http://g.tbcdn.cn/group/pro/`，或者配置`proxyHosts`，使用虚机域名来访问
+
+13，我不想让flexcombo占用80端口，可否实现？
+
+可以，配置`abc.json`中的`port`字段即可，如果不是80端口，无法绑定host，只能绑定HTTP代理到8080端口来调试。
+
 
 ### TODO
 
