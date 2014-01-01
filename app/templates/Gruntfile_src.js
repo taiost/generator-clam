@@ -60,7 +60,7 @@ module.exports = function (grunt) {
          *       files: [
          *           {
 		 *				// 这里指定项目根目录下所有文件为入口文件，自定义入口请自行添加
-         *               src: [ 'src/** /*.js', '!Gruntfile.js'],
+         *               src: [ 'src/** /*.js', '!src/** /* /Gruntfile.js'],
          *               dest: 'build/'
          *           }
          *       ]
@@ -77,13 +77,12 @@ module.exports = function (grunt) {
                 ],
 				map: [['<%= pkg.name %>/src/', '<%= pkg.name %>/']]
             },
-
             main: {
                 files: [
                     {
                         expand: true,
 						cwd: 'src/',
-                        src: [ '**/*.js', '!Gruntfile.js'],
+                        src: [ '**/*.js', '!Gruntfile.js','!**/*/Gruntfile.js'],
                         dest: 'build/'
                     }
                 ]
@@ -160,11 +159,11 @@ module.exports = function (grunt) {
 			// 源码调试服务
 			server:{
 				options:{
-					// proxyHosts:'a.com' // 反向代理时本地服务的域名
 					proxyport:8080,
 					target:'src/',
 					urls:'/<%= pkg.group %>/<%= pkg.name %>',
 					port:'<%= pkg.port %>',
+					proxyHosts:['demo.com'],
 					servlet:'?',
 					separator:',',
 					charset:'utf8',
@@ -175,11 +174,11 @@ module.exports = function (grunt) {
 				options:{
 					// 无线H5项目调试，可打开host配置，用法参照
 					// https://speakerdeck.com/lijing00333/grunt-flexcombo
-					// proxyHosts:'a.com' // 反向代理时本地服务的域名
 					target:'build/',
 					proxyport:8080, // 反向代理绑定当前主机的 proxyport 端口
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
+					proxyHosts:['demo.com'],// 反向代理时本地虚机域名
 					servlet:'?',
 					separator:',',
 					charset:'utf8',
@@ -393,6 +392,13 @@ module.exports = function (grunt) {
 	 * 启动Demo调试时的本地服务
 	 */
 	grunt.registerTask('server', '开启Demo调试模式', function() {
+		task.run(['flexcombo:server','watch:all']);
+	});
+
+	/**
+	 * 启动Demo调试时的本地服务
+	 */
+	grunt.registerTask('demo', '开启Demo调试模式', function() {
 		task.run(['flexcombo:server','watch:all']);
 	});
 
