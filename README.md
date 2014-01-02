@@ -157,7 +157,7 @@ Clam 里对于项目的定义是一个完整的前端应用，或其中一个相
 	</script>
 
 
-启动本地demo服务`grunt demo`，浏览器绑定HTTP服务`127.0.0.1:8080`，访问`demo.com/pages/abc/index.html`
+启动本地demo服务`grunt demo`，浏览器绑定HTTP服务`127.0.0.1:8080`，访问`demo/pages/abc/index.html`
 
 	<!DOCTYPE HTML>
 	<html>

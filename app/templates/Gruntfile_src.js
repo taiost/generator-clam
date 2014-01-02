@@ -125,7 +125,7 @@ module.exports = function (grunt) {
                 ]
             }
         },
-		// 静态合并HTML和抽取JS/CSS 
+		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php/tms
 		// https://npmjs.org/package/grunt-combohtml
 		combohtml:{
 			options:{
@@ -135,7 +135,10 @@ module.exports = function (grunt) {
 					to:'build/'
 				},
 				comboJS:false, // 是否静态合并当前页面引用的本地js
-				comboCSS:false // 是否静态合并当前页面引用的css
+				comboCSS:false, // 是否静态合并当前页面引用的css
+				convert2vm:false,// 是否将juicer语法块转换为vm格式
+				convert2php:false,// 是否将juicer语法块转换为php格式
+				convert2tms:false// 是否将juicer语法块转换为tms格式
 			},
 			main:{
                 files: [
@@ -159,14 +162,14 @@ module.exports = function (grunt) {
 			// 源码调试服务
 			server:{
 				options:{
-					proxyport:8080,
+					proxyport:'<%= pkg.proxyPort %>',
 					target:'src/',
 					urls:'/<%= pkg.group %>/<%= pkg.name %>',
 					port:'<%= pkg.port %>',
-					proxyHosts:['demo.com'],
+					proxyHosts:['demo'],
 					servlet:'?',
 					separator:',',
-					charset:'utf8',
+					charset:'utf8'
 				}
 			},
 			// 目标代码调试服务
@@ -175,10 +178,10 @@ module.exports = function (grunt) {
 					// 无线H5项目调试，可打开host配置，用法参照
 					// https://speakerdeck.com/lijing00333/grunt-flexcombo
 					target:'build/',
-					proxyport:8080, // 反向代理绑定当前主机的 proxyport 端口
+					proxyport:'<%= pkg.proxyPort %>', // 反向代理绑定当前主机的 proxyport 端口
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
-					proxyHosts:['demo.com'],// 反向代理时本地虚机域名
+					proxyHosts:['demo'],// 反向代理时本地虚机域名
 					servlet:'?',
 					separator:',',
 					charset:'utf8',

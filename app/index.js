@@ -97,7 +97,7 @@ ClamGenerator.prototype.askFor = function askFor() {
         },
         {
             name   : 'author',
-            message: 'Author Name:',
+            message: 'Author Name(花名):',
             default: abcJSON.author.name,
             warning: ''
         },
@@ -110,13 +110,19 @@ ClamGenerator.prototype.askFor = function askFor() {
         {
             name   : 'groupName',
             message: 'Group Name:',
-            default: 'group-name',
+            default: 'trip',
             warning: ''
         },
         {
             name   : 'port',
-            message: 'HTTP Server Port:',
+            message: 'FlexCombo Server Port:',
             default: '80',
+            warning: ''
+        },
+		{
+            name   : 'proxyPort',
+            message: 'HTTP Proxy Server Port:',
+            default: '8080',
             warning: ''
         },
         {
@@ -148,6 +154,7 @@ ClamGenerator.prototype.askFor = function askFor() {
         this.author = props.author;
         this.email = props.email;
         this.port = props.port;
+		this.proxyPort = props.proxyPort;
         this.version = props.version;
         this.groupName = props.groupName;
         //this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+this.version+'/config.js';
@@ -161,7 +168,7 @@ ClamGenerator.prototype.askFor = function askFor() {
                 {
                     name   : 'modsPagesWidgets',
                     message: 'Create "src/mods[widgets|pages]"?',
-                    default: 'N/y',
+                    default: 'Y/n',
                     warning: ''
                 }
             ], function (err, props) {
