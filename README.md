@@ -1,4 +1,4 @@
-## 淘北京前端开发工具集
+## 淘北京前端团队开发工具集
 
 ![](http://gtms01.alicdn.com/tps/i1/T1hlJGFwpXXXcSR17F-327-101.png)
 
@@ -196,7 +196,7 @@ Clam 项目构建基于[Grunt](http://www.gruntjs.net/)，构建任务作为插�
 	- 合并SSI的html，抽取页面中分散的JS和CSS，合并好后输出；
 	- 解析原html中的[juicer模板](http://juicer.name)，生成vm、tms或者php。
 - [Grunt-kmc](https://github.com/daxingplay/grunt-kmc)，JS库代码依赖KISSY，使用KISSY打包工具来解析源码中JS的依赖关系，生成`map.js`或者静态合并。
-- Grunt-uglify、Grunt-cssmin、Grunt-replace、Grunt-less，Grunt-css_combo
+- Grunt-uglify、Grunt-cssmin、Grunt-replace、Grunt-less，`Grunt-css_combo`
 - [Grunt-mytps](https://npmjs.org/package/grunt-mytps)，上传本地图片到tps服务器，依赖python（默认不开启，开发者自行配置）
 - [Grunt-toascii](https://npmjs.org/package/grunt-toascii)，把文件中的非英文字符转码成对应的ascii码（默认不开启，开发者自行配置）
 - [Grunt-cssimage](https://npmjs.org/package/grunt-cssimage)，对css文件中的图片进行压缩替换，支持远程图片抓取（默认不开启，开发者自行配置）
@@ -317,6 +317,18 @@ Grunt-Flexcombo 服务支持[juicer模板](http://juicer.name)渲染输出，因
 如果源文件中存在Mock数据字段`<!--#def ... -->`，则服务将会解析文件中的juicer模板
 
 > 这个功能主要提供了调试数据模板的方法，写demo时就直接生成了juicer模板，通过[grunt-combohtml](https://github.com/jayli/grunt-combohtml)可以将juicer语法的源文件编译为velocity语法和php语法。
+
+#### 本地 Server 服务器对 PHP 文件的解析
+
+项目代码中的`.php`的文件，会被本地 Server 正常解析，前提是你本机环境安装有php（在命令行执行`php -v`查看是否安装）。由于只是[模板语言的转换](http://php.net/manual/zh/features.commandline.php)，因此php中无法直接获取`外部变量`，比如`$_ENV`、`$_SESSION`等。若要获取`$_GET`参数，php 文件顶部添加：
+
+	<?
+	if(isset($argv)){
+		$_GET = (array)(json_decode($argv[2]));
+	}
+	?>
+
+之后就可以使用`$_GET`来获取URL参量了。
 
 #### 本地服务所依赖的 Grunt 插件
 
