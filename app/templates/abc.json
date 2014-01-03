@@ -3,7 +3,7 @@
     "desc": "description of your app",
     "type": "clam",
 	"port":"<%= port %>",
-	"proxyPort":"<%= port %>",
+	"proxyPort":"<%= proxyPort %>",
 	"group":"<%= groupName %>",
 	"src":"<%= srcDir %>",
 	"version":"<%= version %>",
