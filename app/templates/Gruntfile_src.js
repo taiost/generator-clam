@@ -438,7 +438,7 @@ module.exports = function (grunt) {
 		exec('git branch -a & git tag', function(err, stdout, stderr, cb) {
 			var r = getBiggestVersion(stdout.match(/\d+\.\d+\.\d+/ig));
 			if(!r){
-				r = '0.0.1';
+				r = '0.1.0';
 			} else {
 				r[2]++;
 				r = r.join('.');
