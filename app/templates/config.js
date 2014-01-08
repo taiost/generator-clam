@@ -5,7 +5,7 @@
     KISSY.config('tag', null); //去除?t时间戳
 
     if (KISSY.Config.debug !== true) {
-        if (location.href.indexOf('waptest') > -1 || location.href.indexOf('wapa') > -1) {
+        if (location.host.match(/(waptest\.taobao|wapa.taobao|daily.taobao.net)/)) {
             KISSY.Config.daily = true;
         }
     }
