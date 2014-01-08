@@ -1,10 +1,10 @@
 /**
  * 本文件是 Gruntfile.js 默认模板，请根据需要和注释提示自行修改
- * @info https://github.com/jayli/generator-clam
+ * 从这里获得最新版
+ * https://github.com/jayli/generator-clam/blob/master/app/templates/Gruntfile_src.js
  */
 var path = require('path'),
 	fs = require('fs-extra'),
-	os = require('os'),
 	exec = require('child_process').exec;
 
 module.exports = function (grunt) {
@@ -12,7 +12,10 @@ module.exports = function (grunt) {
 	var file = grunt.file;
 	var task = grunt.task;
 	var pathname = path.basename(__dirname);
-	var all_files = ['**/*.eot','**/*.otf','**/*.svg','**/*.ttf','**/*.woff','**/*.html','**/*.htm','**/*.js','**/*.less','**/*.css','**/*.png','**/*.gif','**/*.jpg','!node_modules','!**/*/Gruntfile.js','**/*.sass'];
+	var all_files = ['**/*.eot','**/*.otf','**/*.svg','**/*.ttf',
+					'**/*.woff','**/*.html','**/*.htm','**/*.js',
+					'**/*.less','**/*.css','**/*.png','**/*.gif',
+					'**/*.jpg','!node_modules','!**/*/Gruntfile.js','**/*.sass'];
 
 	// -------------------------------------------------------------
 	// 任务配置
