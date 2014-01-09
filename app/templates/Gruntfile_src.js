@@ -137,6 +137,8 @@ module.exports = function (grunt) {
 					from:/src\//,
 					to:'build/'
 				},
+				// 本地文件引用替换为线上地址
+				relative:'http://g.tbcdn.cn/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/',
 				comboJS:false, // 是否静态合并当前页面引用的本地js
 				comboCSS:false, // 是否静态合并当前页面引用的css
 				convert2vm:false,// 是否将juicer语法块转换为vm格式
@@ -149,9 +151,9 @@ module.exports = function (grunt) {
                         expand: true,
 						cwd:'build',
 						// 对'*.htm'文件进行HTML合并解析
-                        src: ['**/*.htm'],
+                        src: ['**/*.html'],
                         dest: 'build/',
-                        ext: '.htm'
+                        ext: '.html'
                     }
                 ]
 			}
