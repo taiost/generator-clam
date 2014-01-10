@@ -190,6 +190,11 @@ module.exports = function (grunt) {
 					servlet:'?',
 					separator:',',
 					charset:'utf8',
+					hosts:{
+						"a.tbcdn.cn":"122.225.67.241", 
+						"g.tbcdn.cn":"115.238.23.250",
+						"g.assets.daily.taobao.net":"10.235.136.37"
+					},
 					filter:{
 						'-min\\.js':'.js'
 					}
