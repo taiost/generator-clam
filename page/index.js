@@ -110,7 +110,7 @@ AppGenerator.prototype.files = function files(){
 	this.template('index.htm',mojoName + '/index'+appendix);
     this.template('index.js',mojoName+'/index.js');
     this.template('mockdata.htm',mojoName+'/mockdata.html');
-    this.template('index.css',mojoName+'/index.css');
+    this.template('index.less',mojoName+'/index.less');
 };
 
 function consoleColor(str,num){

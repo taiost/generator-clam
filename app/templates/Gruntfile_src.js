@@ -214,7 +214,7 @@ module.exports = function (grunt) {
 						cwd:'build/',
                         src: ['**/*.less'],
                         dest: 'build/',
-                        ext: '.css'
+                        ext: 'less.css'
                     }
                 ]
             }
@@ -261,10 +261,10 @@ module.exports = function (grunt) {
             'all': {
                 files: ['src/**/*.js',
                 		'src/**/*.css',
-                		'src/**/*.less'
-                		'src/**/*.php'
-                		'src/**/*.html'
-                		'src/**/*.htm'
+                		'src/**/*.less',
+                		'src/**/*.php',
+                		'src/**/*.html',
+                		'src/**/*.htm',
                 		'src/**/*.scss'],
                 tasks: [ 'build' ]
             }
