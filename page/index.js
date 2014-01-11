@@ -68,8 +68,8 @@ AppGenerator.prototype.askFor = function askFor() {
 
 	var prompts = [{
 			name: 'mojoName',
-			message: 'Name of Module?',
-			default: 'your-mojo-name',
+			message: 'Name of Page?',
+			default: 'your-page-name',
 			waring:''
 		}
 	];
@@ -106,9 +106,10 @@ AppGenerator.prototype.files = function files(){
 	var mojoName = this.modsPagesWidgets? this.mojoName.replace(/^([^\/]+)\//i,'') : this.mojoName;
 	this.mkdir(mojoName);
 	this.mkdir(mojoName+'/img');
-	var appendix = (this.combohtml === 'true'? '.htm' : '.html');
+	var appendix = (this.combohtml === 'true'? '.php' : '.html');
 	this.template('index.htm',mojoName + '/index'+appendix);
     this.template('index.js',mojoName+'/index.js');
+    this.template('mockdata.htm',mojoName+'/mockdata.html');
     this.template('index.css',mojoName+'/index.css');
 };
 

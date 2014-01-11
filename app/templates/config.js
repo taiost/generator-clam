@@ -12,6 +12,7 @@
 	if (KISSY.Config.debug) {
 		var srcPath = "<%= srcPath %>";
 		KISSY.config({
+			combine:false,
 			packages:[
 				{
 					name:"<%= packageName %>",

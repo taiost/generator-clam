@@ -130,12 +130,6 @@ ClamGenerator.prototype.askFor = function askFor() {
             message: 'Version:',
             default: '0.1.0',
             warning: ''
-        },
-        {
-            name   : 'combohtml',
-            message: 'do combo html by default:',
-            default: 'N/y',
-            warning: ''
         }
     ];
 
@@ -159,7 +153,7 @@ ClamGenerator.prototype.askFor = function askFor() {
         this.groupName = props.groupName;
         //this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+this.version+'/config.js';
         this.srcDir = (/^y/i).test(props.srcDir);
-        this.combohtml = (/^y/i).test(props.combohtml);
+        this.combohtml = true;
         this.srcPath = '../';
         this.currentBranch = 'master';
 

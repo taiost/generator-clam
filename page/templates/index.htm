@@ -1,16 +1,34 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+	<?php
+		if(isset($argv)){
+		    $_GET = (array)(json_decode($argv[2]));
+		}
+	?>
+	<title> <%= projectName %> - <%= modName %> Demo </title>
 	<meta charset="utf-8" />
-	<title> <%= projectName %> - <%= modName %> demo </title>
+	<link rel="dns-prefetch" href="//g.tbcdn.cn">
+    <link rel="dns-prefetch" href="//gtms01.alicdn.com">
+    <link rel="dns-prefetch" href="//img01.taobaocdn.com">
+    <link rel="dns-prefetch" href="//img02.taobaocdn.com">
+    <link rel="dns-prefetch" href="//img03.taobaocdn.com">
+    <link rel="dns-prefetch" href="//img04.taobaocdn.com">
+    <link rel="dns-prefetch" href="//log.mmstat.com">
+    <link rel="dns-prefetch" href="//p.tanx.com">
+    <link rel="dns-prefetch" href="//i.mmcdn.cn">
+    <meta name="data-spm" content="181"/>
+    <!--import Kissy Seed & Pi-->
 	<script src="http://g.tbcdn.cn/??kissy/k/1.4.1/seed-min.js,tpi/pi/1.1.6/seed-min.js"></script>
+	<link rel="stylesheet" href="http://g.tbcdn.cn/kissy/k/1.4.1/css/dpl/base-min.css">
+	<!--import Page's Assets-->
 	<link rel="stylesheet" href="./index.css"/>
 	<script src="<%= srcPath %>config.js"></script>
 </head>
 <body>
 
-	<!--Your Code Here-->
-	<!--#include virtual="./path/to/include/file.html" -->
+	<!--Put Your Code Here-->
+	<!--#include virtual="./mockdata.html" -->
 
 	<script>
 		KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
@@ -19,4 +37,3 @@
 	</script>
 </body>
 </html>
-

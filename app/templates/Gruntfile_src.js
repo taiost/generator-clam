@@ -15,7 +15,8 @@ module.exports = function (grunt) {
 	var all_files = ['**/*.eot','**/*.otf','**/*.svg','**/*.ttf',
 					'**/*.woff','**/*.html','**/*.htm','**/*.js',
 					'**/*.less','**/*.css','**/*.png','**/*.gif',
-					'**/*.jpg','!node_modules','!**/*/Gruntfile.js','**/*.sass'];
+					'**/*.jpg','**/*.scss','**/*.php','**/*.swf',
+					'!node_modules','!**/*/Gruntfile.js'];
 
 	// -------------------------------------------------------------
 	// 任务配置
@@ -150,10 +151,10 @@ module.exports = function (grunt) {
                     {
                         expand: true,
 						cwd:'build',
-						// 对'*.htm'文件进行HTML合并解析
-                        src: ['**/*.html'],
+						// 对'*.php'文件进行HTML合并解析
+                        src: ['**/*.php'],
                         dest: 'build/',
-                        ext: '.html'
+                        ext: '.php'
                     }
                 ]
 			}
@@ -191,8 +192,6 @@ module.exports = function (grunt) {
 					separator:',',
 					charset:'utf8',
 					hosts:{
-						"a.tbcdn.cn":"122.225.67.241", 
-						"g.tbcdn.cn":"115.238.23.250",
 						"g.assets.daily.taobao.net":"10.235.136.37"
 					},
 					filter:{
@@ -260,7 +259,13 @@ module.exports = function (grunt) {
 		// 监听JS、CSS、LESS文件的修改
         watch: {
             'all': {
-                files: ['src/**/*.js','src/**/*.css','src/**/*.less'],
+                files: ['src/**/*.js',
+                		'src/**/*.css',
+                		'src/**/*.less'
+                		'src/**/*.php'
+                		'src/**/*.html'
+                		'src/**/*.htm'
+                		'src/**/*.scss'],
                 tasks: [ 'build' ]
             }
 		},
@@ -424,7 +429,18 @@ module.exports = function (grunt) {
 
 	// 默认构建任务
 	grunt.registerTask('build', '默认构建任务', function() {
-		task.run(['clean:build', 'copy','less', /*'mytps',*/'css_combo', 'kmc', 'combohtml', 'replace', 'uglify','cssmin'/*'concat','yuidoc'*/]);
+		task.run(['clean:build', 
+					'copy',
+					'less', 
+					/*'mytps',*/
+					'css_combo', 
+					'kmc', 
+					'combohtml', 
+					'replace', 
+					'uglify',
+					'cssmin'
+					/*'concat',
+					'yuidoc'*/]);
 	});
 
 	/*
