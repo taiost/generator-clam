@@ -215,7 +215,7 @@ module.exports = function (grunt) {
 						cwd:'build/',
                         src: ['**/*.less'],
                         dest: 'build/',
-                        ext: 'less.css'
+                        ext: '.less.css'
                     }
                 ]
             }
