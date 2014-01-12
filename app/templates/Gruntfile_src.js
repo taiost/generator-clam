@@ -58,7 +58,8 @@ module.exports = function (grunt) {
 		 *		depFilePath: 'build/map.js',// 生成的模块依赖表
 		 *		comboOnly: true,
 		 *		fixModuleName:true,
-		 *		comboMap: true,
+		 *		copyAssets:true,
+		 *		comboMap: true
          *   },
          *   main: {
          *       files: [
