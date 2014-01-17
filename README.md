@@ -2,6 +2,10 @@
 
 ![](http://gtms01.alicdn.com/tps/i1/T1hlJGFwpXXXcSR17F-327-101.png)
 
+先看视频，了解`Generator-clam`：
+
+<a href="http://v.youku.com/v_show/id_XNjYyNzE3NzIw.html"><img src="http://gtms01.alicdn.com/tps/i1/T1W9JyFEJfXXcSQDsf-632-357.png"></img></a>
+
 ### 什么是 Generator-Clam
 
 Web 前端项目开发需要依赖一揽子辅助工具和约定，来保持代码的快速流转和可维护性。 
