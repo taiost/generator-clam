@@ -15,7 +15,7 @@ module.exports = function (grunt) {
 	var source_files = clamUtil.walk('src',
 		clamUtil.NORMAL_FILTERS,
 		clamUtil.NORMAL_EXFILTERS);
-	var all_files = source_files.css
+	var all_files = source_files.css || []
 		.concat(source_files.eot || [])
 		.concat(source_files.otf || [])
 		.concat(source_files.svg || [])
