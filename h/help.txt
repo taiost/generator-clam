@@ -21,11 +21,12 @@ Useage：
     grunt newbranch 创建一个新版本分支
     grunt info      打印当前项目的gitlab地址
     grunt listen    监听项目中文件修改并实时编译
-    grunt server    使用Grunt开启本地DEMO服务，（CDN host配向本机，或者代理配向本机器8080端口）
+    grunt demo      使用Grunt开启本地DEMO服务，（CDN host配向本机，或者代理配向本机器8080端口）
     grunt debug		使用Grunt开启本地调试模式，（CDN host配向本机，或者代理配向本机器8080端口）
-    grunt combohtml	以Clam方式构建页面（合并页面引用本地JS/CSS）
+    grunt combohtml	以Clam方式构建页面（合并页面引用本地JS/CSS，选择解析juicer到vm）
 	grunt build		默认构建流程
 
 工具文档：https://github.com/jayli/generator-clam
 使用说明：https://speakerdeck.com/lijing00333/generator-clam2
 Grunt-Flexcombo说明：https://speakerdeck.com/lijing00333/grunt-flexcombo
+@author by 拔赤

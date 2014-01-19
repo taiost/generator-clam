@@ -6,6 +6,7 @@
 	"proxyPort":"<%= proxyPort %>",
 	"group":"<%= groupName %>",
 	"src":"<%= srcDir %>",
+    "cssCompile":"<%= cssCompile %>",
 	"version":"<%= version %>",
 	"combohtml":"<%= combohtml %>",
     "author": {

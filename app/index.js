@@ -126,6 +126,12 @@ ClamGenerator.prototype.askFor = function askFor() {
             warning: ''
         },
         {
+            name   : 'cssCompile',
+            message: 'less/sass?',
+            default: 'less',
+            warning: ''
+        },
+        {
             name   : 'version',
             message: 'Version:',
             default: '0.1.0',
@@ -153,6 +159,7 @@ ClamGenerator.prototype.askFor = function askFor() {
         this.groupName = props.groupName;
         //this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+this.version+'/config.js';
         this.srcDir = (/^y/i).test(props.srcDir);
+        this.cssCompile = (props.cssCompile === 'less')? 'less':'scss';
         this.combohtml = true;
         this.srcPath = '../';
         this.currentBranch = 'master';

@@ -20,15 +20,15 @@
         "grunt-contrib-uglify": "~0.2.0",
         "grunt-contrib-clean": "~0.4.0",
         "grunt-contrib-less": "~0.5.0",
-        "grunt-css-combo": "",
+        "grunt-sass":"~0.10.0",
         "grunt-contrib-cssmin": "~0.5.0",
         "grunt-contrib-watch": "",
         "grunt-kmc": "~0.1.18",
+        "clam-util":"",
         "grunt-exec": "",
         "grunt-flexcombo": "",
 		"grunt-combohtml":"",
 		"grunt-mytps":"",
-		"fs-extra":"",
 		"grunt-replace":""
     },
 

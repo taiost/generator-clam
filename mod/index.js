@@ -55,6 +55,10 @@ AppGenerator.prototype.askFor = function askFor() {
 		abcJSON.group = 'groupName';
 	}
 
+	if(!abcJSON.cssCompile){
+		abcJSON.cssCompile = 'less';
+	}
+
 	if(!abcJSON.combohtml){
 		abcJSON.combohtml = 'false';
 	}
@@ -62,6 +66,7 @@ AppGenerator.prototype.askFor = function askFor() {
 	this.modsPagesWidgets = modsPagesWidgets;
 	this.projectName = abcJSON.name;
 	this.combohtml = abcJSON.combohtml;
+	this.cssCompile = abcJSON.cssCompile;
 
     // welcome message
 	console.log(ClamLogo(this));
@@ -91,6 +96,7 @@ AppGenerator.prototype.askFor = function askFor() {
         this.mojoName = this.modsPagesWidgets? this.modsPagesWidgets + '/' + props.mojoName : props.mojoName;// your-mod-name
 		this.modName = parseName(_tname);//YourModName
 		this.packageName = abcJSON.name;// package-name
+		this.cssCompile = abcJSON.cssCompile;
         this.groupName = abcJSON.group;
 		//this.config = abcJSON.config;
 		this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+abcJSON.version+'/config.js';
@@ -110,7 +116,7 @@ AppGenerator.prototype.files = function files(){
 	this.template(combohtml,mojoName + '/index.html');
     this.template('demo.html',mojoName + '/demo.html');
     this.template('index.js',mojoName+'/index.js');
-    this.template('index.css',mojoName+'/index.css');
+    this.template('index.css',mojoName+'/index.'+this.cssCompile);
 };
 
 function consoleColor(str,num){
