@@ -155,7 +155,7 @@ module.exports = function (grunt) {
          */
         uglify: {
             options: {
-				 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %> */\n',
+				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %> */\n',
                 beautify: {
                     ascii_only: true
                 }
@@ -216,9 +216,12 @@ module.exports = function (grunt) {
 			publish: {
 				command: 'git push origin publish/<%= currentBranch %>:publish/<%= currentBranch %>'
 			},
-			commit:{
-			   command: 'git commit -m "<%= currentBranch %> - <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %>"'
-			},
+            commit:{
+                command: function(msg){
+                    var command = 'git commit -m "' + grunt.config.get('currentBranch') + ' - ' + grunt.template.today("yyyy-mm-dd HH:MM:ss") + ' ' + msg + '"';
+                    return command;
+                }
+            },
 			add: {
 				command: 'git add .'	
 			},
@@ -228,9 +231,11 @@ module.exports = function (grunt) {
 			grunt_publish: {
 				command: 'grunt default:publish'
 			},
-			grunt_prepub:{
-				command: 'grunt default:prepub'
-			},
+            grunt_prepub:{
+                command: function(msg){
+                    return 'grunt default:prepub:' + msg;
+                }
+            },
 			new_branch: {
 				command: 'git checkout -b daily/<%= currentBranch %>'
 			}
@@ -293,12 +298,12 @@ module.exports = function (grunt) {
 		task.run('exec:grunt_publish');
 	});
 
-	/**
-	 * 预发布
-	 */
-	grunt.registerTask('prepub', 'clam pre publish...', function() {
-		task.run('exec:grunt_prepub');
-	});
+    /**
+     * 预发布
+     */
+    grunt.registerTask('prepub', 'clam pre publish...', function(msg) {
+        task.run('exec:grunt_prepub:' + (msg || ''));
+    });
 
 	/**
 	 * 监听修改 
@@ -323,7 +328,7 @@ module.exports = function (grunt) {
 	/*
 	 * 获取当前最大版本号，并创建新分支
 	 **/
-	grunt.registerTask('newbranch', 'clam newBranch...', function(type) {
+	grunt.registerTask('newbranch', 'clam newBranch...', function(type, msg) {
 		var done = this.async();
 		exec('git branch -a;git tag', function(err, stdout, stderr, cb) {
 			var r = getBiggestVersion(stdout.match(/\d+\.\d+\.\d+/ig));
@@ -342,7 +347,7 @@ module.exports = function (grunt) {
 
 	// =======================  注册Grunt主流程  ==========================
 	
-	return grunt.registerTask('default', 'clam running ...', function(type) {
+	return grunt.registerTask('default', 'clam running ...', function(type, msg) {
 
 		var done = this.async();
 
@@ -368,8 +373,8 @@ module.exports = function (grunt) {
 		} else if ('publish' === type || 'pub' === type) {
 			task.run(['exec:tag', 'exec:publish']);
 		} else if ('prepub' === type) {
-			task.run(['exec:add','exec:commit']);
-			task.run(['exec:prepub']);
+            task.run(['exec:add','exec:commit:' + msg]);
+            task.run(['exec:prepub']);
 		}
 
 	});

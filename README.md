@@ -421,7 +421,7 @@ Grunt-Flexcombo 服务支持[juicer模板](http://juicer.name)渲染输出，因
 初始化完成的项目包含`Gruntfile.js`模板，可以辅助你完成：
 
 - `grunt`: 执行构建
-- `grunt prepub`:执行预发
+- `grunt prepub[:message]`:执行预发，[]中为可选的commit注释
 - `grunt publish`:执行发布
 - `grunt info`:查看当前库git地址
 - `grunt newbranch`:创建新daily分支，基于当前版本累加

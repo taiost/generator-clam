@@ -118,7 +118,7 @@ module.exports = function (grunt) {
         // 压缩JS https://github.com/gruntjs/grunt-contrib-uglify
         uglify   : {
             options: {
-                banner  : '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %> */\n',
+                banner  : '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %> */\n',
                 beautify: {
                     ascii_only: true
                 }
@@ -160,7 +160,7 @@ module.exports = function (grunt) {
                 command: 'git push origin publish/<%= currentBranch %>:publish/<%= currentBranch %>'
             },
             commit       : {
-                command: 'git commit -m "<%= currentBranch %> - <%= grunt.template.today("yyyy-mm-dd hh:MM:ss") %>"'
+                command: 'git commit -m "<%= currentBranch %> - <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>"'
             },
             add          : {
                 command: 'git add .'
