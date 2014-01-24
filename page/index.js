@@ -115,7 +115,7 @@ AppGenerator.prototype.files = function files(){
 	var appendix = (this.combohtml === 'true'? '.php' : '.html');
 	this.template('index.htm',mojoName + '/index'+appendix);
     this.template('index.js',mojoName+'/index.js');
-    this.template('mockdata.htm',mojoName+'/mockdata.html');
+    this.template('mock.tms.htm',mojoName+'/mock.tms.html');
     this.template('index.less',mojoName+'/index.'+this.cssCompile);
 };
 

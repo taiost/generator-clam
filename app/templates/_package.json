@@ -29,7 +29,8 @@
         "grunt-flexcombo": "",
 		"grunt-combohtml":"",
 		"grunt-mytps":"",
-		"grunt-replace":""
+		"grunt-replace":"",
+        "grunt-tms":""
     },
 
     "dependencies": {

@@ -8,28 +8,22 @@
 	?>
 	<title> <%= projectName %> - <%= modName %> Demo </title>
 	<meta charset="utf-8" />
-	<link rel="dns-prefetch" href="//g.tbcdn.cn">
-    <link rel="dns-prefetch" href="//gtms01.alicdn.com">
-    <link rel="dns-prefetch" href="//img01.taobaocdn.com">
-    <link rel="dns-prefetch" href="//img02.taobaocdn.com">
-    <link rel="dns-prefetch" href="//img03.taobaocdn.com">
-    <link rel="dns-prefetch" href="//img04.taobaocdn.com">
-    <link rel="dns-prefetch" href="//log.mmstat.com">
-    <link rel="dns-prefetch" href="//p.tanx.com">
-    <link rel="dns-prefetch" href="//i.mmcdn.cn">
-    <meta name="data-spm" content="181"/>
-    <!--import Kissy Seed & Pi-->
-	<script src="http://g.tbcdn.cn/??kissy/k/1.4.1/seed-min.js,tpi/pi/1.1.6/seed-min.js"></script>
-	<link rel="stylesheet" href="http://g.tbcdn.cn/kissy/k/1.4.1/css/dpl/base-min.css">
+    <!--import Kissy Seed 1.4.1 & Pi Seed 1.1.7-->
+	<!--#include virtual="http://trip.taobao.com/go/act/trip/clam-pctpl-prefetch.php" -->
 	<!--import Page's Assets-->
 	<link rel="stylesheet" href="./index.<%= cssCompile %>.css"/>
 	<script src="<%= srcPath %>config.js"></script>
 </head>
 <body>
+	<!--#include virtual="http://trip.taobao.com/go/act/trip/clam-pctpl-header.php" -->
+	<div id="content">
+	    <!-- 内容模块 begin -->
 
-	<!--Put Your Code Here-->
-	<!--#include virtual="./mockdata.html" -->
+		<!--#include virtual="./mock.tms.html" -->
 
+	    <!-- 内容模块 end -->
+	</div>
+	<!--#include virtual="http://trip.taobao.com/go/act/trip/clam-pctpl-footer.php" -->
 	<script>
 		KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
 			new <%= modName %>();
