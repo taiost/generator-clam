@@ -358,7 +358,11 @@ Grunt-Flexcombo 服务支持[juicer模板](http://juicer.name)渲染输出，因
 
 #### Mock 数据模拟转换为 TMS 格式
 
-[参照grunt-tms文档](https://npmjs.org/grunt-tms)
+Mock 数据可以直接被转换为 TMS 语法。配置和用法[参照grunt-tms文档](https://npmjs.org/grunt-tms)
+
+#### Sass 和 Less 文件的解析
+
+开启本地服务后，访问`a.less.css`，将会访问`a.less`文件解析的结果，[规则详情参阅这里](http://velocity.alibaba-inc.com/issues/660)。
 
 #### 本地 Server 服务器对 PHP 文件的解析
 
@@ -384,11 +388,17 @@ Grunt-Flexcombo 服务支持[juicer模板](http://juicer.name)渲染输出，因
 
 ![](http://gtms01.alicdn.com/tps/i1/T11RMcFg0cXXaO85U_-560-117.png)
 
+![](http://gtms03.alicdn.com/tps/i3/T1230QFvtXXXby4FLC-257-123.png)
+
+![](http://gtms03.alicdn.com/tps/i3/T19QhNFrlfXXbdiM7D-219-108.png)
+
 1. [grunt](http://gruntjs.net/)
 1. [yeoman](http://yeomanjs.org/)
 1. [bower](http://bower.io/)
 1. [kissy](http://docs.kissyui.com)
 1. [grunt-kmc](https://github.com/daxingplay/grunt-kmc)
+1. [Juicer](http://juicer.name)
+1. [Less](http://www.lesscss.net/article/home.html) 或 [Sass](http://www.sass-lang.com/)
 
 同时要理解基于[Gitlab的代码发布机制](http://velocity.alibaba-inc.com/projects/f2e-tools/wiki/Assets_Publish)
 
@@ -616,6 +626,12 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 14，开启`grunt demo`服务后，访问php文件返回空？
 
 可能你没有安装php，在命令行执行`php -v`来检查php是否正确安装。
+
+15，本地Demo页面如何引用一个线上页面的内容：
+
+直接`include`一个线上地址即可
+
+`<!--#include virtual="http://www.taobao.com" -->`
 
 ### TODO
 
