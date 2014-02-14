@@ -1,6 +1,6 @@
 ## 淘宝北京前端开发工具集
 
-![](http://gtms01.alicdn.com/tps/i1/T1hlJGFwpXXXcSR17F-327-101.png)
+![](http://gtms02.alicdn.com/tps/i2/T1.0X5FzXaXXXWYLnD-292-85.png)
 
 先看视频，了解`Generator-clam`：
 
