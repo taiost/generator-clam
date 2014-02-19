@@ -25,10 +25,10 @@
         "grunt-contrib-watch": "",
         "grunt-kmc": "~0.1.18",
         "clam-util":"",
+        "grunt-mytps":"",
         "grunt-exec": "",
         "grunt-flexcombo": "",
 		"grunt-combohtml":"",
-		"grunt-mytps":"",
 		"grunt-replace":"",
         "grunt-tms":""
     },

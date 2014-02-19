@@ -43,7 +43,7 @@ AppGenerator.prototype.askFor = function askFor() {
 };
 
 AppGenerator.prototype.begin = function begin() {
-	this.invoke('kissy-gallery',{
+	this.invoke('kpm',{
 		args:[
 			this._version
 		]

@@ -120,16 +120,6 @@ module.exports = function (grunt) {
 			*/
         },
 		
-		// 将css文件中引用的本地图片上传CDN并替换url，默认不开启
-		mytps: {
-			options: {
-				argv: "--inplace"
-			},
-			expand:true,
-			cwd:'src',
-			all:source_files.css 
-		},
-
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
 		// https://npmjs.org/package/grunt-combohtml
 		combohtml:{
@@ -357,6 +347,16 @@ module.exports = function (grunt) {
 			}
 		},
 
+		// 将css文件中引用的本地图片上传CDN并替换url，默认不开启
+		mytps: {
+			options: {
+				argv: "--inplace"
+			},
+			expand:true,
+			cwd:'src',
+			all:source_files.css 
+		},
+
 		// 拷贝文件
 		copy : {
 			main: {
@@ -415,9 +415,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-kmc');
+	grunt.loadNpmTasks('grunt-mytps');
 	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-mytps');
 	grunt.loadNpmTasks('grunt-flexcombo');
 	grunt.loadNpmTasks('grunt-replace');
 	grunt.loadNpmTasks('grunt-combohtml');

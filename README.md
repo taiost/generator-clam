@@ -406,6 +406,8 @@ Mock 数据可以直接被转换为 TMS 语法。配置和用法[参照grunt-tms
 
 环境依赖：Node、Npm， 使用 Generator-Clam 创建项目骨架的视频演示：[http://ascii.io/a/4384](http://ascii.io/a/4384)。[Generator-Clam 的介绍 PPT](https://speakerdeck.com/lijing00333/generator-clam2)。
 
+> npm 抓外网的包速度慢，在阿里内网请使用tnpm
+
 #### Generator-Clam 的安装
 
 首先安装 [grunt](http://gruntjs.com) 和 [yeoman](http://yeoman.io/)：
@@ -414,7 +416,7 @@ Mock 数据可以直接被转换为 TMS 语法。配置和用法[参照grunt-tms
 
 安装 Generator-Clam：
 
-	npm install -g generator-clam generator-kissy-gallery
+	npm install -g generator-clam generator-kpm
 
 安装完成后，命令行新增这些命令：
 
@@ -575,7 +577,8 @@ PI 格式的组件结构和[KISSY Gallery](http://gallery.kissyui.com/guide)完�
 4，yo clam 构建好目录结构后安装npm包时间太长，怎么办？
 
 - 原因：构建项目最后使用`npm install`安装npm包
-- 解决办法：在首次构建项目的时候最后一步询问是否安装本地`node_modules`，输入`N`，在当前目录使用`npm install --link`，将包安装到全局。以后每次`yo clam`最后都不安装本地包，使用`npm install --link`来安装，速度会很快。
+- 解决办法1：在首次构建项目的时候最后一步询问是否安装本地`node_modules`，输入`N`，在当前目录使用`npm install --link`，将包安装到全局。以后每次`yo clam`最后都不安装本地包，使用`npm install --link`来安装，速度会很快。
+- 解决办法2：使用阿里内网npm镜像，手动执行`tnpm install`
 
 5，yo clam:mod 构建好一个模块后，怎么运行它？
 
