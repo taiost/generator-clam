@@ -638,6 +638,10 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 
 `<!--#include virtual="http://www.taobao.com" -->`
 
+16，在Chrome下启动demo服务后，输入`http://demo`访问不到文件列表？
+
+解决：使用`http://demo.com/`来访问
+
 ### TODO
 
 - JSON接口模拟和映射
