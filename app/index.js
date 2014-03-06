@@ -116,7 +116,7 @@ ClamGenerator.prototype.askFor = function askFor() {
         {
             name   : 'port',
             message: 'FlexCombo Server Port:',
-            default: '80',
+            default: '81',
             warning: ''
         },
 		{

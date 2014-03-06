@@ -184,8 +184,9 @@ module.exports = function (grunt) {
 					target:'src/',
 					urls:'/<%= pkg.group %>/<%= pkg.name %>',
 					port:'<%= pkg.port %>',
-					proxyHosts:['demo'],
+					proxyHosts:['demo','demo.com'],
 					servlet:'?',
+					longPolling:false,
 					separator:',',
 					charset:'utf8'
 				}
@@ -199,9 +200,10 @@ module.exports = function (grunt) {
 					proxyport:'<%= pkg.proxyPort %>', // 反向代理绑定当前主机的 proxyport 端口
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
-					proxyHosts:['demo'],// 反向代理时本地虚机域名
+					proxyHosts:['demo','demo.com'],// 反向代理时本地虚机域名
 					servlet:'?',
 					separator:',',
+					longPolling:false,
 					charset:'utf8',
 					hosts:{
 						"g.assets.daily.taobao.net":"10.235.136.37"
@@ -277,6 +279,9 @@ module.exports = function (grunt) {
                 ]
             },
             less: {
+				options:{
+					strictImports:true
+				},
                 files: [
                     {
                         expand: true,
