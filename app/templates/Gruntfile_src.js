@@ -60,33 +60,7 @@ module.exports = function (grunt) {
 		 *
          * 		@link https://github.com/daxingplay/grunt-kmc
 		 *
-		 * 如果需要只生成依赖关系表，不做合并，样例代码:
-         *   options: {
-         *       packages: [
-         *           {
-         *              name: '<%= pkg.name %>',
-         *              path: './src/',
-		 *				charset:'utf-8',
-		 *				ignorePackageNameInUri:true
-         *           }
-         *       ],
-		 *		depFilePath: 'build/map.js',// 生成的模块依赖表
-		 *		comboOnly: true,
-		 *		fixModuleName:true,
-		 *		copyAssets:true,
-		 *		comboMap: true
-         *   },
-         *   main: {
-         *       files: [
-         *           {
-		 *				// 这里指定项目根目录下所有文件为入口文件，自定义入口请自行添加
-         *              src: [ 'src/** /*.js', '!src/** /* /Gruntfile.js'],
-         *              dest: 'build/'
-         *           }
-         *       ]
-         *   }
-         */
-        kmc: {
+		 * 如果只需要合并,使用这个配置
             options: {
                 packages: [
                     {
@@ -107,17 +81,31 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-			// 若有新任务，请自行添加
-			/*
-            "simple-example": {
-                files: [
-                    {
-                        src: "a.js",
-                        dest: "build/index.js"
-                    }
-                ]
-            }
-			*/
+         */
+        kmc: {
+			options: {
+				packages: [
+					{
+						name: '<%= pkg.name %>',
+						path: './src/',
+						charset:'utf-8',
+						ignorePackageNameInUri:true
+					}
+				],
+				depFilePath: 'build/map.js',// 生成的模块依赖表
+				comboOnly: true,
+				fixModuleName:true,
+				copyAssets:true,
+				comboMap: true
+			},
+			main: {
+				files: [
+					{
+						src: [ 'src/**/*.js', '!src/**/*/Gruntfile.js'],
+						dest: 'build/'
+					}
+				]
+			}
         },
 		
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
@@ -131,11 +119,16 @@ module.exports = function (grunt) {
 				},
 				// 本地文件引用替换为线上地址
 				relative:'http://g.tbcdn.cn/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/',
+				combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
+				// KISSY Modules Maps File 地址
+				comboMapFile:'http://g.tbcdn.cn/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/maps.js',
 				tidy:false,  // 是否重新格式化HTML
-				comboJS:false, // 是否静态合并当前页面引用的本地js
-				comboCSS:false, // 是否静态合并当前页面引用的css
+				mockFilter:true, // 是否过滤Demo中的JuicerMock
+				comboJS:false, // 是否静态合并当前页面引用的本地js为一个文件
+				comboCSS:false, // 是否静态合并当前页面引用的css为一个文件
 				convert2vm:false,// 是否将juicer语法块转换为vm格式
-				convert2php:false // 是否将juicer语法块转换为php格式
+				convert2php:false, // 是否将juicer语法块转换为php格式
+				comboExt:'-combo' // 静态合并后的js和css后缀
 			},
 			main:{
                 files: [

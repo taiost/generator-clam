@@ -90,7 +90,7 @@ Web 项目大致分三类：
 
 #### 基本流程
 
-![](http://gtms01.alicdn.com/tps/i1/T1yhsgFeJXXXXi0pTP-614-379.png)
+![](http://gtms04.alicdn.com/tps/i4/T1bhHQFuhhXXan.AoY-549-348.png)
 
 前端工程师拥有大部分的HTML的发布权限和所有的JS/CSS/IMG的发布权限。HTML片段参与组成线上页面。基于HTML和CSS/JS分离的原则，前端工程师会将更多的时间用户修补JS/CSS而非HTML。因此JS和CSS的重要性大于HTML。
 
@@ -431,6 +431,7 @@ Mock 数据可以直接被转换为 TMS 语法。配置和用法[参照grunt-tms
 - `yo clam:h`: 打印工具帮助信息
 - `yo clam`: 初始化一个标准的Project
 - `yo clam:mod`: 初始化一个模块
+- `yo clam:h5`: 初始化一个H5页面模板
 - `yo clam:page`: 初始化一个Page
 - `yo clam:pi`: 初始化一个[Pi](http://pi.taobao.net) 组件
 - `yo clam:widget`: 初始化一个标准[kissy组件](http://gallery.kissyui.com)，首先创建组件空目录，进入空目录后执行此命令
@@ -649,6 +650,16 @@ Flex Combo所需要使用的端口正在被使用中，如果这个端口是80�
 16，在Chrome下启动demo服务后，输入`http://demo`访问不到文件列表？
 
 解决：使用`http://demo.com/`来访问
+
+17, `sudo grunt debug`的时候,访问combo请求时报错
+
+	Fatal error: EACCES, permission denied '/home/bachi/.flex-combo/cache/8de..'
+
+原因是`~/.flex-combo/`缺少权限,给`.flex-combo`目录附上777权限
+
+	cd ~/.flex-combo/
+	chmod 777 * -r
+
 
 ### TODO
 

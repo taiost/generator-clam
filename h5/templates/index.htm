@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<?php
+		if(isset($argv)){
+		    $_GET = (array)(json_decode($argv[2]));
+		}
+	?>
+	<title> <%= projectName %> - <%= modName %> Demo </title>
+	<meta charset="utf-8">
+	<!--Meta-->
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<meta content="yes" name="apple-mobile-web-app-capable" />
+	<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+	<meta content="telephone=no" name="format-detection" />
+	<meta content="false" name="twcClient" id="twcClient" />
+	<meta content="yes" name="apple-touch-fullscreen" />
+	<!--Global Imgs-->
+	<link type="image/x-icon" href="http://www.taobao.com/favicon.ico" rel="shortcut icon" />
+	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://img02.taobaocdn.com/tps/i2/T1CeYDXkdcXXX1dP6j-57-57.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://img03.taobaocdn.com/tps/i3/T1Tf6CXbdnXXcCcBHm-72-72.png" />
+	<link rel="apple-touch-startup-image" href="http://img04.taobaocdn.com/tps/i4/T1Ig6UXaJgXXbFQ7Io-320-460.png" />
+	<!--Global StyleSheets-->
+	<link rel="stylesheet" href="http://g.tbcdn.cn/tpi/pi/1.1.0/base/index-min.css" />
+	<link rel="stylesheet" href="./index.<%= cssCompile %>.css"/>
+	<!--Global JavaScripts-->
+	<script src="http://g.tbcdn.cn/kissy/m/0.2.1/mini-full-min.js"></script>
+	<script src="../../config.js"></script>
+</head>
+<body>
+	<!-- 内容模块 begin -->
+
+	<!--#include virtual="./mock.tms.html" -->
+
+	<!-- 内容模块 end -->
+	<script>
+		KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
+			new <%= modName %>();
+		});	
+	</script>
+
+</body>
+</html>

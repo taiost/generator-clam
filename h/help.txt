@@ -3,16 +3,11 @@ Useage：
     yo clam:h       显示帮助
     yo clam:mod     初始化一个模块单元
     yo clam:page    生成一个Page
+    yo clam:h5      生成一个H5页面模板
     yo clam:pi		生成一个PI标准格式组件（需要手动先创建目录）
 		Example:	yo clam:pi
     yo clam:widget  创建标准的Gallery Widget组件（需要手动先创建目录）
         Example:    yo clam:widget 2.1
-    yo clam:install 安装一个Gallery模块(TODO)
-        Example:    yo clam:install slide
-        Example:    yo clam:install git@github.com:a/slide.git
-    yo clam:search  在Gallery中查找匹配的模块(TODO)
-        Example:    yo clam:search 列出所有可用模块
-        Example:    yo clam:search calendar 列出匹配的模块
 
 生成项目的默认Grunt命令：
     grunt           在daily分支中构建项目
@@ -29,4 +24,4 @@ Useage：
 工具文档：https://github.com/jayli/generator-clam
 使用说明：https://speakerdeck.com/lijing00333/generator-clam2
 Grunt-Flexcombo说明：https://speakerdeck.com/lijing00333/grunt-flexcombo
-@author by 拔赤
+@author by 拔赤,弘树

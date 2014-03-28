@@ -15,12 +15,14 @@
 		}
 	}
 
-    if (KISSY.Config.debug !== true) {
+	var debug = ~location.search.indexOf('ks-debug');
+
+    if (debug !== true) {
         if (location.host.match(/(waptest\.taobao|wapa.taobao|daily.taobao.net)/)) {
             KISSY.Config.daily = true;
         }
     }
-	if (KISSY.Config.debug) {
+	if (debug) {
 		var srcPath = "<%= srcPath %>";
 		KISSY.config({
 			combine:false,
