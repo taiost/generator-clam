@@ -2,6 +2,8 @@
  * 本文件是 Gruntfile.js 默认模板，请根据需要和注释提示自行修改
  * 从这里获得最新版
  * https://github.com/jayli/generator-clam/blob/master/app/templates/Gruntfile_src.js
+ * 文档地址:
+ * http://cnpmjs.org/package/generator-clam
  */
 var path = require('path'),
 	clamUtil = require('clam-util'),
