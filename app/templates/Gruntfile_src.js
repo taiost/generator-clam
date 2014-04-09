@@ -123,7 +123,7 @@ module.exports = function (grunt) {
 				relative:'http://g.tbcdn.cn/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/',
 				combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
 				// KISSY Modules Maps File 地址
-				comboMapFile:'http://g.tbcdn.cn/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/maps.js',
+				comboMapFile:'http://g.tbcdn.cn/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/map-min.js',
 				tidy:false,  // 是否重新格式化HTML
 				mockFilter:true, // 是否过滤Demo中的JuicerMock
 				comboJS:false, // 是否静态合并当前页面引用的本地js为一个文件
