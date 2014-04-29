@@ -140,8 +140,8 @@ module.exports = function (grunt) {
                     {
                         expand: true,
 						cwd:'build',
-						// 对'*.php'文件进行HTML合并解析
-                        src: ['**/*.php'],
+						// 对'*.html'文件进行HTML合并解析
+                        src: ['**/*.html'],
                         dest: 'build/'
                     }
                 ]
@@ -198,7 +198,7 @@ module.exports = function (grunt) {
 					proxyport:'<%= pkg.proxyPort %>', // 反向代理绑定当前主机的 proxyport 端口
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
-					proxyHosts:['demo','demo.com'],// 反向代理时本地虚机域名
+					proxyHosts:['demo','demo.com','h5.m.taobao.com'],// 反向代理时本地虚机域名
 					servlet:'?',
 					separator:',',
 					longPolling:false,
@@ -207,7 +207,10 @@ module.exports = function (grunt) {
 						"g.assets.daily.taobao.net":"10.235.136.37"
 					},
 					filter:{
-						'-min\\.js':'.js'
+						'-min\\.js':'.js',
+						// 访问 h5.m.taobao.com/trip/car/search/index.html
+						// 将重定向到 ./build/pages/search/index.html
+						'/trip/h5-trains/\(.+\\.\)html':'/pages/$1html'
 					}
 				}
 			}

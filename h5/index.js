@@ -112,7 +112,7 @@ AppGenerator.prototype.files = function files(){
 	var mojoName = this.modsPagesWidgets? this.mojoName.replace(/^([^\/]+)\//i,'') : this.mojoName;
 	this.mkdir(mojoName);
 	this.mkdir(mojoName+'/img');
-	var appendix = (this.combohtml === 'true'? '.php' : '.html');
+	var appendix = (this.combohtml === 'true'? '.html' : '.html');
 	this.template('index.htm',mojoName + '/index'+appendix);
     this.template('index.js',mojoName+'/index.js');
     this.template('mock.tms.htm',mojoName+'/mock.tms.html');
