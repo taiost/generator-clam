@@ -9,6 +9,18 @@
     "cssCompile":"<%= cssCompile %>",
 	"version":"<%= version %>",
 	"combohtml":"<%= combohtml %>",
+	"env":"publish",
+	"htmlProxy": [{
+		"urlReg": "^http://trip.taobao.com/index$",
+		"demoPage": "http://www.baidu.com/index.php",
+		"replacements": [{
+			"fragment": "mods/demo/index.html",
+			"selector": "#lg"
+		}, {
+			"fragment": "mods/nav/index.html",
+			"selector": "#nv"
+		}]
+	}],
     "author": {
         "name": "<%= author %>",
         "email": "<%= email %>"

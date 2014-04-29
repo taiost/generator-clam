@@ -41,6 +41,9 @@ module.exports = function (grunt) {
 	
 	// 如果 Gruntfile.js 编码为 gbk，打开此注释
 	// grunt.file.defaultEncoding = 'gbk';
+	var base ='http://g.tbcdn.cn';
+	var pkg = grunt.file.readJSON('abc.json');
+	if(pkg.env === 'daily') base = 'http://g.assets.daily.taobao.net';
     grunt.initConfig({
 
 		// 从 abc.json 中读取配置项
@@ -120,10 +123,10 @@ module.exports = function (grunt) {
 					to:'build/'
 				},
 				// 本地文件引用替换为线上地址
-				relative:'http://g.tbcdn.cn/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/',
+				relative:base + '/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/',
 				combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
 				// KISSY Modules Maps File 地址
-				comboMapFile:'http://g.tbcdn.cn/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/map-min.js',
+				comboMapFile:base + '/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>/map-min.js',
 				tidy:false,  // 是否重新格式化HTML
 				mockFilter:true, // 是否过滤Demo中的JuicerMock
 				comboJS:false, // 是否静态合并当前页面引用的本地js为一个文件
