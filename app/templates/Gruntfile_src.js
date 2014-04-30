@@ -112,7 +112,78 @@ module.exports = function (grunt) {
 				]
 			}
         },
-		
+		prompt: {
+			assets_pub:{
+				options: {
+					questions: [
+						{
+							config: 'assets_pub',
+							type: 'list',
+							message: 'assets发布,publish type?',
+							default: 'prepub',
+							choices: [
+								{
+									value:'prepub',
+									name:'预发,g.assets.daily.taobao.net'
+								},
+								{
+									value:'publish',
+									name:'正式,g.tbcdn.cn'
+								}
+							]
+						}
+					]
+				}
+			},
+			grunt_default: {
+				options: {
+					questions: [
+						{
+							config: 'grunt_default',
+							type: 'list',
+							message: 'assets构建,build type?',
+							default: base.valueOf(),
+							choices: [
+								{
+									value:'http://g.assets.daily.taobao.net',
+									name:'预发,g.assets.daily.taobao.net'
+								},
+								{
+									value:'http://g.tbcdn.cn',
+									name:'正式,g.tbcdn.cn'
+								}
+							]
+						}
+					]
+				}
+			},
+			awpp_question: {
+				options: {
+					questions: [
+						{
+							config: 'awpp_question',
+							type: 'list',
+							message: 'H5 html发布类型(/build/pages/search/index.html对应到/trip/'+pkg.name+'/search/index.html)?',
+							default: 'waptest',
+							choices: [
+								{
+									value:'waptest',
+									name:'日常,waptest'
+								},
+								{
+									value:'wapa --autoparse false',
+									name:'预发,wapa'
+								},
+								{
+									value:'m',
+									name:'正式,m'
+								}
+							]
+						}
+					]
+				}
+			}
+		},
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
 		// https://npmjs.org/package/grunt-combohtml
 		combohtml:{
@@ -133,7 +204,9 @@ module.exports = function (grunt) {
 				comboCSS:false, // 是否静态合并当前页面引用的css为一个文件
 				convert2vm:false,// 是否将juicer语法块转换为vm格式
 				convert2php:false, // 是否将juicer语法块转换为php格式
-				comboExt:'-combo' // 静态合并后的js和css后缀
+				comboExt:'-combo', // 静态合并后的js和css后缀
+                htmlProxy: '<%= pkg.htmlProxy %>',      // htmlProxy 配置，用于产出线上页面区块替换为本地模块页面
+                htmlProxyDestDir: 'html-fragments'      // html 代理区块页面生成到的目标目录
 			},
 			main:{
                 files: [
@@ -198,7 +271,9 @@ module.exports = function (grunt) {
 					proxyport:'<%= pkg.proxyPort %>', // 反向代理绑定当前主机的 proxyport 端口
 					urls:'/<%= pkg.group %>/<%= pkg.name %>/<%= pkg.version %>',
 					port:'<%= pkg.port %>',
-					proxyHosts:['demo','demo.com','h5.m.taobao.com'],// 反向代理时本地虚机域名
+					// 反向代理时本地虚机域名强制定向到本机
+                    htmlProxy: '<%= pkg.htmlProxy %>',
+					proxyHosts:['demo','demo.com','h5.m.taobao.com'],
 					servlet:'?',
 					separator:',',
 					longPolling:false,
@@ -208,7 +283,7 @@ module.exports = function (grunt) {
 					},
 					filter:{
 						'-min\\.js':'.js',
-						// 访问 h5.m.taobao.com/trip/car/search/index.html
+						// 访问 h5.m.taobao.com/trip/h5-trains/search/index.html
 						// 将重定向到 ./build/pages/search/index.html
 						'/trip/h5-trains/\(.+\\.\)html':'/pages/$1html'
 					}
@@ -316,7 +391,7 @@ module.exports = function (grunt) {
                 		'src/**/*.html',
                 		'src/**/*.htm',
                 		'src/**/*.scss'],
-                tasks: [ 'build' ]
+                tasks: [ 'exec_build' ]
             }
 		},
 
@@ -327,6 +402,13 @@ module.exports = function (grunt) {
 			},
 			publish: {
 				command: 'git push origin publish/<%= currentBranch %>:publish/<%= currentBranch %>'
+			},
+			awpp:{
+                command: function(){
+					var msg = grunt.config('awpp_question');
+                    var command = 'cd build/pages/ ; awpp ./ -p ' + pkg.name + ' -e '+ msg + " ; cd ../../";
+                    return command;
+                }
 			},
             commit:{
                 command: function(msg){
@@ -379,6 +461,22 @@ module.exports = function (grunt) {
 		},
 		// 替换config中的版本号@@version
 		replace: {
+			daily:{
+				options: {
+					variables: {
+						'g.tbcdn.cn': 'http://g.assets.daily.taobao.net'
+					},
+					prefix:'http://'
+				},
+				files: [
+					{
+						expand: true, 
+                        cwd: 'build/',
+                        dest: 'build/',
+						src: ['**/*']
+					}
+				]
+			},
 			dist: {
 				options: {
 					variables: {
@@ -429,6 +527,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-combohtml');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-tms');
+	grunt.loadNpmTasks('grunt-prompt');
 
 	// 根据需要打开这些配置
     //grunt.loadNpmTasks('grunt-kissy-template');
@@ -439,77 +538,65 @@ module.exports = function (grunt) {
 	// 注册Grunt子命令
 	// -------------------------------------------------------------
 	
-	/**
-	 * 正式发布
-	 */
+	// 正式发布
 	grunt.registerTask('publish', 'clam 正式发布', function() {
 		task.run('exec:grunt_publish');
 	});
-	grunt.registerTask('pub', 'clam 正式发布', function() {
-		task.run('exec:grunt_publish');
-	});
 
-	/**
-	 * 预发布
-	 */
+	// 预发布
     grunt.registerTask('prepub', 'clam pre publish...', function(msg) {
         task.run('exec:grunt_prepub:' + (msg || ''));
     });
 
-	/**
-	 * 启动Demo调试时的本地服务
-	 */
-	grunt.registerTask('server', '开启Demo调试模式', function() {
-		task.run(['flexcombo:server','watch:all']);
-	});
-
-	/**
-	 * 启动Demo调试时的本地服务
-	 */
+	// 启动Demo调试时的本地服务
 	grunt.registerTask('demo', '开启Demo调试模式', function() {
 		task.run(['flexcombo:server','watch:all']);
 	});
 
-	/**
-	 * 启动Debug调试时的本地服务
-	 */
+	// 启动Debug调试时的本地服务
 	grunt.registerTask('debug', '开启debug模式', function() {
 		task.run(['flexcombo:debug','watch:all']);
 	});
 
-	// 默认构建任务
-	grunt.registerTask('build', '默认构建任务', function() {
-		task.run(['clean:build', 
-					'copy',
-					'less', 
-					'sass',
-					/*'mytps',*/
-					'kmc', 
-					'tms',
-					'combohtml', 
-					'replace', 
-					'uglify',
-					'cssmin'
-					/*'concat'*/]);
-	});
-
-	/*
-	 * 获取当前库的信息
-	 **/
-	grunt.registerTask('info', '获取库的路径', function() {
-		var abcJSON = {};
-		try {
-			abcJSON = require(path.resolve(process.cwd(), 'abc.json'));
-			console.log('\n'+abcJSON.repository.url);
-		} catch (e){
-			console.log('未找到abc.json');
+	// 默认构建流程
+	grunt.registerTask('exec_build', '执行构建脚本', function() {
+		base = grunt.config('grunt_default') || base;
+		var actions = [
+			'clean:build',
+			'copy',
+			'less', 
+			'sass',
+			/*'mytps',*/
+			'kmc', 
+			'tms',
+			'combohtml'
+		];
+		if(!/g.tbcdn.cn/.test(base)){
+			actions.push('replace:daily');
 		}
+		actions = actions.concat([
+			'uglify',
+			'cssmin'
+		]);
+		task.run(actions);
 	});
 
-	/*
-	 * 获取当前最大版本号，并创建新分支
-	 **/
-	grunt.registerTask('newbranch', '创建新的分支', function(type, msg) {
+	grunt.registerTask('exec_publish', '发布、预发assets', function() {
+		var pubtype = grunt.config('assets_pub');
+		pubtype = 'exec:grunt_' + pubtype;
+		task.run(pubtype);
+	});
+
+	// 默认构建任务
+	grunt.registerTask('build',['prompt:grunt_default','exec_build']);
+
+	// 发布页面
+	grunt.registerTask('awpp',['prompt:awpp_question','exec:awpp']);
+
+	// 发布assets
+	grunt.registerTask('pub',['prompt:assets_pub','exec_publish']);
+
+	grunt.registerTask('newbranch', '获取当前最大版本号,创建新的分支', function(type, msg) {
 		var done = this.async();
 		exec('git branch -a & git tag', function(err, stdout, stderr, cb) {
 			var r = clamUtil.getBiggestVersion(stdout.match(/\d+\.\d+\.\d+/ig));
@@ -568,7 +655,7 @@ module.exports = function (grunt) {
 		// 构建和发布任务
 		if (!type) {
 			task.run(['build']);
-		} else if ('publish' === type || 'pub' === type) {
+		} else if ('publish' === type) {
 			task.run(['exec:tag', 'exec:publish']);
 		} else if ('prepub' === type) {
             task.run(['exec:add','exec:commit:' + msg]);

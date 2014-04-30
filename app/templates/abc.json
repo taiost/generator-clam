@@ -12,7 +12,7 @@
 	"env":"publish",
 	"htmlProxy": [{
 		"urlReg": "^http://trip.taobao.com/index$",
-		"demoPage": "http://www.baidu.com/index.php",
+		"demoPage": "http://trip.taobao.com/index.php",
 		"replacements": [{
 			"fragment": "mods/demo/index.html",
 			"selector": "#lg"

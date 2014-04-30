@@ -13,7 +13,6 @@
     "keywords": [
         "clam", "<%= projectName %>"
     ],
-
     "devDependencies": {
         "grunt": "~0.4.1",
         "grunt-contrib-copy": "",
@@ -30,9 +29,9 @@
         "grunt-flexcombo": "",
 		"grunt-combohtml":"",
 		"grunt-replace":"",
-        "grunt-tms":""
+        "grunt-tms":"",
+		"grunt-prompt": "~1.1.0"
     },
 
-    "dependencies": {
-    }
+    "dependencies": {}
 }

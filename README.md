@@ -259,7 +259,7 @@ Clam 项目构建基于[Grunt](http://www.gruntjs.net/)，构建任务作为插�
 
 ##### 本地服务的启动
 
-基于Clam生成的项目目录运行`sudo grunt debug`，将会启用`flexcombo`服务，会在本地启动两个 Server 服务，两个服务分属两个端口`proxyport`（反向代理服务）和`port`（Flexcombo 模拟 CDN 环境）
+基于Clam生成的项目目录运行`grunt debug`，将会启用`flexcombo`服务，会在本地启动两个 Server 服务，两个服务分属两个端口`proxyport`（反向代理服务）和`port`（Flexcombo 模拟 CDN 环境）
 
 - 反向代理服务：用于启用本地虚机
 - [flexcombo](https://npmjs.org/package/flexcombo)服务：映射 CDN Combo 请求中的某个文件到本地：`http://cdn/??a.js,b.js`
@@ -284,6 +284,35 @@ Clam 项目构建基于[Grunt](http://www.gruntjs.net/)，构建任务作为插�
 	http://demo.com/
 
 > flexcombo服务可以配合watch和你Gruntfile.js中的构建命令，完成代码调试，比如在[Gallery中的代码调试](http://gallery.kissyui.com/quickstart)，更多内容参照：[grunt-flexcombo 配置方法](https://npmjs.org/package/grunt-flexcombo)。
+
+#### 本地服务如何映射HTML片段
+
+本地服务的debug模式可以映射线上页面中的html片段到本地，配置方法见[html-proxy](http://cnpmjs.org/package/html-proxy)
+
+通过项目配置文件`abc.json`来配置，类似
+
+	"htmlProxy": [{
+		"urlReg": "^http://trip.taobao.com/index$",
+		"demoPage": "http://trip.taobao.com/index.php",
+		"replacements": [{
+			"fragment": "mods/demo/index.html",
+			"selector": "#lg"
+		}, {
+			"fragment": "mods/nav/index.html",
+			"selector": "#nv"
+		}]
+	}],
+
+例子：http://gitlab.alibaba-inc.com/trip/trip-home-slide
+
+检出代码，依次执行：
+
+	git clone git@gitlab.alibaba-inc.com:trip/trip-home-slide.git
+	cd trip-home-slide
+	tnpm install
+	grunt debug
+
+打开浏览器，绑定本机的8080端口，访问`http://trip.taobao.com/index.php`，看到首焦图片被替换了。done
 
 #### Flexcombo 服务启动后如何映射 Combo URL 里的文件
 
@@ -418,13 +447,14 @@ Mock 数据可以直接被转换为 TMS 语法。配置和用法[参照grunt-tms
 
 #### Generator-Clam 的安装
 
-首先安装 [grunt](http://gruntjs.com) 和 [yeoman](http://yeoman.io/)：
+首先安装 [grunt](http://gruntjs.com) bower 和 [yeoman](http://yeoman.io/)：
 
-	npm install -g yo grunt-cli
+	npm install -g yo grunt-cli bower 
 
 安装 Generator-Clam：
 
-	npm install -g generator-clam generator-kpm
+	npm install -g tnpm --registry=http://registry.npm.taobao.net --disturl=http://dist.u.qiniudn.com
+	tnpm install -g generator-clam generator-kpm awpp
 
 安装完成后，命令行新增这些命令：
 
@@ -459,30 +489,47 @@ Mock 数据可以直接被转换为 TMS 语法。配置和用法[参照grunt-tms
 
 初始化完成的项目包含`Gruntfile.js`模板，可以辅助你完成：
 
-- `grunt`: 执行构建
+- `grunt`: 在分支中执行构建
 - `grunt prepub[:message]`:执行预发，`[]`中为可选的commit注释
 - `grunt publish`:执行发布
-- `grunt info`:查看当前库git地址
 - `grunt newbranch`:创建新daily分支，基于当前版本累加
-- `grunt watch`:监听文件修改，实时编译
 - `grunt demo`:开启本地Demo调试模式
 - `grunt debug`:开启生产环境Debug模式
 - `grunt combohtml`:构建包含SSI的html，合并页面中的css和js，编译juicer模板为VM、php和TMS格式
-- `grunt build`:默认构建流程
+- `grunt build`:默认构建流程，在所有场景下均可执行
+- `grunt awpp`:H5页面的发布
+- `grunt pub`:选择预发或者发布前端资源
+
+其中，通过grunt awpp发布的页面必须满足如下规则
+
+- 在[发布平台](http://daily.h5.taobao.org/admin/protos.htm)创建日常、预发页面，形如`trip/h5-test/xxx/index.html`对应到gitlab中的目录是`build/pages/xxx/index.html`
+- 发布页面前首先发布资源（预发或者正式）
+- 要注意`abc.json`中的版本号设置，是否和当前daily分支版本保持一致
 
 使用`yo clam`构建好项目后，会在项目根目录下生成`Gruntfile.js`。
 
 `Gruntfile.js`使用到的一些基本参数存放在`abc.json`中，生成好的`abc.json`格式如下：
 
 	{
-		"name": "项目名称",
+		"name": "项目名称-一般和目录名保持一致",
 		"desc": "项目描述",
 		"type": "clam",
-		"port":"80",
-		"group":"Group名称",
-		"src":"false",
+		"port":"8081",
+		"proxyPort":"8080",
+		"group":"trip",
+		"src":"true",
+		"cssCompile":"less",
+		"version":"0.1.45",
 		"combohtml":"true",
-		"version":"0.0.1",
+		"env":"publish",
+		"htmlProxy": [{
+			"urlReg": "^http://www.baidu.com/",
+			"demoPage": "http://www.baidu.com/index.php",
+			"replacements": [{
+				"fragment": "mods/bbb/index.html",
+				"selector": "#lg"
+			}]
+		}],
 		"author": {
 			"name": "",
 			"email": ""
@@ -503,7 +550,7 @@ Mock 数据可以直接被转换为 TMS 语法。配置和用法[参照grunt-tms
 
 ![](http://gtms01.alicdn.com/tps/i1/T1xlFEFzxgXXaOmlQV-444-280.png)
 
-访问 demo 时应当带上`?ks-debug`，上线后的项目引用`config.js`的绝对地址即可。
+浏览器需要绑定本机8080端口，访问 demo 时应当带上`?ks-debug`，上线后的项目引用`config.js`的绝对地址即可。
 
 #### 基于项目代码，模拟线上 CDN 环境
 
@@ -513,16 +560,20 @@ Step 1，将项目git源码checkout到本地（比如目录`path/to/local_pro/`�
 
 Step 2，开启Debug模式
 
-	sudo grunt debug 
+	grunt debug 
 
 这时开启了本地服务，并将目录映射到了`build/`下，同时开启了对`src/`中文件修改的监听
 
 Step 3， 客户端环境映射，二选一
 
-1. 配host：`127.0.0.1 g.tbcdn.cn`
+1. <del>配host：`127.0.0.1 g.tbcdn.cn`</del>
 1. 配proxy：[参照这里](https://npmjs.org/package/grunt-flexcombo)
 
 Step 4，给浏览器绑定HTTP代理（IP:8080）后，在`'src'`目录中给你的js加断点，保存即可
+
+#### 线上URL映射到本地文件
+
+参照`Gruntfile.js`中flexcombo项中的filter配置，自行修改
 
 #### Assets 的预发和发布
 
@@ -538,6 +589,12 @@ Step 4，给浏览器绑定HTTP代理（IP:8080）后，在`'src'`目录中给�
 
 - `grunt prepub` 预发
 - `grunt publish` 发布
+
+或者直接执行
+
+	grunt pub
+
+可以选择预发或者发布资源
 
 #### 创建 PI 格式的组件
 
