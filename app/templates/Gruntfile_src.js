@@ -575,6 +575,7 @@ module.exports = function (grunt) {
 			actions.push('replace:daily');
 		}
 		actions = actions.concat([
+			'replace:dist',
 			'uglify',
 			'cssmin'
 		]);
