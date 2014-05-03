@@ -285,7 +285,7 @@ module.exports = function (grunt) {
 						'-min\\.js':'.js',
 						// 访问 h5.m.taobao.com/trip/h5-trains/search/index.html
 						// 将重定向到 ./build/pages/search/index.html
-						'/trip/h5-trains/\(.+\\.\)html':'/pages/$1html'
+						'(.+)/trip/h5-trains/\(.+\\.\)html':'$1/pages/$2html'
 					}
 				}
 			}
