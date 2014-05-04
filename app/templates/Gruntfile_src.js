@@ -214,7 +214,7 @@ module.exports = function (grunt) {
                         expand: true,
 						cwd:'build',
 						// 对'*.html'文件进行HTML合并解析
-                        src: ['**/*.html'],
+                        src: ['pages/**/*.html'],
                         dest: 'build/'
                     }
                 ]
@@ -273,6 +273,7 @@ module.exports = function (grunt) {
 					port:'<%= pkg.port %>',
 					// 反向代理时本地虚机域名强制定向到本机
                     htmlProxy: '<%= pkg.htmlProxy %>',
+					// 本机虚机域名
 					proxyHosts:['demo','demo.com','h5.m.taobao.com'],
 					servlet:'?',
 					separator:',',
@@ -285,7 +286,8 @@ module.exports = function (grunt) {
 						'-min\\.js':'.js',
 						// 访问 h5.m.taobao.com/trip/h5-trains/search/index.html
 						// 将重定向到 ./build/pages/search/index.html
-						'(.+)/trip/h5-trains/\(.+\\.\)html':'$1/pages/$2html'
+						// Example: '(.+)/trip/h5-car/\(.+\\.\)html':'$1/pages/$2html'
+						'(.+)/trip/[^\/]+/\(.+\\.\)html':'$1/pages/$2html'
 					}
 				}
 			}

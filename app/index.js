@@ -18,7 +18,7 @@ var ClamGenerator = module.exports = function ClamGenerator(args, options, confi
             {
                 name   : 'npm_install',
                 message: 'Install node_modules for grunt now?',
-                default: 'Y/n',
+                default: 'N/y',
                 warning: ''
             }
         ], function (err, props) {
