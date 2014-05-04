@@ -285,35 +285,6 @@ Clam 项目构建基于[Grunt](http://www.gruntjs.net/)，构建任务作为插�
 
 > flexcombo服务可以配合watch和你Gruntfile.js中的构建命令，完成代码调试，比如在[Gallery中的代码调试](http://gallery.kissyui.com/quickstart)，更多内容参照：[grunt-flexcombo 配置方法](https://npmjs.org/package/grunt-flexcombo)。
 
-#### 本地服务如何映射HTML片段
-
-本地服务的debug模式可以映射线上页面中的html片段到本地，配置方法见[html-proxy](http://cnpmjs.org/package/html-proxy)
-
-通过项目配置文件`abc.json`来配置，类似
-
-	"htmlProxy": [{
-		"urlReg": "^http://trip.taobao.com/index$",
-		"demoPage": "http://trip.taobao.com/index.php",
-		"replacements": [{
-			"fragment": "mods/demo/index.html",
-			"selector": "#lg"
-		}, {
-			"fragment": "mods/nav/index.html",
-			"selector": "#nv"
-		}]
-	}],
-
-例子：http://gitlab.alibaba-inc.com/trip/trip-home-slide
-
-检出代码，依次执行：
-
-	git clone git@gitlab.alibaba-inc.com:trip/trip-home-slide.git
-	cd trip-home-slide
-	tnpm install
-	grunt debug
-
-打开浏览器，绑定本机的8080端口，访问`http://trip.taobao.com/index.php`，看到首焦图片被替换了。done
-
 #### Flexcombo 服务启动后如何映射 Combo URL 里的文件
 
 我们通过[一个案例](https://github.com/jayli/grunt-flexcombo/tree/master/test)来说明原理：
@@ -500,7 +471,7 @@ Mock 数据可以直接被转换为 TMS 语法。配置和用法[参照grunt-tms
 - `grunt awpp`:H5页面的发布
 - `grunt pub`:选择预发或者发布前端资源
 
-其中，通过grunt awpp发布的页面必须满足如下规则
+其中，通过`grunt awpp`发布的页面必须满足如下规则
 
 - 在[发布平台](http://daily.h5.taobao.org/admin/protos.htm)创建日常、预发页面，形如`trip/h5-test/xxx/index.html`对应到gitlab中的目录是`build/pages/xxx/index.html`
 - 发布页面前首先发布资源（预发或者正式）
@@ -573,7 +544,61 @@ Step 4，给浏览器绑定HTTP代理（IP:8080）后，在`'src'`目录中给�
 
 #### 线上URL映射到本地文件
 
-参照`Gruntfile.js`中flexcombo项中的filter配置，自行修改
+在Gruntfile.js中给flexcombo配置项增加了filter配置，比如
+
+	proxyHosts:['demo','demo.com','h5.m.taobao.com'],
+	filter:{
+		'-min\\.js':'.js',
+		// 访问 h5.m.taobao.com/trip/h5-trains/search/index.html
+		// 将重定向到 ./build/pages/search/index.html
+		// Example: '(.+)/trip/h5-car/\(.+\\.\)html':'$1/pages/$2html'
+		'(.+)/trip/[^\/]+/\(.+\\.\)html':'$1/pages/$2html'
+	}
+
+执行`grunt debug`后，访问`h5.m.taobao.com`下的文件，都将转发请求到本项目文件，比如我访问
+
+	http://h5.m.taobao.com/trip/h5-trains/search/index.html
+
+将实际访问我本机的这个文件
+
+	./build/pages/search/index.html
+
+其中h5-trains是项目名称。如果想针对某个项目（比如`h5-car`）进行转发，可以这样
+
+	filter:{
+		'(.+)/trip/h5-car/\(.+\\.\)html':'$1/pages/$2html'
+	}
+
+filter中的key是一个字符串形式的正则表达式，value是被替换的字符串
+
+#### 本地服务如何映射HTML片段
+
+本地服务的debug模式可以映射线上页面中的html片段到本地，配置方法见[html-proxy](http://cnpmjs.org/package/html-proxy)
+
+通过项目配置文件`abc.json`来配置，类似
+
+	"htmlProxy": [{
+		"urlReg": "^http://trip.taobao.com/index$",
+		"demoPage": "http://trip.taobao.com/index.php",
+		"replacements": [{
+			"fragment": "mods/demo/index.html",
+			"selector": "#lg"
+		}, {
+			"fragment": "mods/nav/index.html",
+			"selector": "#nv"
+		}]
+	}],
+
+例子：http://gitlab.alibaba-inc.com/trip/trip-home-slide
+
+检出代码，依次执行：
+
+	git clone git@gitlab.alibaba-inc.com:trip/trip-home-slide.git
+	cd trip-home-slide
+	tnpm install
+	grunt debug
+
+打开浏览器，绑定本机的8080端口，访问`http://trip.taobao.com/index.php`，看到首焦图片被替换了。done
 
 #### Assets 的预发和发布
 
@@ -595,6 +620,12 @@ Step 4，给浏览器绑定HTTP代理（IP:8080）后，在`'src'`目录中给�
 	grunt pub
 
 可以选择预发或者发布资源
+
+#### HTML代码的预发和发布
+
+执行`grunt awpp`回车，选择发布类型，`build/pages/`里的文件会被同步到[AWPP平台](http://h5.taobao.org/admin/protos.htm)
+
+grunt-flexcombo 支持对`<!--HTTP:url,gbk:HTTP-->`（[文档](http://h5.taobao.org/doc/webapp/2013/08/06/html_standard/index.html?spm=0.0.0.0)）标签解析
 
 #### 创建 PI 格式的组件
 
