@@ -6,9 +6,9 @@
 
 <a href="http://v.youku.com/v_show/id_XNjYyNzE3NzIw.html"><img src="http://gtms01.alicdn.com/tps/i1/T1W9JyFEJfXXcSQDsf-632-357.png"></img></a>
 
-### 什么是 Generator-Clam
-
 [对原理不关心，直接跳到使用指南](#把-generator-clam-运行起来)
+
+### 什么是 Generator-Clam
 
 阿里航旅前端基础设施：
 
@@ -535,10 +535,7 @@ Step 2，开启Debug模式
 
 这时开启了本地服务，并将目录映射到了`build/`下，同时开启了对`src/`中文件修改的监听
 
-Step 3， 客户端环境映射，二选一
-
-1. <del>配host：`127.0.0.1 g.tbcdn.cn`</del>
-1. 配proxy：[参照这里](https://npmjs.org/package/grunt-flexcombo)
+Step 3， 客户端环境映射, 配proxy：[参照这里](https://npmjs.org/package/grunt-flexcombo)
 
 Step 4，给浏览器绑定HTTP代理（IP:8080）后，在`'src'`目录中给你的js加断点，保存即可
 
@@ -571,7 +568,7 @@ Step 4，给浏览器绑定HTTP代理（IP:8080）后，在`'src'`目录中给�
 
 filter中的key是一个字符串形式的正则表达式，value是被替换的字符串
 
-#### 本地服务如何映射HTML片段
+#### 本地服务如何映射HTML片段 
 
 本地服务的debug模式可以映射线上页面中的html片段到本地，配置方法见[html-proxy](http://cnpmjs.org/package/html-proxy)
 
