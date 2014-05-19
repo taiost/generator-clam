@@ -163,7 +163,7 @@ module.exports = function (grunt) {
 						{
 							config: 'awpp_question',
 							type: 'list',
-							message: 'H5 html发布类型(/build/pages/search/index.html对应到/trip/'+Gpkg.name+'/search/index.html)?',
+							message: 'H5 html发布类型(/build/pages/search/index.html对应到/trip/'+clamUtil.awppDirName(Gpkg.name)+'/search/index.html)?',
 							default: 'waptest',
 							choices: [
 								{
@@ -408,7 +408,7 @@ module.exports = function (grunt) {
 			awpp:{
                 command: function(){
 					var msg = grunt.config('awpp_question');
-                    var command = 'cd build/pages/ ; awpp ./ -p ' + Gpkg.name + ' -e '+ msg + " ; cd ../../";
+                    var command = 'cd build/pages/ ; awpp ./ -p ' + clamUtil.awppDirName(Gpkg.name) + ' -e '+ msg + " ; cd ../../";
                     return command;
                 }
 			},
