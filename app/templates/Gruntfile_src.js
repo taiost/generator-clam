@@ -562,21 +562,23 @@ module.exports = function (grunt) {
 	// 注册Grunt子命令
 	// -------------------------------------------------------------
 
+	// 预发布
+	grunt.registerTask('prepub', 'clam pre publish...', function (msg) {
+		base = 'g.assets.daily.taobao.net';
+		grunt.config('grunt_default', base);
+		task.run(['exec_build']);
+		task.run(['exec:add', 'exec:commit:' + msg]);
+		task.run(['exec:prepub']);
+	});
+
 	// 正式发布
 	grunt.registerTask('publish', 'clam 正式发布', function (msg) {
 		base = 'g.tbcdn.cn';
+		grunt.config('grunt_default', base);
 		task.run(['exec_build']);
 		task.run(['exec:add', 'exec:commit:' + msg]);
 		task.run(['exec:prepub']);
 		task.run(['exec:grunt_publish']);
-	});
-
-	// 预发布
-	grunt.registerTask('prepub', 'clam pre publish...', function (msg) {
-		base = 'g.assets.daily.taobao.net';
-		task.run(['exec_build']);
-		task.run(['exec:add', 'exec:commit:' + msg]);
-		task.run(['exec:prepub']);
 	});
 
 	// 启动Demo调试时的本地服务
