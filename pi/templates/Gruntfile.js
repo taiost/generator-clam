@@ -100,7 +100,7 @@ module.exports = function (grunt) {
         // 编译LESS为CSS https://github.com/gruntjs/grunt-contrib-less
         less     : {
             options: {
-                paths: './'
+	            strictImports: true
             },
             main   : {
                 files: [

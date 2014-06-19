@@ -132,7 +132,7 @@ module.exports = function (grunt) {
          */
         less: {
             options: {
-                paths: './'
+	            strictImports: true
             },
 
             main: {

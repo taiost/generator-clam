@@ -1,6 +1,6 @@
 {
     "name": "<%= packageName %>",
-    "version": "0.0.1",
+    "version": "<%= version %>",
     "description": "a clam project",
     "author": {
         "name": "<%= author %>",
@@ -8,7 +8,7 @@
     },
 	"repository": {
         "type": "git",
-        "url": ""
+        "url": "http://gitlab.alibaba-inc.com/<%= groupName %>/<%= packageName %>"
     },
     "keywords": [
         "clam", "<%= projectName %>"
@@ -30,7 +30,8 @@
 		"grunt-combohtml":"",
 		"grunt-replace":"",
         "grunt-tms":"",
-		"grunt-prompt": "~1.1.0"
+		"grunt-prompt": "~1.1.0",
+	    "grunt-tpl-compiler":""
     },
 
     "dependencies": {}

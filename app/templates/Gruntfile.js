@@ -15,177 +15,177 @@ module.exports = function (grunt) {
 	// file.pic 存储项目中所有图片文件
 
 	// ======================= 配置每个任务 ==========================
-	
-    grunt.initConfig({
 
-        pkg: grunt.file.readJSON('abc.json'),
+	grunt.initConfig({
+
+		pkg: grunt.file.readJSON('abc.json'),
 
 		// 配置默认分支
 		currentBranch: 'master',
 
-        // 对页面进行清理
-        clean: {
+		// 对页面进行清理
+		clean: {
 
-            build: {
-                src: 'build/*'
+			build: {
+				src: 'build/*'
 			}
-        },
+		},
 
-        /**
-         * 将src目录中的KISSY文件做编译打包，仅做合并，源文件需要指定名称
-		 * 		KISSY.add('package/path/to/file',function(S){});
+		/**
+		 * 将src目录中的KISSY文件做编译打包，仅做合并，源文件需要指定名称
+		 *        KISSY.add('package/path/to/file',function(S){});
 		 *
-         * 		@link https://github.com/daxingplay/grunt-kmc
+		 *        @link https://github.com/daxingplay/grunt-kmc
 		 *
 		 * 如果需要只生成依赖关系表，不做合并
 		 * 在kmc.options中增加两个参数:
-		 *		depFilePath: 'build/mods.js',
-		 *		comboOnly: true,
-		 *		comboMap: true,
-         */
-        kmc: {
-            options: {
-                packages: [
-                    {
-                        name: '<%= pkg.name %>',
-                        path: '../',
-						charset:'utf-8'
-                    }
-                ],
+		 *        depFilePath: 'build/mods.js',
+		 *        comboOnly: true,
+		 *        comboMap: true,
+		 */
+		kmc: {
+			options: {
+				packages: [
+					{
+						name: '<%= pkg.name %>',
+						path: '../',
+						charset: 'utf-8'
+					}
+				],
 				map: [/*['<%= pkg.name %>/', '<%= pkg.name %>/<%= currentBranch %>/']*/]
-            },
-            main: {
-                files: [
-                    {
+			},
+			main: {
+				files: [
+					{
 						// 这里指定项目根目录下所有文件为入口文件，自定义入口请自行添加
-                        expand: true,
+						expand: true,
 						cwd: './',
-                        src: [ '**/*.js', '!build/**/*','!Gruntfile.js','!node_modules/**/*','!doc/**/*'],
-                        dest: 'build/'
-                    }
-                ]
-            }
+						src: [ '**/*.js', '!build/**/*', '!Gruntfile.js', '!node_modules/**/*', '!doc/**/*'],
+						dest: 'build/'
+					}
+				]
+			}
 			// 若有新任务，请自行添加
 			/*
-            "simple-example": {
-                files: [
-                    {
-                        src: "a.js",
-                        dest: "build/index.js"
-                    }
-                ]
-            }
-			*/
-        },
+			 "simple-example": {
+			 files: [
+			 {
+			 src: "a.js",
+			 dest: "build/index.js"
+			 }
+			 ]
+			 }
+			 */
+		},
 		// 将css文件中引用的本地图片上传CDN并替换url
 		mytps: {
 			options: {
 				argv: "--inplace"
 			},
-			all: [ '**/*.css', '!build/**/*','!node_modules/**/*','!doc/**/*']
+			all: [ '**/*.css', '!build/**/*', '!node_modules/**/*', '!doc/**/*']
 		},
 
 		// CSS-Combo: 合并项目中所有css，通过@import "other.css" 来处理CSS的依赖关系
-        css_combo: {
-            options: {
-                paths: './'
-            },
-
-            main: {
-                files: [
-                    {
-                        expand: true,
-						cwd:'build',
-                        src: ['**/*.css'], 
-                        dest: 'build/',
-                        ext: '.css'
-                    }
-                ]
-            }
-        },
-
-		// FlexCombo服务配置: https://npmjs.org/package/grunt-flexcombo
-		flexcombo:{
+		css_combo: {
 			options: {
-				target:'',
-				urls:'/<%= pkg.group %>/<%= pkg.name %>',
-				port:'<%= pkg.port %>',
-				servlet:'?',
-				separator:',',
-				charset:'utf8'
+				paths: './'
 			},
-			main:{}
+
+			main: {
+				files: [
+					{
+						expand: true,
+						cwd: 'build',
+						src: ['**/*.css'],
+						dest: 'build/',
+						ext: '.css'
+					}
+				]
+			}
 		},
 
-        // 编译LESS为CSS https://github.com/gruntjs/grunt-contrib-less
-        less: {
-            options: {
-                paths: './'
-            },
-            main: {
-                files: [
-                    {
-                        expand: true,
-						cwd:'build/',
-                        src: ['**/*.less'],
-                        dest: 'build/',
-                        ext: '.css'
-                    }
-                ]
-            }
-        },
+		// FlexCombo服务配置: https://npmjs.org/package/grunt-flexcombo
+		flexcombo: {
+			options: {
+				target: '',
+				urls: '/<%= pkg.group %>/<%= pkg.name %>',
+				port: '<%= pkg.port %>',
+				servlet: '?',
+				separator: ',',
+				charset: 'utf8'
+			},
+			main: {}
+		},
 
-        // 压缩JS https://github.com/gruntjs/grunt-contrib-uglify
-        uglify: {
-            options: {
-				 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %> */\n',
-                beautify: {
-                    ascii_only: true
-                }
-            },
-            main: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: 'build/',
-                        src: ['**/*.js', '!**/*-min.js'],
-                        dest: 'build/',
-                        ext: '-min.js'
-                    }
-                ]
-            }
-        },
+		// 编译LESS为CSS https://github.com/gruntjs/grunt-contrib-less
+		less: {
+			options: {
+				strictImports: true
+			},
+			main: {
+				files: [
+					{
+						expand: true,
+						cwd: 'build/',
+						src: ['**/*.less'],
+						dest: 'build/',
+						ext: '.css'
+					}
+				]
+			}
+		},
 
-        // 压缩CSS https://github.com/gruntjs/grunt-contrib-cssmin
-        cssmin: {
-            main: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: 'build/',
-                        src: ['**/*.css', '!**/*-min.css'],
-                        dest: 'build/',
-                        ext: '-min.css'
-                    }
-                ]
-            }
-        },
+		// 压缩JS https://github.com/gruntjs/grunt-contrib-uglify
+		uglify: {
+			options: {
+				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %> */\n',
+				beautify: {
+					ascii_only: true
+				}
+			},
+			main: {
+				files: [
+					{
+						expand: true,
+						cwd: 'build/',
+						src: ['**/*.js', '!**/*-min.js'],
+						dest: 'build/',
+						ext: '-min.js'
+					}
+				]
+			}
+		},
+
+		// 压缩CSS https://github.com/gruntjs/grunt-contrib-cssmin
+		cssmin: {
+			main: {
+				files: [
+					{
+						expand: true,
+						cwd: 'build/',
+						src: ['**/*.css', '!**/*-min.css'],
+						dest: 'build/',
+						ext: '-min.css'
+					}
+				]
+			}
+		},
 
 		// 监听JS、CSS、LESS文件的修改
-        watch: {
-            'js': {
-                files: [ '**/*.js' ,'!**/*-min.js','!build/**/*'],
-                tasks: [ 'kmc', 'uglify' ]
-            },
-			'css':{
-                files: [ '**/*.css' ,'!**/*-min.css','!build/**/*'],
-                tasks: [ 'copy','cssmin' ]
+		watch: {
+			'js': {
+				files: [ '**/*.js' , '!**/*-min.js', '!build/**/*'],
+				tasks: [ 'kmc', 'uglify' ]
 			},
-            'less': {
-                files: [ '**/*.less','!**/*-min.less','!build/**/*'],
-                tasks: ['less', 'cssmin']
-            }
-        },
+			'css': {
+				files: [ '**/*.css' , '!**/*-min.css', '!build/**/*'],
+				tasks: [ 'copy', 'cssmin' ]
+			},
+			'less': {
+				files: [ '**/*.less', '!**/*-min.less', '!build/**/*'],
+				tasks: ['less', 'cssmin']
+			}
+		},
 
 		// 发布命令
 		exec: {
@@ -195,11 +195,17 @@ module.exports = function (grunt) {
 			publish: {
 				command: 'git push origin publish/<%= currentBranch %>:publish/<%= currentBranch %>'
 			},
-			commit:{
-			   command: 'git commit -m "<%= currentBranch %> - <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>"'
+			commit: {
+				command: function (msg) {
+					var command = 'git commit -m "' + grunt.config.get('currentBranch') + ' - ' + grunt.template.today("yyyy-mm-dd HH:MM:ss") + ' ' + msg + '"';
+					return command;
+				}
 			},
 			add: {
-				command: 'git add .'	
+				command: 'git add .'
+			},
+			sync: {
+				command: 'git stash;git pull origin daily/<%= currentBranch %>;git stash pop;'
 			},
 			prepub: {
 				command: 'git push origin daily/<%= currentBranch %>:daily/<%= currentBranch %>'
@@ -207,8 +213,10 @@ module.exports = function (grunt) {
 			grunt_publish: {
 				command: 'grunt default:publish'
 			},
-			grunt_prepub:{
-				command: 'grunt default:prepub'
+			grunt_prepub: {
+				command: function (msg) {
+					return 'grunt default:prepub:' + msg;
+				}
 			},
 			new_branch: {
 				command: 'git checkout -b daily/<%= currentBranch %>'
@@ -216,27 +224,27 @@ module.exports = function (grunt) {
 		},
 
 		// 拷贝文件
-		copy : {
+		copy: {
 			main: {
-				files:[
+				files: [
 					{
-						src: files.pic, 
-						dest: 'build/', 
+						src: files.pic,
+						dest: 'build/',
 						filter: 'isFile'
 					},
 					{
-						src: files.js, 
-						dest: 'build/', 
+						src: files.js,
+						dest: 'build/',
 						filter: 'isFile'
 					},
 					{
-						src: files.css, 
-						dest: 'build/', 
+						src: files.css,
+						dest: 'build/',
 						filter: 'isFile'
 					},
 					{
-						src: files.less, 
-						dest: 'build/', 
+						src: files.less,
+						dest: 'build/',
 						filter: 'isFile'
 					}
 				]
@@ -252,10 +260,27 @@ module.exports = function (grunt) {
 				},
 				files: [
 					{
-						expand: true, 
-                        cwd: 'build/',
-                        dest: 'build/',
+						expand: true,
+						cwd: 'build/',
+						dest: 'build/',
 						src: ['**/*']
+					}
+				]
+			}
+		},
+
+		// juicer 模板编译为 kissy 模块，文档：https://www.npmjs.org/package/grunt-tpl-compiler
+		tpl_compiler: {
+			options: {
+				ext: '-tpl'
+			},
+			main: {
+				files: [
+					{
+						expand: true,
+						cwd: 'src/',
+						src: ['**/*.tpl.html'],
+						dest: 'src/'
 					}
 				]
 			}
@@ -263,38 +288,38 @@ module.exports = function (grunt) {
 
 		// 合并文件
 		/*
-		concat: {
-			dist: {
-				src: ['from.css'],
-				dest: 'build/to.css'
-			
-			}
-		},
-		*/
+		 concat: {
+		 dist: {
+		 src: ['from.css'],
+		 dest: 'build/to.css'
+
+		 }
+		 },
+		 */
 		// YUIDoc: 对build目录中的js文件生成文档，放入doc/中
-		 /*
-		yuidoc: {
-			compile: {
-				name: 'generator-clam',
-				description: 'A Clam generator for Yeoman',
-				options: {
-					paths: 'build/',
-					outdir: 'doc/'
-				}
-			}
-		}
-		*/
-    });
+		/*
+		 yuidoc: {
+		 compile: {
+		 name: 'generator-clam',
+		 description: 'A Clam generator for Yeoman',
+		 options: {
+		 paths: 'build/',
+		 outdir: 'doc/'
+		 }
+		 }
+		 }
+		 */
+	});
 
 	// ======================= 载入使用到的通过NPM安装的模块 ==========================
-	
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-css-combo');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-kmc');
+
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-css-combo');
+	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-kmc');
 	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-mytps');
@@ -302,53 +327,53 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-replace');
 
 	// 根据需要打开这些配置
-    //grunt.loadNpmTasks('grunt-kissy-template');
-    //grunt.loadNpmTasks('grunt-contrib-connect');
+	//grunt.loadNpmTasks('grunt-kissy-template');
+	//grunt.loadNpmTasks('grunt-contrib-connect');
 	//grunt.loadNpmTasks('grunt-contrib-concat');
 	//grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
 	// =======================  注册Grunt 各个操作 ==========================
-	
+
 	/**
 	 * 正式发布
 	 */
-	grunt.registerTask('publish', 'clam publish...', function() {
+	grunt.registerTask('publish', 'clam publish...', function () {
 		task.run('exec:grunt_publish');
 	});
-	grunt.registerTask('pub', 'clam publish...', function() {
+	grunt.registerTask('pub', 'clam publish...', function () {
 		task.run('exec:grunt_publish');
 	});
 
 	/**
 	 * 预发布
 	 */
-	grunt.registerTask('prepub', 'clam pre publish...', function() {
+	grunt.registerTask('prepub', 'clam pre publish...', function () {
 		task.run('exec:grunt_prepub');
 	});
 
 	/**
-	 * 监听修改 
+	 * 监听修改
 	 */
-	grunt.registerTask('listen', 'clam watch ...', function() {
+	grunt.registerTask('listen', 'clam watch ...', function () {
 		task.run('watch');
 	});
 
 	/**
 	 * 启动服务
 	 */
-	grunt.registerTask('server', 'clam server...', function() {
-		task.run(['flexcombo','watch']);
+	grunt.registerTask('server', 'clam server...', function () {
+		task.run(['flexcombo', 'watch']);
 	});
 
 	/*
 	 * 获取当前库的信息
 	 **/
-	grunt.registerTask('info', 'clam info...', function() {
+	grunt.registerTask('info', 'clam info...', function () {
 		var abcJSON = {};
 		try {
 			abcJSON = require(path.resolve(process.cwd(), 'abc.json'));
-			console.log('\n'+abcJSON.repository.url);
-		} catch (e){
+			console.log('\n' + abcJSON.repository.url);
+		} catch (e) {
 			console.log('未找到abc.json');
 		}
 	});
@@ -356,31 +381,32 @@ module.exports = function (grunt) {
 	/*
 	 * 获取当前最大版本号，并创建新分支
 	 **/
-	grunt.registerTask('newbranch', 'clam newBranch...', function(type) {
+	grunt.registerTask('newbranch', 'clam newBranch...', function (type) {
 		var done = this.async();
-		exec('git branch -a & git tag', function(err, stdout, stderr, cb) {
-			var r = getBiggestVersion(stdout.match(/\d+\.\d+\.\d+/ig));
-			if(!r){
-				r = '0.0.1';
+		exec('git branch -a & git tag', function (err, stdout, stderr, cb) {
+			var versions = stdout.match(/\d+\.\d+\.\d+/ig),
+				r = clamUtil.getBiggestVersion(versions);
+			if (!r || !versions) {
+				r = '0.1.0';
 			} else {
 				r[2]++;
 				r = r.join('.');
 			}
 			grunt.log.write(('新分支：daily/' + r).green);
 			grunt.config.set('currentBranch', r);
-			task.run(['exec:new_branch']);		
+			task.run(['exec:new_branch']);
 			// 回写人 abc.json 的 version
 			try {
 				abcJSON = require(path.resolve(process.cwd(), 'abc.json'));
 				abcJSON.version = r;
-				fs.writeJSONFile("abc.json", abcJSON, function(err){
+				fs.writeJSONFile("abc.json", abcJSON, function (err) {
 					if (err) {
 						console.log(err);
 					} else {
 						console.log("update abc.json.");
 					}
 				});
-			} catch (e){
+			} catch (e) {
 				console.log('未找到abc.json');
 			}
 			done();
@@ -388,13 +414,13 @@ module.exports = function (grunt) {
 	});
 
 	// =======================  注册Grunt主流程  ==========================
-	
-	return grunt.registerTask('default', 'clam running ...', function(type) {
+
+	return grunt.registerTask('default', 'clam running ...', function (type, msg) {
 
 		var done = this.async();
 
 		// 获取当前分支
-		exec('git branch', function(err, stdout, stderr, cb) {
+		exec('git branch', function (err, stdout, stderr, cb) {
 
 			var reg = /\*\s+daily\/(\S+)/,
 				match = stdout.match(reg);
@@ -411,11 +437,11 @@ module.exports = function (grunt) {
 
 		// 构建和发布任务
 		if (!type) {
-			task.run(['clean:build', 'copy','less','mytps', 'css_combo','kmc','replace', 'uglify', 'cssmin'/*'concat','yuidoc'*/]);
+			task.run(['clean:build', 'tpl_compiler', 'copy', 'less', 'mytps', 'css_combo', 'kmc', 'replace', 'uglify', 'cssmin'/*'concat','yuidoc'*/]);
 		} else if ('publish' === type || 'pub' === type) {
 			task.run(['exec:tag', 'exec:publish']);
 		} else if ('prepub' === type) {
-			task.run(['exec:add','exec:commit']);
+			task.run(['exec:add', 'exec:commit:' + msg]);
 			task.run(['exec:prepub']);
 		}
 
@@ -430,33 +456,33 @@ module.exports = function (grunt) {
 		if (stat.isFile() && !/(build|node_modules|demo|doc|\.git|\.+)[\\|\/]/i.test(uri) && !/grunt.+/i.test(uri)) {
 
 			switch (path.extname(uri)) {
-			case '.css':
-				files.css.push(uri);
-				break;
-			case '.js':
-				files.js.push(uri);
-				break;
-			case '.less':
-				files.less.push(uri);
-				break;
-			case '.scss':
-				files.scss.push(uri);
-				break;
-			case '.png':
-				files.pic.push(uri);
-				break;
-			case '.gif':
-				files.pic.push(uri);
-				break;
-			case '.jpg':
-				files.pic.push(uri);
-				break;
-			default:
-				files.other.push(uri);
+				case '.css':
+					files.css.push(uri);
+					break;
+				case '.js':
+					files.js.push(uri);
+					break;
+				case '.less':
+					files.less.push(uri);
+					break;
+				case '.scss':
+					files.scss.push(uri);
+					break;
+				case '.png':
+					files.pic.push(uri);
+					break;
+				case '.gif':
+					files.pic.push(uri);
+					break;
+				case '.jpg':
+					files.pic.push(uri);
+					break;
+				default:
+					files.other.push(uri);
 			}
 		}
 		if (stat.isDirectory()) {
-			fs.readdirSync(uri).forEach(function(part) {
+			fs.readdirSync(uri).forEach(function (part) {
 				walk(path.join(uri, part), files);
 			});
 		}
@@ -476,47 +502,47 @@ module.exports = function (grunt) {
 		return files;
 	}
 
-	function getBiggestVersion(A){
+	function getBiggestVersion(A) {
 		var a = [];
 		var b = [];
 		var t = [];
 		var r = [];
-		if(!A){
-			return [0,0,0];
+		if (!A) {
+			return [0, 0, 0];
 		}
-		for(var i= 0;i< A.length;i++){
-			if(A[i].match(/^\d+\.\d+\.\d+$/)){
+		for (var i = 0; i < A.length; i++) {
+			if (A[i].match(/^\d+\.\d+\.\d+$/)) {
 				var sp = A[i].split('.');
 				a.push([
-					Number(sp[0]),Number(sp[1]),Number(sp[2])
+					Number(sp[0]), Number(sp[1]), Number(sp[2])
 				]);
 			}
 		}
-		
-		var r = findMax(findMax(findMax(a,0),1),2);
+
+		var r = findMax(findMax(findMax(a, 0), 1), 2);
 		return r[0];
 	}
 
 	// a：二维数组，index，比较第几个
 	// return：返回保留比较后的结果组成的二维数组
-	function findMax(a,index){
+	function findMax(a, index) {
 		var t = [];
 		var b = [];
 		var r = [];
-		for(var i = 0;i<a.length;i++){
+		for (var i = 0; i < a.length; i++) {
 			t.push(Number(a[i][index]));
 		}
-		var max = Math.max.apply(this,t);
-		for(var i = 0;i<a.length;i++){
-			if(a[i][index] === max){
+		var max = Math.max.apply(this, t);
+		for (var i = 0; i < a.length; i++) {
+			if (a[i][index] === max) {
 				b.push(i);
 			}
 		}
-		for(var i = 0;i<b.length;i++){
+		for (var i = 0; i < b.length; i++) {
 			r.push(a[b[i]]);
 		}
 		return r;
 	}
-    
+
 };
 
