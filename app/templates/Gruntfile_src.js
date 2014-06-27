@@ -112,28 +112,6 @@ module.exports = function (grunt) {
 			}
 		},
 		prompt: {
-			assets_pub: {
-				options: {
-					questions: [
-						{
-							config: 'assets_pub',
-							type: 'list',
-							message: 'assets发布,publish type?',
-							default: 'prepub',
-							choices: [
-								{
-									value: 'prepub',
-									name: '预发,g.assets.daily.taobao.net'
-								},
-								{
-									value: 'publish',
-									name: '正式,g.tbcdn.cn'
-								}
-							]
-						}
-					]
-				}
-			},
 			awpp_question: {
 				options: {
 					questions: [
@@ -145,15 +123,19 @@ module.exports = function (grunt) {
 							choices: [
 								{
 									value: 'waptest',
-									name: '日常,waptest'
+									name: '日常,wapp.waptest.taobao.com'
 								},
 								{
 									value: 'wapa --autoparse false',
-									name: '预发,wapa'
+									name: '预发,wapp.wapa.taobao.com'
+								},
+								{
+									value: 'm --pub false --needperform false',
+									name: '线上预览环境,wapp.m.taobao.com'
 								},
 								{
 									value: 'm',
-									name: '正式,m'
+									name: '正式,h5.m.taobao.com'
 								}
 							]
 						}
@@ -563,17 +545,29 @@ module.exports = function (grunt) {
 
 	// 预发布
 	grunt.registerTask('prepub', 'clam pre publish...', function (msg) {
-		task.run(['exec_build']);
-		task.run(['exec:add', 'exec:commit:' + msg]);
-		task.run(['exec:prepub']);
+		var done = this.async();
+		clamUtil.getBranchVersion(function(version){
+			grunt.log.write(('当前分支：' + version).green);
+			grunt.config.set('currentBranch', version);
+			task.run(['exec_build']);
+			task.run(['exec:add', 'exec:commit:' + msg]);
+			task.run(['exec:prepub']);
+			done();
+		});
 	});
 
 	// 正式发布
 	grunt.registerTask('publish', 'clam 正式发布', function (msg) {
-		task.run(['exec_build']);
-		task.run(['exec:add', 'exec:commit:' + msg]);
-		task.run(['exec:prepub']);
-		task.run(['exec:grunt_publish']);
+		var done = this.async();
+		clamUtil.getBranchVersion(function(version){
+			grunt.log.write(('当前分支：' + version).green);
+			grunt.config.set('currentBranch', version);
+			task.run(['exec_build']);
+			task.run(['exec:add', 'exec:commit:' + msg]);
+			task.run(['exec:prepub']);
+			task.run(['exec:tag', 'exec:publish']);
+			done();
+		});
 	});
 
 	// 启动Demo调试时的本地服务
@@ -606,20 +600,11 @@ module.exports = function (grunt) {
 		task.run(actions);
 	});
 
-	grunt.registerTask('exec_publish', '发布、预发assets', function () {
-		var pubtype = grunt.config('assets_pub');
-		pubtype = 'exec:grunt_' + pubtype;
-		task.run(pubtype);
-	});
-
 	// 默认构建任务
 	grunt.registerTask('build', ['exec_build']);
 
 	// 发布页面
 	grunt.registerTask('awpp', ['prompt:awpp_question', 'exec:awpp']);
-
-	// 发布assets
-	grunt.registerTask('pub', ['prompt:assets_pub', 'exec_publish']);
 
 	grunt.registerTask('newbranch', '获取当前最大版本号,创建新的分支', function (type, msg) {
 		var done = this.async();
@@ -662,32 +647,16 @@ module.exports = function (grunt) {
 		var done = this.async();
 
 		// 获取当前分支
-		exec('git branch', function (err, stdout, stderr, cb) {
-
-			var reg = /\*\s+daily\/(\S+)/,
-				match = stdout.match(reg);
-
-			if (!match) {
-				grunt.log.error('当前分支为 master 或者名字不合法(daily/x.y.z)，请切换到daily分支'.red);
-				grunt.log.error('创建新daily分支：grunt newbranch'.yellow);
-				grunt.log.error('只执行构建：grunt build'.yellow);
-				return;
-			}
-			grunt.log.write(('当前分支：' + match[1]).green);
-			grunt.config.set('currentBranch', match[1]);
+		clamUtil.getBranchVersion(function(version){
+			grunt.log.write(('当前分支：' + version).green);
+			grunt.config.set('currentBranch', version);
 			done();
 		});
 
 		// 构建和发布任务
 		if (!type) {
 			task.run(['build']);
-		} else if ('publish' === type) {
-			task.run(['exec:tag', 'exec:publish']);
-		} else if ('prepub' === type) {
-			task.run(['exec:add', 'exec:commit:' + msg]);
-			task.run(['exec:prepub']);
 		}
-
 	});
 
 };
