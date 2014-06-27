@@ -392,7 +392,7 @@ module.exports = function (grunt) {
 			awpp: {
 				command: function () {
 					var msg = grunt.config('awpp_question');
-					var command = 'cd build/pages/ ; awpp ./ -p ' + clamUtil.awppDirName(Gpkg.name) + ' -e ' + msg + " ; cd ../../";
+					var command = 'cd build/pages/ ; awpp ./ -p ' + clamUtil.awppDirName(Gpkg.name) + ' -e ' + msg + " --notusetoken false --onlinetoken 1baabcdb896630f7a87f9fde4e4d985b --dailytoken db9b515a3c1cb1b0e3bf0bf7b0cbf416 -o 拔赤; cd ../../";
 					return command;
 				}
 			},
