@@ -43,7 +43,6 @@ module.exports = function (grunt) {
 	// grunt.file.defaultEncoding = 'gbk';
 	var base = 'http://g.tbcdn.cn';
 	var Gpkg = grunt.file.readJSON('abc.json');
-	if (Gpkg.env === 'daily') base = 'http://g.assets.daily.taobao.net';
 	grunt.initConfig({
 
 		// 从 abc.json 中读取配置项
@@ -135,28 +134,6 @@ module.exports = function (grunt) {
 					]
 				}
 			},
-			grunt_default: {
-				options: {
-					questions: [
-						{
-							config: 'grunt_default',
-							type: 'list',
-							message: 'assets构建,build type?',
-							default: base.valueOf(),
-							choices: [
-								{
-									value: 'http://g.assets.daily.taobao.net',
-									name: '预发,g.assets.daily.taobao.net'
-								},
-								{
-									value: 'http://g.tbcdn.cn',
-									name: '正式,g.tbcdn.cn'
-								}
-							]
-						}
-					]
-				}
-			},
 			awpp_question: {
 				options: {
 					questions: [
@@ -184,6 +161,25 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+		'inline-assets':{
+			options:{
+				encoding:'utf8',
+				// 本地文件引用替换为线上地址
+				// KISSY Modules Maps File 地址
+				comboMapFile: '../../map.js'
+			},
+			main:{
+                files: [
+                    {
+                        expand: true,
+						cwd:'build',
+						// 对'*.html'文件进行HTML合并解析
+                        src: ['pages/**/*.html'],
+                        dest: 'build/'
+                    }
+                ]
+			}
+		},
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
 		// https://npmjs.org/package/grunt-combohtml
 		combohtml: {
@@ -193,11 +189,12 @@ module.exports = function (grunt) {
 					from: /src\//,
 					to: 'build/'
 				},
+				assetseParser: false,
 				// 本地文件引用替换为线上地址
 				relative: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/',
 				combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
 				// KISSY Modules Maps File 地址
-				comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
+				// comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
 				tidy: false,  // 是否重新格式化HTML
 				mockFilter: true, // 是否过滤Demo中的JuicerMock
 				comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
@@ -552,6 +549,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-tms');
 	grunt.loadNpmTasks('grunt-prompt');
+	grunt.loadNpmTasks('grunt-inline-assets');
+	grunt.loadNpmTasks('grunt-tpl-compiler');
 
 	// 根据需要打开这些配置
 	//grunt.loadNpmTasks('grunt-kissy-template');
@@ -564,8 +563,6 @@ module.exports = function (grunt) {
 
 	// 预发布
 	grunt.registerTask('prepub', 'clam pre publish...', function (msg) {
-		base = 'g.assets.daily.taobao.net';
-		grunt.config('grunt_default', base);
 		task.run(['exec_build']);
 		task.run(['exec:add', 'exec:commit:' + msg]);
 		task.run(['exec:prepub']);
@@ -573,8 +570,6 @@ module.exports = function (grunt) {
 
 	// 正式发布
 	grunt.registerTask('publish', 'clam 正式发布', function (msg) {
-		base = 'g.tbcdn.cn';
-		grunt.config('grunt_default', base);
 		task.run(['exec_build']);
 		task.run(['exec:add', 'exec:commit:' + msg]);
 		task.run(['exec:prepub']);
@@ -593,7 +588,6 @@ module.exports = function (grunt) {
 
 	// 默认构建流程
 	grunt.registerTask('exec_build', '执行构建脚本', function () {
-		base = grunt.config('grunt_default') || base;
 		var actions = [
 			'clean:build',
 			'tpl_compiler',
@@ -603,16 +597,12 @@ module.exports = function (grunt) {
 			/*'mytps',*/
 			'kmc',
 			'tms',
-			'combohtml'
-		];
-		if (!/g.tbcdn.cn/.test(base)) {
-			actions.push('replace:daily');
-		}
-		actions = actions.concat([
+			'combohtml',
+			'inline-assets',
 			'replace:dist',
 			'uglify',
 			'cssmin'
-		]);
+		];
 		task.run(actions);
 	});
 
@@ -623,7 +613,7 @@ module.exports = function (grunt) {
 	});
 
 	// 默认构建任务
-	grunt.registerTask('build', ['prompt:grunt_default', 'exec_build']);
+	grunt.registerTask('build', ['exec_build']);
 
 	// 发布页面
 	grunt.registerTask('awpp', ['prompt:awpp_question', 'exec:awpp']);

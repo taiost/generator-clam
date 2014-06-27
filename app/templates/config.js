@@ -1,8 +1,5 @@
-/**
- * http://g.tbcdn.cn/<%= groupName %>/<%= packageName %>/@@version/config.js
- */
 (function(){
-    KISSY.config('tag', null); //去除?t时间戳
+    KISSY.config('tag', null);
 
 	var debug = (location.search.indexOf('ks-debug') >= 0);
 	if (debug) {
@@ -31,7 +28,6 @@
             packages: [
                 {
                     name: '<%= packageName %>',
-                    // 修改 abc.json 中的 version 字段来生成版本号
                     path: 'http://' + srcHost +'/<%= groupName %>/<%= packageName %>/@@version',
                     ignorePackageNameInUri: true
                 }
