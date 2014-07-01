@@ -43,6 +43,7 @@ module.exports = function (grunt) {
 	// grunt.file.defaultEncoding = 'gbk';
 	var base = 'http://g.tbcdn.cn';
 	var Gpkg = grunt.file.readJSON('abc.json');
+	var isH5 = Gpkg.isH5 === "true" ? true : false;
 	grunt.initConfig({
 
 		// 从 abc.json 中读取配置项
@@ -171,12 +172,12 @@ module.exports = function (grunt) {
 					from: /src\//,
 					to: 'build/'
 				},
-				assetseParser: false,
+				assetseParser: !isH5,
 				// 本地文件引用替换为线上地址
 				relative: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/',
 				combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
 				// KISSY Modules Maps File 地址
-				// comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
+				comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
 				tidy: false,  // 是否重新格式化HTML
 				mockFilter: true, // 是否过滤Demo中的JuicerMock
 				comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
@@ -563,8 +564,8 @@ module.exports = function (grunt) {
 			grunt.log.write(('当前分支：' + version).green);
 			grunt.config.set('currentBranch', version);
 			task.run(['exec_build']);
-			task.run(['exec:add', 'exec:commit:' + msg]);
-			task.run(['exec:prepub']);
+			// task.run(['exec:add', 'exec:commit:' + msg]);
+			// task.run(['exec:prepub']);
 			task.run(['exec:tag', 'exec:publish']);
 			done();
 		});
@@ -590,13 +591,19 @@ module.exports = function (grunt) {
 			'sass',
 			/*'mytps',*/
 			'kmc',
-			'tms',
+			'tms'
+		];
+		if(isH5){
+			actions = actions.concat([
+				'inline-assets'
+			]);
+		}
+		actions = actions.concat([
 			'combohtml',
-			'inline-assets',
 			'replace:dist',
 			'uglify',
 			'cssmin'
-		];
+		]);
 		task.run(actions);
 	});
 

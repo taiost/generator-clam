@@ -90,6 +90,12 @@ ClamGenerator.prototype.askFor = function askFor() {
             warning: ''
         },
         {
+            name   : 'isH5',
+            message: 'is A H5 Project?',
+            default: 'Y/n',
+            warning: ''
+        },
+        {
             name   : 'srcDir',
             message: 'create "src" directory?',
             default: 'Y/n',
@@ -153,6 +159,7 @@ ClamGenerator.prototype.askFor = function askFor() {
         this.projectName = parseMojoName(this.packageName); //ProjectName
         this.author = props.author;
         this.email = props.email;
+		this.isH5 = (/^y/i).test(props.isH5) ? 'true':'false';
         this.port = props.port;
 		this.proxyPort = props.proxyPort;
         this.version = props.version;
