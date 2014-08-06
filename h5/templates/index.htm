@@ -8,9 +8,10 @@
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta content="black" name="apple-mobile-web-app-status-bar-style" />
     <meta name="format-detection" content="telephone=no" />
+	<meta name="format-detection" content="email=no"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta content="false" name="twcClient" id="twcClient" />
     <!--Global Imgs-->
-    <link type="image/x-icon" href="http://www.taobao.com/favicon.ico" rel="shortcut icon" />
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://img02.taobaocdn.com/tps/i2/T1CeYDXkdcXXX1dP6j-57-57.png" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://img03.taobaocdn.com/tps/i3/T1Tf6CXbdnXXcCcBHm-72-72.png" />
     <link rel="apple-touch-startup-image" href="http://img04.taobaocdn.com/tps/i4/T1Ig6UXaJgXXbFQ7Io-320-460.png" />
@@ -22,32 +23,19 @@
     <script type="text/javascript" src="http://g.tbcdn.cn/kissy/m/0.2.1/mini-full-min.js"></script>
     <script type="text/javascript" src="http://g.tbcdn.cn/mpi/bridge/index-min.js"></script>
     <script type="text/javascript" src="../../config.js"></script>
-    <!--Global Header-->
-	<!--扩展用共用头-->
-    <!--#include virtual="../header.html" -->
 </head>
 <body>
 
-<div data-role="page"><!--动画转场包装器开始-->
+<!--正文开始-->
 
-<div id="tbh5v0" class="content triph5v0">
-    <div id="bodyCont" class="screen-wrap fullscreen">
-	<!--正文开始-->
-
-		<!--JUICER 翻译成 TMS 语法例子-->
-		<!--#include virtual="./mock.tms.html" -->
-
-	<!--正文结束-->
-    </div>
-</div>
+<!--JUICER 翻译成 TMS 语法例子-->
+<!--#include virtual="./mock.tms.html" -->
 
 <script type="text/javascript">
     KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
         new <%= modName %>();
     });
 </script>
-
-</div><!--动画转场包装器结束-->
 
 </body>
 </html>

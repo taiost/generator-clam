@@ -133,8 +133,8 @@ ClamGenerator.prototype.askFor = function askFor() {
         },
         {
             name   : 'cssCompile',
-            message: 'less/sass?',
-            default: 'less',
+            message: 'scss/less?',
+            default: 'scss',
             warning: ''
         },
         {

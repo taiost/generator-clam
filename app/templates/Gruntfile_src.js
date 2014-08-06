@@ -235,7 +235,12 @@ module.exports = function (grunt) {
 					target: 'src/',
 					urls: '/<%= abcpkg.group %>/<%= abcpkg.name %>',
 					port: '<%= abcpkg.port %>',
-					proxyHosts: ['demo', 'demo.com'],
+					proxyHosts: [
+						'demo', 
+						'demo.com',
+						'dev.waptest.taobao.com', 
+						'dev.wapa.taobao.com'
+					],
 					servlet: '?',
 					longPolling: false,
 					separator: ',',
@@ -254,7 +259,12 @@ module.exports = function (grunt) {
 					// 反向代理时本地虚机域名强制定向到本机
 					htmlProxy: '<%= abcpkg.htmlProxy %>',
 					// 本机虚机域名
-					proxyHosts: ['demo', 'demo.com', 'h5.m.taobao.com'],
+					proxyHosts: [
+						'demo', 
+						'demo.com', 
+						'h5.m.taobao.com',
+						'm.trip.taobao.com'
+					],
 					servlet: '?',
 					separator: ',',
 					longPolling: false,
