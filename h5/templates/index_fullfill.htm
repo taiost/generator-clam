@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+<head>
+	<!--<?php if(isset($argv)){$_GET = (array)(json_decode($argv[2]));}	?>-->
+    <meta charset="UTF-8">
+	<title> <%= projectName %> - <%= modName %> Demo </title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta name="format-detection" content="telephone=no" />
+	<meta name="format-detection" content="email=no"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta content="false" name="twcClient" id="twcClient" />
+    <!--Global Imgs-->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://img02.taobaocdn.com/tps/i2/T1CeYDXkdcXXX1dP6j-57-57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://img03.taobaocdn.com/tps/i3/T1Tf6CXbdnXXcCcBHm-72-72.png" />
+    <link rel="apple-touch-startup-image" href="http://img04.taobaocdn.com/tps/i4/T1Ig6UXaJgXXbFQ7Io-320-460.png" />
+    <!--Global StyleSheets-->
+    <link rel="stylesheet" href="../../css/index.css" />
+    <!--Page StyleSheets-->
+    <link rel="stylesheet" href="./index.css"/>
+    <!--Global JavaScripts-->
+    <script type="text/javascript" src="http://g.tbcdn.cn/kissy/m/0.2.1/mini-full-min.js"></script>
+    <script type="text/javascript" src="http://g.tbcdn.cn/mpi/bridge/index-min.js"></script>
+    <script type="text/javascript" src="../../config.js"></script>
+</head>
+<body>
+
+<!--正文开始-->
+
+<!--JUICER 翻译成 TMS 语法例子-->
+<!--#include virtual="./mock.tms.html" -->
+
+<script type="text/javascript">
+    KISSY.use('<%= packageName %>/<%= mojoName %>/index', function(S, <%= modName %>) {
+        new <%= modName %>();
+    });
+</script>
+
+</body>
+</html>
