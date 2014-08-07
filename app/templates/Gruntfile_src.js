@@ -151,13 +151,13 @@ module.exports = function (grunt) {
 			}
 		},
 		'inline-assets':{
-			options:{
-				encoding:'utf8',
-				// 本地文件引用替换为线上地址
-				// KISSY Modules Maps File 地址
-				comboMapFile: '../../map.js'
-			},
 			main:{
+				options:{
+					encoding:'utf8',
+					// 本地文件引用替换为线上地址
+					// KISSY Modules Maps File 地址
+					comboMapFile: '../../map.js'
+				},
                 files: [
                     {
                         expand: true,
@@ -172,29 +172,29 @@ module.exports = function (grunt) {
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
 		// https://npmjs.org/package/grunt-combohtml
 		combohtml: {
-			options: {
-				encoding: 'utf8',
-				replacement: {
-					from: /src\//,
-					to: 'build/'
-				},
-				assetseParser: !isH5,
-				// 本地文件引用替换为线上地址
-				relative: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/',
-				combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
-				// KISSY Modules Maps File 地址
-				comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
-				tidy: false,  // 是否重新格式化HTML
-				mockFilter: true, // 是否过滤Demo中的JuicerMock
-				comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
-				comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
-				convert2vm: false,// 是否将juicer语法块转换为vm格式
-				convert2php: false, // 是否将juicer语法块转换为php格式
-				comboExt: '-combo', // 静态合并后的js和css后缀
-				htmlProxy: '<%= abcpkg.htmlProxy %>',      // htmlProxy 配置，用于产出线上页面区块替换为本地模块页面
-				htmlProxyDestDir: 'html-fragments'      // html 代理区块页面生成到的目标目录
-			},
 			main: {
+				options: {
+					encoding: 'utf8',
+					replacement: {
+						from: /src\//,
+						to: 'build/'
+					},
+					assetseParser: !isH5,
+					// 本地文件引用替换为线上地址
+					relative: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/',
+					combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
+					// KISSY Modules Maps File 地址
+					comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
+					tidy: false,  // 是否重新格式化HTML
+					mockFilter: true, // 是否过滤Demo中的JuicerMock
+					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
+					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
+					convert2vm: false,// 是否将juicer语法块转换为vm格式
+					convert2php: false, // 是否将juicer语法块转换为php格式
+					comboExt: '-combo', // 静态合并后的js和css后缀
+					htmlProxy: '<%= abcpkg.htmlProxy %>',      // htmlProxy 配置，用于产出线上页面区块替换为本地模块页面
+					htmlProxyDestDir: 'html-fragments'      // html 代理区块页面生成到的目标目录
+				},
 				files: [
 					{
 						expand: true,
@@ -204,6 +204,35 @@ module.exports = function (grunt) {
 						dest: 'build/'
 					}
 				]
+			},
+			offline:{
+				options: {
+					encoding: 'utf8',
+					replacement: {
+						from: /src\//,
+						to: 'build/'
+					},
+					assetseParser: !isH5,
+					// 本地文件引用替换为线上地址
+					combineAssets: false, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
+					// KISSY Modules Maps File 地址
+					comboMapFile: false,
+					tidy: false,  // 是否重新格式化HTML
+					mockFilter: true, // 是否过滤Demo中的JuicerMock
+					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
+					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
+					convert2vm: false,// 是否将juicer语法块转换为vm格式
+					convert2php: false // 是否将juicer语法块转换为php格式
+				},
+				files: [
+					{
+						expand: true,
+						cwd: 'src',
+						src: ['pages/**/*.html'],
+						dest: 'build_offline/'
+					}
+				]
+
 			}
 		},
 		// convert juicer+mockdata to tms format
@@ -648,16 +677,18 @@ module.exports = function (grunt) {
 		];
 		if(isH5){
 			actions = actions.concat([
-				'inline-assets'
+				'inline-assets:main'
 			]);
 		}
 		actions = actions.concat([
-			'combohtml',
+			// 构建在线包
+			'combohtml:main',
 			'replace:dist',
             'uglify:main',
             'cssmin:main',
 			// 构建离线包
-            'copy:offline_html',
+			'combohtml:offline',
+            //'copy:offline_html',
             'copy:offline_jscss',
             'uglify:offline',
             'cssmin:offline',
