@@ -56,7 +56,13 @@ module.exports = function (grunt) {
 		clean: {
 			build: {
 				src: 'build/*'
-			}
+			},
+            offline: {
+                src: '<%= abcpkg.name %>/*'  
+            },
+            mods: {
+                src: 'src/map.js'
+            }
 		},
 
 		/**
@@ -294,7 +300,7 @@ module.exports = function (grunt) {
 						cwd: 'build/',
 						src: ['**/*.less'],
 						dest: 'build/',
-						ext: '.less.css'
+						ext: '.css'
 					}
 				]
 			}
@@ -308,7 +314,7 @@ module.exports = function (grunt) {
 						cwd: 'build/',
 						src: ['**/*.scss'],
 						dest: 'build/',
-						ext: '.scss.css'
+						ext: '.css'
 					}
 				]
 			}
@@ -332,36 +338,21 @@ module.exports = function (grunt) {
 						ext: '-min.js'
 					}
 				]
-			}
+			},
+            offline: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'build_offline/',
+                        src: ['**/*.js', '!**/*-min.js'],
+                        dest: 'build_offline/'
+                    }
+                ]
+            }
 		},
 
 		// 压缩CSS https://github.com/gruntjs/grunt-contrib-cssmin
 		cssmin: {
-			scss: {
-				files: [
-					{
-						expand: true,
-						cwd: 'build/',
-						src: ['**/*.scss.css', '!**/*.scss-min.css'],
-						dest: 'build/',
-						ext: '.scss-min.css'
-					}
-				]
-			},
-			less: {
-				options: {
-					strictImports: true
-				},
-				files: [
-					{
-						expand: true,
-						cwd: 'build/',
-						src: ['**/*.less.css', '!**/*.less-min.css'],
-						dest: 'build/',
-						ext: '.less-min.css'
-					}
-				]
-			},
 			main: {
 				files: [
 					{
@@ -372,7 +363,17 @@ module.exports = function (grunt) {
 						ext: '-min.css'
 					}
 				]
-			}
+			},
+            offline: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'build_offline/',
+                        src: ['**/*.css', '!**/*-min.css'],
+                        dest: 'build_offline/',
+                    }
+                ]
+            }
 		},
 
 		// 监听JS、CSS、LESS文件的修改
@@ -429,7 +430,10 @@ module.exports = function (grunt) {
 			},
 			new_branch: {
 				command: 'git checkout -b daily/<%= currentBranch %>'
-			}
+			},
+            zip: {
+                command: 'cd build_offline/; zip -r9 ../build_offline.zip *; cd ../'
+            }
 		},
 
 		// 将css文件中引用的本地图片上传CDN并替换url，默认不开启
@@ -454,7 +458,43 @@ module.exports = function (grunt) {
 						filter: 'isFile'
 					}
 				]
-			}
+			},
+            mods: {
+                files: [
+                    {
+                        expand:true,
+                        src: 'map.js', 
+                        dest: 'src/',
+                        cwd:'build/'
+                    }
+                ]
+            },
+            offline_jscss: {
+                files: [
+                    {
+                        expand:true,
+                        src: [
+                            '**/*.js', '**/*.css', 
+                            '!**/*-min.js', '!**/*-min.css', 
+                            '!**/build/**/*.js', '!**/build/**/*.css', 
+                            '!**/demo/**/*.js', '!**/demo/**/*.css', 
+                            '!**/docs/**/*.js', '!**/docs/**/*.css'
+                        ],
+                        dest: 'build_offline/',
+                        cwd:'build/'
+                    }
+                ]
+            },
+            offline_html: {
+                files: [
+                    {
+                        expand:true,
+                        src: ['pages/**/*.html'],
+                        dest: 'build_offline/',
+                        cwd:'src/'
+                    }
+                ]
+            }
 		},
 		// 替换config中的版本号@@version
 		replace: {
@@ -594,13 +634,16 @@ module.exports = function (grunt) {
 	// 默认构建流程
 	grunt.registerTask('exec_build', '执行构建脚本', function () {
 		var actions = [
-			'clean:build',
+            'clean:build',
+            'clean:offline',
+			'clean:mods',
 			'tpl_compiler',
-			'copy',
+			'copy:main',
 			'less',
 			'sass',
 			/*'mytps',*/
 			'kmc',
+			'copy:mods',
 			'tms'
 		];
 		if(isH5){
@@ -611,8 +654,14 @@ module.exports = function (grunt) {
 		actions = actions.concat([
 			'combohtml',
 			'replace:dist',
-			'uglify',
-			'cssmin'
+            'uglify:main',
+            'cssmin:main',
+			// 构建离线包
+            'copy:offline_html',
+            'copy:offline_jscss',
+            'uglify:offline',
+            'cssmin:offline',
+			'exec:zip'
 		]);
 		task.run(actions);
 	});
@@ -622,6 +671,10 @@ module.exports = function (grunt) {
 
 	// 发布页面
 	grunt.registerTask('awpp', ['prompt:awpp_question', 'exec:awpp']);
+
+    // 压缩离线包
+    grunt.registerTask('zip', ['exec:zip']);
+
 
 	grunt.registerTask('newbranch', '获取当前最大版本号,创建新的分支', function (type, msg) {
 		var done = this.async();
