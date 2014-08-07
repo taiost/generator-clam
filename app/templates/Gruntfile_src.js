@@ -167,6 +167,22 @@ module.exports = function (grunt) {
                         dest: 'build/'
                     }
                 ]
+			},
+			offline:{
+				options:{
+					encoding:'utf8',
+					onlineFileSSIOnly:true
+				},
+                files: [
+                    {
+                        expand: true,
+						cwd:'build_offline',
+						// 对'*.html'文件进行HTML合并解析
+                        src: ['pages/**/*.html'],
+                        dest: 'build_offline/'
+                    }
+                ]
+
 			}
 		},
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
@@ -692,6 +708,7 @@ module.exports = function (grunt) {
             'copy:offline_jscss',
             'uglify:offline',
             'cssmin:offline',
+			'inline-assets:offline',
 			'exec:zip'
 		]);
 		task.run(actions);
