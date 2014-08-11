@@ -4,6 +4,7 @@ var path = require('path');
 var ClamLogo = require('../app/logo').ClamLogo;
 var yeoman = require('yeoman-generator');
 var ABC = require('abc-generator');
+var exec = require('child_process').exec;
 
 var AppGenerator = module.exports = function AppGenerator(args, options, config) {
 	// yeoman.generators.Base.apply(this, arguments);
@@ -126,7 +127,11 @@ AppGenerator.prototype.files = function files(){
 	this.mkdir(mojoName);
 	this.mkdir(mojoName+'/img');
 	var appendix = (this.combohtml === 'true'? '.html' : '.html');
-	this.template('index.htm',mojoName + '/index'+appendix);
+	if(this.fullfill){
+		this.template('index_fullfill.htm',mojoName + '/index'+appendix);
+	} else {
+		this.template('index.htm',mojoName + '/index'+appendix);
+	}
     this.template('index.js',mojoName+'/index.js');
     this.template('mock.tms.htm',mojoName+'/mock.tms.html');
     this.template('index.less',mojoName+'/index.'+this.cssCompile);
@@ -134,7 +139,18 @@ AppGenerator.prototype.files = function files(){
 
 // TODO
 function fullfill(){
-
+	var p = path.resolve(process.cwd(), '../widgets/');
+	console.log('Installing assets, please wait...');
+	exec('cd ' + p + ';bower install mpi/css;bower install mpi/libs;',
+		function(err,stdout,stderr,cb){
+			if (err) {
+				console.log(red(err));
+				console.log(yellow('bower install failed!'));
+			} else {
+				console.log(stdout);
+				console.log(green('done!'));
+			}
+	});
 }
 
 
