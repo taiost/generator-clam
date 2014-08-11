@@ -141,7 +141,7 @@ AppGenerator.prototype.files = function files(){
 function fullfill(){
 	var p = path.resolve(process.cwd(), '../widgets/');
 	console.log('Installing assets, please wait...');
-	exec('cd ' + p + ';bower install mpi/css;bower install mpi/libs;',
+	exec('cd ' + p + ';bower install mpi/css;bower install mpi/mtop;bower install mpi/tracker;bower install mpi/bridge;',
 		function(err,stdout,stderr,cb){
 			if (err) {
 				console.log(red(err));

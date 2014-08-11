@@ -224,6 +224,7 @@ ClamGenerator.prototype.app = function app() {
             that.mkdir('src/widgets');
         }
         this.template('config.js', 'src/config.js');
+        this.template('map.js', 'src/map.js');
     } else {
         /*
          this.template('index.js');
