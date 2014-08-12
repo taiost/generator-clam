@@ -58,7 +58,7 @@ module.exports = function (grunt) {
 				src: 'build/*'
 			},
             offline: {
-                src: '<%= abcpkg.name %>/*'  
+                src: 'build_offline/*'  
             },
             mods: {
                 src: 'src/map.js'
@@ -202,7 +202,8 @@ module.exports = function (grunt) {
 					// KISSY Modules Maps File 地址
 					comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
 					tidy: false,  // 是否重新格式化HTML
-					mockFilter: true, // 是否过滤Demo中的JuicerMock
+					// TODO:改成True时juicerMock函数有bug
+					mockFilter: false, // 是否过滤Demo中的JuicerMock
 					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
 					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
 					convert2vm: false,// 是否将juicer语法块转换为vm格式
@@ -226,7 +227,7 @@ module.exports = function (grunt) {
 					encoding: 'utf8',
 					replacement: {
 						from: /src\//,
-						to: 'build/'
+						to: 'build_offline/'
 					},
 					assetseParser: !isH5,
 					// 本地文件引用替换为线上地址
@@ -234,7 +235,7 @@ module.exports = function (grunt) {
 					// KISSY Modules Maps File 地址
 					comboMapFile: false,
 					tidy: false,  // 是否重新格式化HTML
-					mockFilter: true, // 是否过滤Demo中的JuicerMock
+					mockFilter: false, // 是否过滤Demo中的JuicerMock
 					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
 					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
 					convert2vm: false,// 是否将juicer语法块转换为vm格式
@@ -243,7 +244,7 @@ module.exports = function (grunt) {
 				files: [
 					{
 						expand: true,
-						cwd: 'src',
+						cwd: 'build_offline',
 						src: ['pages/**/*.html'],
 						dest: 'build_offline/'
 					}
@@ -703,8 +704,8 @@ module.exports = function (grunt) {
             'uglify:main',
             'cssmin:main',
 			// 构建离线包
+            'copy:offline_html',
 			'combohtml:offline',
-            //'copy:offline_html',
             'copy:offline_jscss',
             'uglify:offline',
             'cssmin:offline',
