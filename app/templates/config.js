@@ -11,7 +11,7 @@
 	}
 
 	// 开发环境
-    if (host.match(/dev\./ig)) {
+    if (host.match(/^(dev\.|demo)/ig)) {
         debug = true;
     }
 

@@ -139,20 +139,30 @@ AppGenerator.prototype.files = function files(){
 
 // TODO
 function fullfill(){
-	var p = path.resolve(process.cwd(), '../widgets/');
-	console.log('Installing assets, please wait...');
-	exec('cd ' + p + ';bower install mpi/css;bower install mpi/mtop;bower install mpi/tracker;bower install mpi/bridge;',
+	var wp = path.resolve(process.cwd(), '../widgets/');
+	var kp = path.resolve(process.cwd(), '../');
+	setTimeout(function(){
+		console.log('\nInstalling assets, please wait...');
+	},500);
+	exec('cd ' + wp + ';bower install mpi/css;bower install mpi/tracker;bower install mpi/jsbridge;',
 		function(err,stdout,stderr,cb){
-			if (err) {
-				console.log(red(err));
-				console.log(yellow('bower install failed!'));
-			} else {
-				console.log(stdout);
-				console.log(green('done!'));
-			}
-	});
+			showLog(err,stdout,stderr,cb);
+			setTimeout(function(){
+				console.log('\nInstalling KISSY-MINI, please wait...');
+			},500);
+			exec('cd '+ wp +';bower install kissy=kissy/m;', showLog);
+		});
 }
 
+function showLog(err,stdout,stderr,cb){
+	if (err) {
+		console.log(red(err));
+		console.log(yellow('bower install failed!'));
+	} else {
+		console.log(stdout);
+		console.log(green('done!'));
+	}
+}
 
 function consoleColor(str,num){
 	if (!num) {
