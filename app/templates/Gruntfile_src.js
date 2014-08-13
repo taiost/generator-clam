@@ -26,12 +26,12 @@ module.exports = function (grunt) {
 		.concat(source_files.html || [])
 		.concat(source_files.htm || [])
 		.concat(source_files.js || [])
-		.concat(source_files.less || [])
+		//.concat(source_files.less || [])
 		.concat(source_files.css || [])
 		.concat(source_files.png || [])
 		.concat(source_files.gif || [])
 		.concat(source_files.jpg || [])
-		.concat(source_files.scss || [])
+		//.concat(source_files.scss || [])
 		.concat(source_files.php || [])
 		.concat(source_files.swf || []);
 
@@ -60,6 +60,15 @@ module.exports = function (grunt) {
             offline: {
                 src: 'build_offline/*'  
             },
+			zip:{
+				src: 'build_offline.zip'
+			},
+			'tms_html':{
+				src : 'build/pages/**/*.tms.html'
+			},
+			'offline_tms_html':{
+				src : 'build_offline/pages/**/*.tms.html'
+			},
             mods: {
                 src: 'src/map.js'
             }
@@ -112,7 +121,11 @@ module.exports = function (grunt) {
 			main: {
 				files: [
 					{
-						src: [ 'src/**/*.js', '!src/**/*/Gruntfile.js'],
+						src: [ 'src/**/*.js', 
+								'!src/widgets/libs/seed.js',
+								'!src/libs/seed.js',
+								'!src/widgets/kissy/**/*',
+								'!src/**/*/Gruntfile.js'],
 						dest: 'build/'
 					}
 				]
@@ -163,7 +176,6 @@ module.exports = function (grunt) {
                     {
                         expand: true,
 						cwd:'build',
-						// 对'*.html'文件进行HTML合并解析
                         src: ['pages/**/*.html'],
                         dest: 'build/'
                     }
@@ -172,13 +184,13 @@ module.exports = function (grunt) {
 			offline:{
 				options:{
 					encoding:'utf8',
+					// 只替换绝对地址引用的文件 
 					onlineFileSSIOnly:true
 				},
                 files: [
                     {
                         expand: true,
 						cwd:'build_offline',
-						// 对'*.html'文件进行HTML合并解析
                         src: ['pages/**/*.html'],
                         dest: 'build_offline/'
                     }
@@ -201,7 +213,7 @@ module.exports = function (grunt) {
 					relative: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/',
 					combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
 					// KISSY Modules Maps File 地址
-					comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
+					// comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
 					tidy: false,  // 是否重新格式化HTML
 					// TODO:改成True时juicerMock函数有bug
 					mockFilter: true, // 是否过滤Demo中的JuicerMock
@@ -218,7 +230,7 @@ module.exports = function (grunt) {
 						expand: true,
 						cwd: 'build',
 						// 对'*.html'文件进行HTML合并解析
-						src: ['pages/**/*.html'],
+						src: ['pages/**/*.html','!pages/**/*.tms.html'],
 						dest: 'build/'
 					}
 				]
@@ -246,7 +258,7 @@ module.exports = function (grunt) {
 					{
 						expand: true,
 						cwd: 'build_offline',
-						src: ['pages/**/*.html'],
+						src: ['pages/**/*.html','!pages/**/*.tms.html'],
 						dest: 'build_offline/'
 					}
 				]
@@ -344,7 +356,7 @@ module.exports = function (grunt) {
 				files: [
 					{
 						expand: true,
-						cwd: 'build/',
+						cwd: 'src/',
 						src: ['**/*.less'],
 						dest: 'build/',
 						ext: '.css'
@@ -358,7 +370,7 @@ module.exports = function (grunt) {
 				files: [
 					{
 						expand: true,
-						cwd: 'build/',
+						cwd: 'src/',
 						src: ['**/*.scss'],
 						dest: 'build/',
 						ext: '.css'
@@ -499,7 +511,17 @@ module.exports = function (grunt) {
 				files: [
 					{
 						expand: true,
-						src: all_files,
+						src: all_files.concat([
+							'!**/build/**/*',
+                            '!**/demo/**/*',
+                            '!**/docs/**/*',
+                            '!**/guide/**/*',
+                            '!**/img/**/*',
+                            '!**/image/**/*',
+                            '!**/tests/**/*',
+                            '!**/src/**/*',
+                            '!**/doc/**/*'
+						]),
 						dest: 'build/',
 						cwd: 'src/',
 						filter: 'isFile'
@@ -684,6 +706,7 @@ module.exports = function (grunt) {
             'clean:build',
             'clean:offline',
 			'clean:mods',
+			'clean:zip',
 			'tpl_compiler',
 			'copy:main',
 			'less',
@@ -693,7 +716,11 @@ module.exports = function (grunt) {
 			'copy:mods',
 			'tms',
 			// 构建在线包
-			'combohtml:main'
+			'combohtml:main',
+			'replace:dist',
+            'uglify:main',
+            'cssmin:main',
+			'clean:main_tms_html'
 		];
 		if(isH5){
 			actions = actions.concat([
@@ -701,13 +728,10 @@ module.exports = function (grunt) {
 			]);
 		}
 		actions = actions.concat([
-			// 构建在线包
-			'replace:dist',
-            'uglify:main',
-            'cssmin:main',
 			// 构建离线包
             'copy:offline_html',
 			'combohtml:offline',
+			'clean:offline_tms_html',
             'copy:offline_jscss',
             'uglify:offline',
             'cssmin:offline',

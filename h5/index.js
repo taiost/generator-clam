@@ -145,7 +145,7 @@ function fullfill(){
 	setTimeout(function(){
 		console.log('\nInstalling assets, please wait...');
 	},500);
-	exec('cd ' + wp + ';bower install mpi/css;bower install mpi/tracker;bower install mpi/jsbridge;',
+	exec('cd ' + wp + ';bower install mpi/css;bower install mpi/tracker;bower install mpi/tms-offline-parser;bower install mpi/jsbridge;',
 		function(err,stdout,stderr,cb){
 			showLog(err,stdout,stderr,cb);
 			setTimeout(function(){
