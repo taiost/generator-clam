@@ -156,7 +156,8 @@ module.exports = function (grunt) {
 					encoding:'utf8',
 					// 本地文件引用替换为线上地址
 					// KISSY Modules Maps File 地址
-					comboMapFile: '../../map.js'
+					//comboMapFile: '../../map.js'
+					comboMapFile: false
 				},
                 files: [
                     {
@@ -203,7 +204,7 @@ module.exports = function (grunt) {
 					comboMapFile: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/map-min.js',
 					tidy: false,  // 是否重新格式化HTML
 					// TODO:改成True时juicerMock函数有bug
-					mockFilter: false, // 是否过滤Demo中的JuicerMock
+					mockFilter: true, // 是否过滤Demo中的JuicerMock
 					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
 					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
 					convert2vm: false,// 是否将juicer语法块转换为vm格式
@@ -690,7 +691,9 @@ module.exports = function (grunt) {
 			/*'mytps',*/
 			'kmc',
 			'copy:mods',
-			'tms'
+			'tms',
+			// 构建在线包
+			'combohtml:main'
 		];
 		if(isH5){
 			actions = actions.concat([
@@ -699,7 +702,6 @@ module.exports = function (grunt) {
 		}
 		actions = actions.concat([
 			// 构建在线包
-			'combohtml:main',
 			'replace:dist',
             'uglify:main',
             'cssmin:main',
