@@ -63,7 +63,7 @@ module.exports = function (grunt) {
 			zip:{
 				src: 'build_offline.zip'
 			},
-			'tms_html':{
+			'main_tms_html':{
 				src : 'build/pages/**/*.tms.html'
 			},
 			'offline_tms_html':{
@@ -345,7 +345,28 @@ module.exports = function (grunt) {
 						'(.+)/trip/[^\/]+/\(.+\\.\)html': '$1/pages/$2html'
 					}
 				}
-			}
+			},
+			// 离线包调试模式 
+			offline: {
+				options: {
+					// 无线H5项目调试，可打开host配置，用法参照
+					// https://speakerdeck.com/lijing00333/grunt-flexcombo
+					target: 'build_offline/',
+					proxyport: '<%= abcpkg.proxyPort %>',
+					urls: '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version%>/',
+					port: '<%= abcpkg.port %>',
+					// 本机虚机域名
+					proxyHosts: [
+						'demo', 
+						'demo.com', 
+						'dev.waptest.taobao.com', 
+						'dev.wapa.taobao.com'
+					],
+					servlet: '?',
+					separator: ',',
+					longPolling: false,
+					charset: 'utf8'
+				}
 		},
 
 		less: {
@@ -512,7 +533,7 @@ module.exports = function (grunt) {
 					{
 						expand: true,
 						src: all_files.concat([
-							'!**/build/**/*',
+							//'!**/build/**/*',
                             '!**/demo/**/*',
                             '!**/docs/**/*',
                             '!**/guide/**/*',
@@ -544,10 +565,23 @@ module.exports = function (grunt) {
                         expand:true,
                         src: [
                             '**/*.js', '**/*.css', 
+							//'!widgets/kissy/**/*.js',
                             '!**/*-min.js', '!**/*-min.css', 
-                            '!**/build/**/*.js', '!**/build/**/*.css', 
+                            //'!**/build/**/*.js', '!**/build/**/*.css', 
                             '!**/demo/**/*.js', '!**/demo/**/*.css', 
                             '!**/docs/**/*.js', '!**/docs/**/*.css'
+                        ],
+                        dest: 'build_offline/',
+                        cwd:'build/'
+                    }
+                ]
+            },
+            offline_kissy: {
+                files: [
+                    {
+                        expand:true,
+                        src: [
+                            'widgets/kissy/**/*-min.js', 
                         ],
                         dest: 'build_offline/',
                         cwd:'build/'
@@ -690,6 +724,12 @@ module.exports = function (grunt) {
 		});
 	});
 
+	// 启动offline调试时的本地服务
+	grunt.registerTask('offline', '开启offline离线包调试模式', function () {
+		task.run(['flexcombo:offline', 'watch:all']);
+	});
+
+
 	// 启动Demo调试时的本地服务
 	grunt.registerTask('demo', '开启Demo调试模式', function () {
 		task.run(['flexcombo:server', 'watch:all']);
@@ -733,6 +773,7 @@ module.exports = function (grunt) {
 			'combohtml:offline',
 			'clean:offline_tms_html',
             'copy:offline_jscss',
+            'copy:offline_kissy',
             'uglify:offline',
             'cssmin:offline',
 			'inline-assets:offline',
