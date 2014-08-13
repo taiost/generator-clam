@@ -5,6 +5,7 @@ var ClamLogo = require('../app/logo').ClamLogo;
 var yeoman = require('yeoman-generator');
 var ABC = require('abc-generator');
 var exec = require('child_process').exec;
+var	rmdir = require('rmdir');
 
 var AppGenerator = module.exports = function AppGenerator(args, options, config) {
 	// yeoman.generators.Base.apply(this, arguments);
@@ -150,7 +151,16 @@ function fullfill(){
 			setTimeout(function(){
 				console.log('\nInstalling KISSY-MINI, please wait...');
 			},500);
-			exec('cd '+ wp +';bower install kissy=kissy/m;', showLog);
+			exec('cd '+ wp +';bower install kissy=kissy/m;', 
+				function(err,stdout,stderr,cb){
+					showLog(err,stdout,stderr,cb);
+					// 删除KISSY里的多余文件
+					['demo','tests','src','docs'].forEach(function(item){
+						rmdir(path.resolve(wp , 'kissy/'+item),function ( err, dirs, files ){
+							console.log(green('rm  '+ item + ' done!'));
+						});		
+					});
+				});
 		});
 }
 

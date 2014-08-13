@@ -27,6 +27,7 @@
     "dependencies"   : {
         "abc-generator"   : "~0.0.3",
         "yeoman-generator": "~0.13.3",
+        "rmdir": "~1.0.4",
         "promise"         : ""
 
     },
