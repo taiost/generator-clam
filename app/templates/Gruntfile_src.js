@@ -170,7 +170,8 @@ module.exports = function (grunt) {
 					// 本地文件引用替换为线上地址
 					// KISSY Modules Maps File 地址
 					//comboMapFile: '../../map.js'
-					comboMapFile: false
+					comboMapFile: false,
+					jsmin: true
 				},
                 files: [
                     {
@@ -243,8 +244,7 @@ module.exports = function (grunt) {
 						to: 'build_offline/'
 					},
 					assetseParser: !isH5,
-					// 本地文件引用替换为线上地址
-					combineAssets: false, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
+					combineAssets: false, 
 					// KISSY Modules Maps File 地址
 					comboMapFile: false,
 					tidy: false,  // 是否重新格式化HTML
@@ -367,6 +367,7 @@ module.exports = function (grunt) {
 					longPolling: false,
 					charset: 'utf8'
 				}
+			}
 		},
 
 		less: {
@@ -565,23 +566,10 @@ module.exports = function (grunt) {
                         expand:true,
                         src: [
                             '**/*.js', '**/*.css', 
-							//'!widgets/kissy/**/*.js',
                             '!**/*-min.js', '!**/*-min.css', 
                             //'!**/build/**/*.js', '!**/build/**/*.css', 
                             '!**/demo/**/*.js', '!**/demo/**/*.css', 
                             '!**/docs/**/*.js', '!**/docs/**/*.css'
-                        ],
-                        dest: 'build_offline/',
-                        cwd:'build/'
-                    }
-                ]
-            },
-            offline_kissy: {
-                files: [
-                    {
-                        expand:true,
-                        src: [
-                            'widgets/kissy/**/*-min.js', 
                         ],
                         dest: 'build_offline/',
                         cwd:'build/'
@@ -652,18 +640,6 @@ module.exports = function (grunt) {
 			}
 		}
 
-		// 下面这两个任务，根据需要自行开启
-
-		// 合并文件
-		/*
-		 concat: {
-		 dist: {
-		 src: ['from.css'],
-		 dest: 'build/to.css'
-
-		 }
-		 },
-		 */
 	});
 
 	// -------------------------------------------------------------
@@ -687,11 +663,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-prompt');
 	grunt.loadNpmTasks('grunt-inline-assets');
 	grunt.loadNpmTasks('grunt-tpl-compiler');
-
-	// 根据需要打开这些配置
-	//grunt.loadNpmTasks('grunt-kissy-template');
-	//grunt.loadNpmTasks('grunt-contrib-connect');
-	//grunt.loadNpmTasks('grunt-contrib-concat');
 
 	// -------------------------------------------------------------
 	// 注册Grunt子命令
@@ -773,7 +744,6 @@ module.exports = function (grunt) {
 			'combohtml:offline',
 			'clean:offline_tms_html',
             'copy:offline_jscss',
-            'copy:offline_kissy',
             'uglify:offline',
             'cssmin:offline',
 			'inline-assets:offline',
