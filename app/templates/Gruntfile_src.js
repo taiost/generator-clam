@@ -620,6 +620,54 @@ module.exports = function (grunt) {
 						src: ['**/*']
 					}
 				]
+			},
+			offline:{
+				options: {
+					patterns: [
+						{
+							match: /<!--HTTP:(.*):HTTP-->/g,
+							replacement: function(match, tms) {
+								var obj = {},
+									async;
+
+								if (tms) {
+									tms = tms.split(',');
+									obj.proxy = 'http://trip.taobao.com/market/trip/h5_offline_service.php';
+									obj.src = encodeURIComponent(tms[0].replace(/\?.*$/ig, ''));
+									obj.params = tms[0].match(/\?/) ? tms[0].replace(/^.*\?/ig, '') : '';
+									obj.charset = tms[1] || 'gbk';
+									async = !!obj.params.match(/async/);
+									if (async) {
+										obj.id = tmsid++;
+										return clamUtil.sub('<script id="tms_fragment_{id}">get_tms_fragment("{proxy}?src={src}", "{charset}", "tms_fragment_{id}");</script>', obj);
+									} else {
+										return clamUtil.sub('<script src="{proxy}?callback=handle_tms_fragment&src={src}" charset="{charset}"></script>', obj);
+									}
+								} else {
+									return match;
+								}
+							}
+						},
+						{
+							match: /<head>/,
+							replacement: [
+								'<head>\n',
+								'<!--{{ generator by clam -->',
+								'<script>window.MT_CONFIG={offline:true};</script>\n',
+								'<script src="../../widgets/tms-offline-parser/index.js"></script>',
+								'<!--}} generator by clam -->'
+							].join('')
+						}
+					]
+				},
+                files: [
+                    {
+                        expand: true, 
+                        cwd: 'build_offline/',
+                        dest: 'build_offline/',
+                        src: ['**/*.html'],
+                    }
+                ]
 			}
 		},
 
@@ -747,6 +795,7 @@ module.exports = function (grunt) {
             'uglify:offline',
             'cssmin:offline',
 			'inline-assets:offline',
+			'replace:offline',
 			'exec:zip'
 		]);
 		task.run(actions);
