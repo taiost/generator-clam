@@ -131,38 +131,6 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		prompt: {
-			awpp_question: {
-				options: {
-					questions: [
-						{
-							config: 'awpp_question',
-							type: 'list',
-							message: 'H5 html发布类型(/build/pages/search/index.html对应到/trip/' + clamUtil.awppDirName(Gpkg.name) + '/search/index.html)?',
-							default: 'waptest',
-							choices: [
-								{
-									value: 'waptest',
-									name: '日常,wapp.waptest.taobao.com'
-								},
-								{
-									value: 'wapa --autoparse false',
-									name: '预发,wapp.wapa.taobao.com'
-								},
-								{
-									value: 'm --pub false --needperform false',
-									name: '线上预览环境,wapp.m.taobao.com'
-								},
-								{
-									value: 'm',
-									name: '正式,h5.m.taobao.com'
-								}
-							]
-						}
-					]
-				}
-			}
-		},
 		'inline-assets':{
 			main:{
 				options:{
@@ -482,13 +450,6 @@ module.exports = function (grunt) {
 			publish: {
 				command: 'git push origin publish/<%= currentBranch %>:publish/<%= currentBranch %>'
 			},
-			awpp: {
-				command: function () {
-					var msg = grunt.config('awpp_question');
-					var command = 'cd build/pages/ ; awpp ./ -p ' + clamUtil.awppDirName(Gpkg.name) + ' -e ' + msg + "; cd ../../";
-					return command;
-				}
-			},
 			commit: {
 				command: function (msg) {
 					var command = 'git commit -m "' + grunt.config.get('currentBranch') + ' - ' + grunt.template.today("yyyy-mm-dd HH:MM:ss") + ' ' + msg + '"';
@@ -708,7 +669,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-combohtml');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-tms');
-	grunt.loadNpmTasks('grunt-prompt');
 	grunt.loadNpmTasks('grunt-inline-assets');
 	grunt.loadNpmTasks('grunt-tpl-compiler');
 
@@ -759,6 +719,11 @@ module.exports = function (grunt) {
 		task.run(['flexcombo:debug', 'watch:all']);
 	});
 
+	// 替换build里的http://g.tbcdn.cn的引用为daily的引用
+	grunt.registerTask('daily', '替换域名引用到daily', function () {
+		task.run(['replace:daily']);
+	});
+
 	// 默认构建流程
 	grunt.registerTask('exec_build', '执行构建脚本', function () {
 		var actions = [
@@ -792,30 +757,28 @@ module.exports = function (grunt) {
 			]);
 		}
 		*/
-		actions = actions.concat([
-			// 构建离线包
-            'copy:offline_html',
-			'combohtml:offline',
-			'clean:offline_tms_html',
-            'copy:offline_jscss',
-            'uglify:offline',
-            'cssmin:offline',
-			'inline-assets:offline',
-			'replace:offline',
-			'exec:zip'
-		]);
+		if(isH5){
+			actions = actions.concat([
+				// 构建离线包
+				'copy:offline_html',
+				'combohtml:offline',
+				'clean:offline_tms_html',
+				'copy:offline_jscss',
+				'uglify:offline',
+				'cssmin:offline',
+				'inline-assets:offline',
+				'replace:offline',
+				'exec:zip'
+			]);
+		}
 		task.run(actions);
 	});
 
 	// 默认构建任务
 	grunt.registerTask('build', ['exec_build']);
 
-	// 发布页面
-	grunt.registerTask('awpp', ['prompt:awpp_question', 'exec:awpp']);
-
     // 压缩离线包
     grunt.registerTask('zip', ['exec:zip']);
-
 
 	grunt.registerTask('newbranch', '获取当前最大版本号,创建新的分支', function (type, msg) {
 		var done = this.async();
