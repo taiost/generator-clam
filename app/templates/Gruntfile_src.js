@@ -248,7 +248,7 @@ module.exports = function (grunt) {
 					// KISSY Modules Maps File 地址
 					comboMapFile: false,
 					tidy: false,  // 是否重新格式化HTML
-					mockFilter: false, // 是否过滤Demo中的JuicerMock
+					mockFilter: true, // 是否过滤Demo中的JuicerMock
 					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
 					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
 					convert2vm: false,// 是否将juicer语法块转换为vm格式
@@ -617,7 +617,7 @@ module.exports = function (grunt) {
 						expand: true,
 						cwd: 'build/',
 						dest: 'build/',
-						src: ['**/*']
+						src: ['*.js','mods/**/*','pages/**/*']
 					}
 				]
 			},
