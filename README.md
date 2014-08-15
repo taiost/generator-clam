@@ -1,6 +1,6 @@
 ## Clam - 航旅前端基础工具集
 
-![](http://gtms02.alicdn.com/tps/i2/TB1kMS.FVXXXXauaXXXkuNrTXXX-170-228.png)
+![](http://gtms01.alicdn.com/tps/i1/TB1dzrbFVXXXXX_aXXXYVzw3FXX-222-310.png)
 
 [背景知识](https://github.com/jayli/generator-clam/blob/master/userguide.md)
 
@@ -293,6 +293,37 @@ AWP平台和Clam自带的本地服务都支持这种解析
 打开浏览器，绑定本机的8080端口，访问`http://trip.taobao.com/index.php`，看到首焦图片被替换了。done
 
 > 这种模式非常有用，特别对于跨团队协作、高模块化的项目中尤其有用，比如在淘宝首页便民中心，便民中心的代码就可以被拆出来，以一个HTML片段（非整个项目）作为一个独立的项目，Clam 工具的这个特性将提供非常方便的调试入口
+
+### 组件安装
+
+如果要使用现成的组件，可以通过`bower`命令来安装，比如要使用[calendar](http://gitlab.alibaba-inc.com/mpi/calendar)组件，则需要在`src/widgets`目录中执行：
+
+	bower install mpi/calendar
+
+即可
+
+### 重要资料
+
+每个项目的配置信息存放在`abc.json`中，组件代码仓库存放在[pi](http://pi.taobao.net)中。组件源码在（[mpi](http://gitlab.alibaba-inc.com/groups/mpi)和[tpi](http://gitlab.alibaba-inc.com/groups/tpi)中）。
+
+感谢这些开源项目
+
+![](http://gtms01.alicdn.com/tps/i1/T11RMcFg0cXXaO85U_-560-117.png)
+
+![](http://gtms01.alicdn.com/tps/i1/T1TgNqFB0bXXbX25fJ-346-77.png)
+
+![](http://gtms03.alicdn.com/tps/i3/T1230QFvtXXXby4FLC-257-123.png)
+
+![](http://gtms03.alicdn.com/tps/i3/T19QhNFrlfXXbdiM7D-219-108.png)
+
+1. [grunt](http://gruntjs.net/)
+1. [yeoman](http://yeomanjs.org/)
+1. [bower](http://bower.io/)
+1. [kissy](http://docs.kissyui.com)
+1. [grunt-kmc](https://github.com/daxingplay/grunt-kmc)
+1. [Juicer](http://juicer.name)
+1. [Less](http://www.lesscss.net/article/home.html) 和 [Sass](http://www.sass-lang.com/)
+1. [grunt-flexcombo](https://github.com/jayli/grunt-flexcombo)
 
 ### Q & A
 
