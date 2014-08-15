@@ -6,6 +6,7 @@
  * http://cnpmjs.org/package/generator-clam
  */
 var path = require('path'),
+	tmsid = 0,
 	clamUtil = require('clam-util'),
 	exec = require('child_process').exec;
 
