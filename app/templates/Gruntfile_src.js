@@ -209,7 +209,7 @@ module.exports = function (grunt) {
 						from: /src\//,
 						to: 'build/'
 					},
-					assetseParser: !isH5,
+					// assetseParser: !isH5, // 参照TIP@2014-8-15
 					// 本地文件引用替换为线上地址
 					relative: base + '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version %>/',
 					combineAssets: true, // 配合relative使用,将页面中所有以CDN引用的JS/CSS文件名进行拼合
@@ -243,7 +243,7 @@ module.exports = function (grunt) {
 						from: /src\//,
 						to: 'build_offline/'
 					},
-					assetseParser: !isH5,
+					assetseParser: false,
 					combineAssets: false, 
 					// KISSY Modules Maps File 地址
 					comboMapFile: false,
@@ -762,6 +762,7 @@ module.exports = function (grunt) {
 	// 默认构建流程
 	grunt.registerTask('exec_build', '执行构建脚本', function () {
 		var actions = [
+			// 构建准备流程
             'clean:build',
             'clean:offline',
 			'clean:mods',
@@ -770,7 +771,6 @@ module.exports = function (grunt) {
 			'copy:main',
 			'less',
 			'sass',
-			/*'mytps',*/
 			'kmc',
 			'copy:mods',
 			'tms',
@@ -781,11 +781,17 @@ module.exports = function (grunt) {
             'cssmin:main',
 			'clean:main_tms_html'
 		];
+		// TIP,2014-8-15：
+		// 根据规范，H5项目应当把所有的assets都inline进来
+		// 但由于awpp命令无法根据inline后的大文件计算正确的摘要值而导致发布失败
+		// 暂时将这个逻辑去掉，根本原因是awpp计算token的bug
+		/*
 		if(isH5){
 			actions = actions.concat([
 				'inline-assets:main'
 			]);
 		}
+		*/
 		actions = actions.concat([
 			// 构建离线包
             'copy:offline_html',
