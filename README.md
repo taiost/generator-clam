@@ -1,4 +1,4 @@
-## 阿里巴巴-航旅前端开发-基础工具集
+## Clam - 航旅前端基础工具集
 
 ![](http://gtms02.alicdn.com/tps/i2/T1.0X5FzXaXXXWYLnD-292-85.png)
 
@@ -290,4 +290,20 @@ AWP平台和Clam自带的本地服务都支持这种解析
 
 > 这种模式非常有用，特别对于跨团队协作、高模块化的项目中尤其有用，比如在淘宝首页便民中心，便民中心的代码就可以被拆出来，以一个HTML片段（非整个项目）作为一个独立的项目，Clam 工具的这个特性将提供非常方便的调试入口
 
+### Q & A
 
+[参照这里](https://github.com/jayli/generator-clam/blob/master/userguide.md#q--a)
+
+### 更新记录
+
+1. 0.1.x
+	1. 脚手架基础功能，代码片段整理
+	1. 完善flex-combo，gruntfile.js
+	1. 完善grunt demo 和grunt debug调试模式
+	1. 完成文档0.1版本，并确定工具的范围和中远期规划
+1. 0.2.x
+	1. H5 项目和PC项目独立区分
+	1. H5项目的在线包和离线包的区分和分别打包
+	1. AWPP 工具从clam剥离出来，形成独立的规范
+	1. 和Gitlab、AWP 平台的更贴切的整合
+	
