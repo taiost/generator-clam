@@ -562,7 +562,7 @@ module.exports = function (grunt) {
 						expand: true,
 						cwd: 'build/',
 						dest: 'build/',
-						src: ['**/*']
+						src: ['pages/**/*.html']
 					}
 				]
 			},
