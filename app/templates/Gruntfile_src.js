@@ -11,6 +11,7 @@ var path = require('path'),
 	exec = require('child_process').exec;
 
 module.exports = function (grunt) {
+	require('time-grunt')(grunt);
 
 	var file = grunt.file;
 	var task = grunt.task;
