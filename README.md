@@ -1,6 +1,6 @@
 ## Clam - 航旅前端基础工具集
 
-![](http://gtms02.alicdn.com/tps/i2/TB1PzItFVXXXXbRXXXXzuqg5pXX-332-268.png)
+![](http://gtms02.alicdn.com/tps/i2/TB1kMS.FVXXXXauaXXXkuNrTXXX-170-228.png)
 
 [背景知识](https://github.com/jayli/generator-clam/blob/master/userguide.md)
 
@@ -21,6 +21,10 @@
 根据提示输入用户名（花名）和token
 
 ![](http://gtms03.alicdn.com/tps/i3/TB1tH16FVXXXXb5XVXX1hDC0FXX-630-82.png)
+
+获取帮助（**重要**）
+
+	yo clam:h
 
 Done!
 
