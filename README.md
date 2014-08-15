@@ -1,6 +1,6 @@
 ## Clam - 航旅前端基础工具集
 
-![](http://gtms02.alicdn.com/tps/i2/T1.0X5FzXaXXXWYLnD-292-85.png)
+![](http://gtms02.alicdn.com/tps/i2/TB1PzItFVXXXXbRXXXXzuqg5pXX-332-268.png)
 
 [背景知识](https://github.com/jayli/generator-clam/blob/master/userguide.md)
 
