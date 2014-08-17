@@ -2,7 +2,7 @@
     "name": "<%= packageName %>",
     "desc": "description of your app",
     "type": "clam",
-	"isH5": "true",
+	"isH5":"<%= isH5 %>",
 	"port":"<%= port %>",
 	"proxyPort":"<%= proxyPort %>",
 	"group":"<%= groupName %>",
