@@ -71,6 +71,9 @@ module.exports = function (grunt) {
 			'offline_tms_html':{
 				src : 'build_offline/pages/**/*.tms.html'
 			},
+			'offline_mods':{
+				src : 'build_offline/mods/**/*.html'
+			},
             mods: {
                 src: 'src/map.js'
             }
@@ -549,7 +552,7 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand:true,
-                        src: ['pages/**/*.html'],
+                        src: ['pages/**/*.html','mods/**/*.html'],
                         dest: 'build_offline/',
                         cwd:'src/'
                     }
@@ -770,6 +773,7 @@ module.exports = function (grunt) {
 				// 构建离线包
 				'copy:offline_html',
 				'combohtml:offline',
+				'clean:offline_mods',
 				'clean:offline_tms_html',
 				'copy:offline_jscss',
 				'uglify:offline',
