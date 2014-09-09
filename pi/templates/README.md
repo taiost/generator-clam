@@ -1,32 +1,51 @@
 # <%= componentName %>
 作者: <%= gitUserName%>
-## 功能
+版本: 0.0.1
 
-
-* ...
+> ...
 
 ## 使用
 
+> ...
+
+### 引入组件
+
 ```
-init code here...
+...
+
 ```
 
-### Config
+## 参数列表
 
-* attrName
-    - 说明...
+> ...
 
-### Method
-
-* methodName
-    - 运行....
-
-### Event
-
-* valuechange
-    - 值发生变化时触发
+|Attribute|Type|Default|Description|
+|:--------|:---|:------|:----------|
+|**`...`**|`...`|`...`|...|
 
 
-## changelog
+## 事件列表
+
+> ...
+
+|Event|Payload|When|
+|:----|:------|:------|
+|**`...`**|...|...|
+
+## api说明
+
+> ...
+
+* `...` : desc
+
+## TODO
 
 * ...
+
+## 变更列表
+
+> ...
+
+|Version|Date|reason|Description|notice|
+|:------|:---|:-----|:----------|:-----|
+|`...`|...|...|...|...|
