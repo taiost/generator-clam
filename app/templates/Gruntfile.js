@@ -112,7 +112,19 @@ module.exports = function (grunt) {
 				port: '<%= pkg.port %>',
 				servlet: '?',
 				separator: ',',
-				charset: 'utf8'
+				charset: 'utf8',
+				startWeinre: false,                                  // 是否自动启动 weinre（H5项目默认为 true）
+				weinrePort: 8091,                                   // weinre 运行端口号
+				proxy: {                                            // 代理配置
+					interface: {                                    // 接口 mock 配置
+						hosts: [/*'api.m.taobao.com', 'api.waptest.taobao.com', 'api.test.taobao.com'*/],   // 接口 mock 要代理的主机名
+						script: 'proxy/interface.js'                // 接口 mock 的执行脚本路径
+					},
+					webpage: {
+						urls: [/*/taobao\.com/*/],                  // 页面代理需要代理的 url 模式（字符串/正则表达式）
+						script: 'proxy/webpage.js'                  // 页面代理执行脚本路径
+					}
+				}
 			},
 			main: {}
 		},

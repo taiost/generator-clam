@@ -5,6 +5,11 @@ var yeoman = require('yeoman-generator');
 var ClamLogo = require('./logo').ClamLogo;
 var ABC = require('abc-generator');
 
+var gitConfig = require('git-config'),
+	curGitUser = gitConfig.sync().user,
+	curUserName = curGitUser.name,
+	curUserEmail = curGitUser.email;
+
 var ClamGenerator = module.exports = function ClamGenerator(args, options, config) {
     ABC.UIBase.apply(this, arguments);
     this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
@@ -91,26 +96,28 @@ ClamGenerator.prototype.askFor = function askFor() {
         },
         {
             name   : 'isH5',
-            message: 'is A H5 Project?',
-            default: 'Y/n',
+	        type   : 'confirm',
+            message: 'is An H5 Project?',
+            default: true,
             warning: ''
         },
         {
             name   : 'srcDir',
+	        type   : 'confirm',
             message: 'create "src" directory?',
-            default: 'Y/n',
+            default: true,
             warning: ''
         },
         {
             name   : 'author',
             message: 'Author Name(花名):',
-            default: abcJSON.author.name,
+            default: abcJSON.author.name || curUserName,
             warning: ''
         },
         {
             name   : 'email',
             message: 'Author Email:',
-            default: abcJSON.author.email,
+            default: abcJSON.author.email || curUserEmail,
             warning: ''
         },
         {
@@ -133,7 +140,9 @@ ClamGenerator.prototype.askFor = function askFor() {
         },
         {
             name   : 'cssCompile',
+	        type   : 'list',
             message: 'scss/less?',
+	        choices: ['scss', 'less'],
             default: 'scss',
             warning: ''
         },
@@ -159,14 +168,14 @@ ClamGenerator.prototype.askFor = function askFor() {
         this.projectName = parseMojoName(this.packageName); //ProjectName
         this.author = props.author;
         this.email = props.email;
-		this.isH5 = (/^y/i).test(props.isH5) ? 'true':'false';
+		this.isH5 = props.isH5;
         this.port = props.port;
 		this.proxyPort = props.proxyPort;
         this.version = props.version;
         this.groupName = props.groupName;
         //this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+this.version+'/config.js';
-        this.srcDir = (/^y/i).test(props.srcDir);
-        this.cssCompile = (props.cssCompile === 'less')? 'less':'scss';
+        this.srcDir = props.srcDir;
+        this.cssCompile = props.cssCompile;
         this.combohtml = true;
         this.srcPath = '../';
         this.currentBranch = 'master';
@@ -176,7 +185,8 @@ ClamGenerator.prototype.askFor = function askFor() {
                 {
                     name   : 'modsPagesWidgets',
                     message: 'Create "src/mods[widgets|pages]"?',
-                    default: 'Y/n',
+	                type   : 'confirm',
+                    default: true,
                     warning: ''
                 }
             ], function (err, props) {
@@ -185,7 +195,7 @@ ClamGenerator.prototype.askFor = function askFor() {
                     return this.emit('error', err);
                 }
 
-                this.modsPagesWidgets = (/^y/i).test(props.modsPagesWidgets);
+                this.modsPagesWidgets = props.modsPagesWidgets;
                 if (this.modsPagesWidgets) {
                     this.srcPath = '../../';
                 }
@@ -236,6 +246,12 @@ ClamGenerator.prototype.app = function app() {
     this.template('README.md');
     this.mkdir('doc');
     this.mkdir('build');
+
+	// 代理脚本
+	this.mkdir('proxy');
+	this.template('proxy/interface.js', 'proxy/interface.js');
+	this.template('proxy/webpage.js', 'proxy/webpage.js');
+
     this.template('abc.json');
     this.copy('bowerrc', '.bowerrc');
 };

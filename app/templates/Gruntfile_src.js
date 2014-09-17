@@ -45,7 +45,7 @@ module.exports = function (grunt) {
 	// grunt.file.defaultEncoding = 'gbk';
 	var base = 'http://g.tbcdn.cn';
 	var Gpkg = grunt.file.readJSON('abc.json');
-	var isH5 = Gpkg.isH5 === "true" ? true : false;
+	var isH5 = (Gpkg.isH5 === "true");
 	grunt.initConfig({
 
 		// 从 abc.json 中读取配置项
@@ -275,20 +275,31 @@ module.exports = function (grunt) {
 			// 源码调试服务
 			server: {
 				options: {
-					proxyport: '<%= abcpkg.proxyPort %>',
-					target: 'src/',
-					urls: '/<%= abcpkg.group %>/<%= abcpkg.name %>',
-					port: '<%= abcpkg.port %>',
-					proxyHosts: [
+					proxyport: '<%= abcpkg.proxyPort %>',               // 本地反向代理端口
+					target: 'src/',                                     // flex-combo 要代理的目录
+					urls: '/<%= abcpkg.group %>/<%= abcpkg.name %>',    // flex-combo 要代理的匹配 url
+					port: '<%= abcpkg.port %>',                         // 本地服务端口
+					proxyHosts: [                                       // 本地反向代理需要代理的主机名
 						'demo', 
 						'demo.com',
 						'dev.waptest.taobao.com', 
 						'dev.wapa.taobao.com'
 					],
 					servlet: '?',
-					longPolling: false,
 					separator: ',',
-					charset: 'utf8'
+					charset: 'utf8',
+					startWeinre: isH5,                                  // 是否自动启动 weinre（H5项目默认为 true）
+					weinrePort: 8091,                                   // weinre 运行端口号
+					proxy: {                                            // 代理配置
+						interface: {                                    // 接口 mock 配置
+							hosts: [/*'api.m.taobao.com', 'api.waptest.taobao.com', 'api.test.taobao.com'*/],   // 接口 mock 要代理的主机名
+							script: 'proxy/interface.js'                // 接口 mock 的执行脚本路径
+						},
+						webpage: {
+							urls: [/*/taobao\.com/*/],                  // 页面代理需要代理的 url 模式（字符串/正则表达式）
+							script: 'proxy/webpage.js'                  // 页面代理执行脚本路径
+						}
+					}
 				}
 			},
 			// 目标代码调试服务
@@ -311,8 +322,19 @@ module.exports = function (grunt) {
 					],
 					servlet: '?',
 					separator: ',',
-					longPolling: false,
 					charset: 'utf8',
+					startWeinre: isH5,
+					weinrePort: 8091,
+					proxy: {
+						interface: {
+							hosts: [/*'api.m.taobao.com', 'api.waptest.taobao.com', 'api.test.taobao.com'*/],
+							script: 'proxy/interface.js'
+						},
+						webpage: {
+							urls: [/*/taobao\.com/*/],
+							script: 'proxy/webpage.js'
+						}
+					},
 					hosts: {
 						"g.assets.daily.taobao.net": "10.235.136.37"
 					},
@@ -343,8 +365,19 @@ module.exports = function (grunt) {
 					],
 					servlet: '?',
 					separator: ',',
-					longPolling: false,
-					charset: 'utf8'
+					charset: 'utf8',
+					startWeinre: isH5,
+					weinrePort: 8091,
+					proxy: {
+						interface: {
+							hosts: ['api.m.taobao.com', 'api.waptest.taobao.com', 'api.test.taobao.com'],
+							script: 'proxy/interface.js'
+						},
+						webpage: {
+							urls: [/*/taobao\.com/*/],
+							script: 'proxy/webpage.js'
+						}
+					},
 				}
 			}
 		},
@@ -694,6 +727,8 @@ module.exports = function (grunt) {
 			grunt.log.write(('当前分支：' + version).green);
 			grunt.config.set('currentBranch', version);
 			task.run(['exec_build']);
+			// 预发替换到 daily
+			task.run(['replace:daily']);
 			task.run(['exec:add', 'exec:commit:' + msg]);
 			task.run(['exec:prepub']);
 			done();
@@ -707,10 +742,15 @@ module.exports = function (grunt) {
 			grunt.log.write(('当前分支：' + version).green);
 			grunt.config.set('currentBranch', version);
 			task.run(['exec_build']);
-			// task.run(['exec:add', 'exec:commit:' + msg]);
-			// task.run(['exec:prepub']);
-			task.run(['exec:tag', 'exec:publish']);
-			done();
+			// 检查是否有待提交的文件
+			exec('git status -s', function(err, stdout, stderr) {
+				if(stdout.trim() != '') {
+					task.run(['exec:add', 'exec:commit:' + msg]);
+					task.run(['exec:prepub']);
+				}
+				task.run(['exec:tag', 'exec:publish']);
+				done();
+			});
 		});
 	});
 
