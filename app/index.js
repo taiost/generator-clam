@@ -132,7 +132,7 @@ ClamGenerator.prototype.askFor = function askFor() {
 		{
 			name   : 'proxyPort',
 			message: 'HTTP Proxy Server Port:',
-			default: '8080',
+			default: '8090',
 			warning: ''
 		},
 		{
