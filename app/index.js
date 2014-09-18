@@ -5,6 +5,8 @@ var yeoman = require('yeoman-generator');
 var clamUtil = require('clam-util');
 var ClamLogo = require('./logo').ClamLogo;
 var ABC = require('abc-generator');
+var crypto = require('crypto');
+var md5 = crypto.createHash('md5');
 var gitConfig = require('git-config'),
 	curGitUser = gitConfig.sync().user,
 	curUserName = curGitUser.name,
@@ -162,6 +164,8 @@ ClamGenerator.prototype.askFor = function askFor() {
 
 		this.packageName = props.projectName;// project-name
 		this.dirName = clamUtil.awppDirName(props.projectName);
+		md5.update(this.packageName);
+		this.packageNameMd5 = md5.digest('hex');;
 		this.projectName = parseMojoName(this.packageName); //ProjectName
 		this.author = props.author;
 		this.email = props.email;
