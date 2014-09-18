@@ -645,6 +645,7 @@ module.exports = function (grunt) {
 							match:/<\/head>/,
 							replacement:[
 								'<!--added by clam {{-->\n',
+								'<meta name="aplus-offline" content="1">\n',
 								'<script src="../../widgets/wlog/build/aplus_wap.js"></script>\n',
 								'<script src="../../widgets/wlog/build/spm_wap.js"></script>\n',
 								'<script src="../../widgets/wlog/build/spmact_wap.js"></script>\n',
