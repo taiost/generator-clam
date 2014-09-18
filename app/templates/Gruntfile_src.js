@@ -531,7 +531,13 @@ module.exports = function (grunt) {
 			cwd: 'src',
 			all: source_files.css
 		},
-
+        cacheinfo:{
+            options:{
+                abc:"abc.json",
+                src:"src",
+                dest:"build_offline/cache_info.json"
+            }
+        },
 		// 拷贝文件
 		copy: {
 			main: {
@@ -715,6 +721,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-tms');
 	grunt.loadNpmTasks('grunt-inline-assets');
 	grunt.loadNpmTasks('grunt-tpl-compiler');
+    grunt.loadNpmTasks('grunt-cacheinfo');
 
 	// -------------------------------------------------------------
 	// 注册Grunt子命令
@@ -820,6 +827,7 @@ module.exports = function (grunt) {
 				'cssmin:offline',
 				'inline-assets:offline',
 				'replace:offline',
+				'cacheinfo',
 				'exec:zip'
 			]);
 		}

@@ -2,6 +2,7 @@
 var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
+var clamUtil = require('clam-util');
 var ClamLogo = require('./logo').ClamLogo;
 var ABC = require('abc-generator');
 var gitConfig = require('git-config'),
@@ -160,6 +161,7 @@ ClamGenerator.prototype.askFor = function askFor() {
 		}
 
 		this.packageName = props.projectName;// project-name
+		this.dirName = clamUtil.awppDirName(props.projectName);
 		this.projectName = parseMojoName(this.packageName); //ProjectName
 		this.author = props.author;
 		this.email = props.email;
@@ -238,6 +240,7 @@ ClamGenerator.prototype.app = function app() {
 		this.template('config.js');
 	}
 	this.template('README.md');
+	this.template('make.sh');
 	this.mkdir('doc');
 	this.mkdir('build');
 

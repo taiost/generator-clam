@@ -1,6 +1,6 @@
 {
   "name": "generator-clam",
-  "version": "0.1.67",
+  "version": "0.1.68",
   "description": "A Clam generator for Yeoman",
   "keywords": [
     "yeoman-generator",
@@ -29,6 +29,7 @@
     "git-config": "0.0.6",
     "promise": "",
     "rmdir": "~1.0.4",
+	"clam-util":"",
     "yeoman-generator": "~0.13.3"
   },
   "devDependencies": {

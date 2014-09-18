@@ -2,6 +2,7 @@
     "name": "<%= packageName %>",
     "desc": "description of your app",
     "type": "clam",
+	"dirName":"<%= dirName %>",
 	"isH5":"<%= isH5 %>",
 	"port":"<%= port %>",
 	"proxyPort":"<%= proxyPort %>",
@@ -10,6 +11,8 @@
     "cssCompile":"<%= cssCompile %>",
 	"version":"<%= version %>",
 	"combohtml":"<%= combohtml %>",
+	"basePath":"pages/search/index.html",
+	"baseUrl":"/trip/<%= dirName %>/search/index.html",
 	"env":"publish",
 	"htmlProxy": [{
 		"urlReg": "^http://trip.taobao.com/index$",

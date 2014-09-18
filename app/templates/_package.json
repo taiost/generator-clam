@@ -26,6 +26,7 @@
         "grunt-kmc": "~0.1.18",
         "clam-util":"",
         "grunt-mytps":"",
+        "grunt-cacheinfo":"",
         "grunt-exec": "",
         "grunt-flexcombo": "",
 		"grunt-combohtml":"",
