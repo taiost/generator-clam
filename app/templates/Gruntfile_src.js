@@ -584,7 +584,13 @@ module.exports = function (grunt) {
                         ],
                         dest: 'build_offline/',
                         cwd:'build/'
-                    }
+                    },
+					{
+						expand:true,
+						src:['widgets/wlog/build/*.js'],
+						dest:'build_offline/',
+						cwd: 'src/'
+					}
                 ]
             },
             offline_html: {
