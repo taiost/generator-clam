@@ -636,6 +636,17 @@ module.exports = function (grunt) {
 				options: {
 					patterns: [
 						{
+							match:/<\/head>/,
+							replacement:[
+								'<!--added by clam {{-->\n',
+								'<script src="../../widgets/wlog/build/aplus_wap.js"></script>\n',
+								'<script src="../../widgets/wlog/build/spm_wap.js"></script>\n',
+								'<script src="../../widgets/wlog/build/spmact_wap.js"></script>\n',
+								'<!--added by clam }}-->\n',
+								'</head>'
+							].join('')
+						},
+						{
 							match: /<!--HTTP:(.*):HTTP-->/g,
 							replacement: function(match, tms) {
 								var obj = {},
@@ -663,10 +674,10 @@ module.exports = function (grunt) {
 							match: /<head>/,
 							replacement: [
 								'<head>\n',
-								'<!--{{ generator by clam -->',
+								'<!--{{ added by clam -->\n',
 								'<script>window.MT_CONFIG={offline:true};</script>\n',
-								'<script src="../../widgets/tms-offline-parser/index.js"></script>',
-								'<!--}} generator by clam -->'
+								'<script src="../../widgets/tms-offline-parser/index.js"></script>\n',
+								'<!--}} added by clam -->'
 							].join('')
 						}
 					]

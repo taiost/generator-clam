@@ -143,9 +143,9 @@ function fullfill(){
 	var wp = path.resolve(process.cwd(), '../widgets/');
 	var kp = path.resolve(process.cwd(), '../');
 	setTimeout(function(){
-		console.log('\nInstalling assets, please wait...');
+		console.log('\n正在安装依赖资源文件, 稍等...');
 	},500);
-	exec('cd ' + wp + ';bower install mpi/tms-offline-parser;bower install mpi/jsbridge;bower install mpi/mpi_css',
+	exec('cd ' + wp + ';bower install mpi/tms-offline-parser;bower install mpi/jsbridge;bower install mpi/mpi_css;bower install mpi/wlog',
 		function(err,stdout,stderr,cb){
 			showLog(err,stdout,stderr,cb);
 			setTimeout(function(){
