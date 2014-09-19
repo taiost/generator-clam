@@ -354,14 +354,15 @@ module.exports = function (grunt) {
 					// https://speakerdeck.com/lijing00333/grunt-flexcombo
 					target: 'build_offline/',
 					proxyport: '<%= abcpkg.proxyPort %>',
-					urls: '/<%= abcpkg.group %>/<%= abcpkg.name %>/<%= abcpkg.version%>/',
+					urls: '/<%= abcpkg.group %>/<%= abcpkg.name %>',
 					port: '<%= abcpkg.port %>',
 					// 本机虚机域名
 					proxyHosts: [
 						'demo', 
 						'demo.com', 
 						'dev.waptest.taobao.com', 
-						'dev.wapa.taobao.com'
+						'dev.wapa.taobao.com',
+						'h5.m.taobao.com'
 					],
 					servlet: '?',
 					separator: ',',
@@ -378,6 +379,12 @@ module.exports = function (grunt) {
 							script: 'proxy/webpage.js'
 						}
 					},
+					filter:{
+						// 将visa更换为你线上域名的目录名
+						'(.+)/trip/visa/\(.+\\.\)html':'$1/pages/$2html',
+						'(.+)/trip/visa/\(.+\\.\)(css|js)':'$1/pages/$2$3',
+						'(.+)/trip/\(.+\\.\)(js|css|png|jpg|gif)':'$1/$2$3',
+					}
 				}
 			}
 		},
