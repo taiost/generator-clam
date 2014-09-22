@@ -1,16 +1,36 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<title> <%= projectName %> - <%= modName %> demo </title>
-	<script src="http://g.tbcdn.cn/kissy/k/1.4.1/seed-min.js"></script>
-	<!-- CDN: <%= config %> -->
-	<script src="<%= srcPath %>config.js"></script>
+    <meta charset="utf-8" />
+    <title> <%= projectName %> - <%= modName %> demo </title>
+    <!--#def
+        {
+            "kissyVersion": "1.4.6",
+            "piVersion": "1.2.14",
+            "piCss": [
+                {"name": "base", "version": "0.1.4"},
+                {"name": "header-footer", "version": "0.4.14"},
+                {"name": "button", "version": "0.1.5"},
+                {"name": "checkbox-radio", "version": "0.1.9"},
+                {"name": "price", "version": "0.1.6"},
+                {"name": "loading", "version": "0.1.1"}
+            ]
+        }
+    -->
+    <link rel="stylesheet"
+          href="http://g.tbcdn.cn/??{@each piCss as item}tpi/<%='$'%>{item.name}/<%='$'%>{item.version}/index-min.css,{@/each}"/>
+
+    <script src="http://g.tbcdn.cn/kissy/k/<%='$'%>{kissyVersion}/seed.js"></script>
+    <script src="http://g.tbcdn.cn/tpi/pi/<%='$'%>{piVersion}/seed.js"></script>
+    <!-- CDN: <%= config %> -->
+    <script src="<%= srcPath %>config.js"></script>
+    <!--[if lt IE 9]>
+    <script src="http://g.tbcdn.cn/tpi/pi/<%='$'%>{piVersion}/base/html5shiv-min.js"></script>
+    <![endif]-->
 </head>
 <body>
-
-	<!--Your Code Here-->
-	<!--#include virtual="./index.html" -->
+    <!--Your Code Here-->
+    <!--#include virtual="./index.html" -->
 
 </body>
 </html>
