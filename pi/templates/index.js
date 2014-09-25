@@ -19,7 +19,7 @@ KISSY.add(function(S,Base) {
         },
         bindUI : function(){
 
-        }
+        },
         //析构
         destructor : function(){
 

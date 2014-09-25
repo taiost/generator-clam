@@ -209,8 +209,8 @@ module.exports = function (grunt) {
 					convert2vm: false,// 是否将juicer语法块转换为vm格式
 					convert2php: false, // 是否将juicer语法块转换为php格式
 					comboExt: '-combo', // 静态合并后的js和css后缀
-					htmlProxy: '<%= abcpkg.htmlProxy %>',      // htmlProxy 配置，用于产出线上页面区块替换为本地模块页面
-					htmlProxyDestDir: 'html-fragments',      // html 代理区块页面生成到的目标目录
+					//htmlProxy: '<%= abcpkg.htmlProxy %>',      // htmlProxy 配置，用于产出线上页面区块替换为本地模块页面
+					//htmlProxyDestDir: 'html-fragments',      // html 代理区块页面生成到的目标目录
 					meta : {
 						'pageid' : 'on181.<%= abcpkg.name%>/${path|regexp,"build/",""}'
 					}
@@ -296,7 +296,8 @@ module.exports = function (grunt) {
 						'demo', 
 						'demo.com',
 						'dev.waptest.taobao.com', 
-						'dev.wapa.taobao.com'
+						'dev.wapa.taobao.com',
+						'dev.m.taobao.com'
 					],
 					servlet: '?',
 					separator: ',',
@@ -501,7 +502,9 @@ module.exports = function (grunt) {
 					'src/**/*.php',
 					'src/**/*.html',
 					'src/**/*.htm',
-					'src/**/*.scss'],
+					'src/**/*.scss',
+					'!src/**/node_modules/**/*',
+					'!src/**/build/**/*'],
 				tasks: [ 'exec_build' ]
 			}
 		},
@@ -521,7 +524,7 @@ module.exports = function (grunt) {
 				}
 			},
 			add: {
-				command: 'git add .'
+				command: 'git add . -A'
 			},
 			prepub: {
 				command: 'git push origin daily/<%= currentBranch %>:daily/<%= currentBranch %>'
@@ -714,7 +717,7 @@ module.exports = function (grunt) {
                         expand: true, 
                         cwd: 'build_offline/',
                         dest: 'build_offline/',
-                        src: ['**/*.html'],
+                        src: ['**/*.html']
                     }
                 ]
 			}
@@ -788,15 +791,10 @@ module.exports = function (grunt) {
 			grunt.log.write(('当前分支：' + version).green);
 			grunt.config.set('currentBranch', version);
 			task.run(['exec_build']);
-			// 检查是否有待提交的文件
-			exec('git status -s', function(err, stdout, stderr) {
-				if(stdout.trim() != '') {
-					task.run(['exec:add', 'exec:commit:' + msg]);
-					task.run(['exec:prepub']);
-				}
-				task.run(['exec:tag', 'exec:publish']);
-				done();
-			});
+			task.run(['exec:add', 'exec:commit:' + msg]);
+			task.run(['exec:prepub']);
+			task.run(['exec:tag', 'exec:publish']);
+			done();
 		});
 	});
 
