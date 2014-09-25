@@ -29,6 +29,7 @@
         "grunt-cacheinfo":"",
         "grunt-exec": "",
         "grunt-flexcombo": "",
+		"grunt-htmlhint": "",
 		"grunt-combohtml":"",
 		"grunt-replace":"",
         "grunt-tms":"",

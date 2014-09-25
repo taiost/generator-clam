@@ -172,6 +172,19 @@ module.exports = function (grunt) {
 
 			}
 		},
+
+		/*------------------------------------*\
+			# HTML标签规范检查
+		\*------------------------------------*/
+		htmlhint: {
+			options: {
+				htmlhintrc: '.htmlhintrc'
+			},
+			html: {
+				src: ['src/**/*.html']
+			}
+		},
+
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
 		// https://npmjs.org/package/grunt-combohtml
 		combohtml: {
@@ -741,6 +754,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-flexcombo');
 	grunt.loadNpmTasks('grunt-replace');
+	grunt.loadNpmTasks('grunt-htmlhint');
 	grunt.loadNpmTasks('grunt-combohtml');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-tms');
@@ -811,6 +825,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('exec_build', '执行构建脚本', function () {
 		var actions = [
 			// 构建准备流程
+			'htmlhint',
             'clean:build',
             'clean:offline',
 			'clean:mods',

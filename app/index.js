@@ -255,6 +255,7 @@ ClamGenerator.prototype.app = function app() {
 
 	this.template('abc.json');
 	this.copy('bowerrc', '.bowerrc');
+	this.copy('htmlhintrc', '.htmlhintrc');
 };
 
 function consoleColor(str, num) {
