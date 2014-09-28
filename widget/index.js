@@ -24,6 +24,7 @@ AppGenerator.prototype.askFor = function askFor() {
 	
     // welcome message
 	console.log(ClamLogo(this));
+	console.log('建议您在 src/widgets 目录执行该命令！');
 
     var prompts = [{
         name: '_version',

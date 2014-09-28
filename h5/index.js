@@ -6,6 +6,10 @@ var yeoman = require('yeoman-generator');
 var ABC = require('abc-generator');
 var exec = require('child_process').exec;
 var	rmdir = require('rmdir');
+var gitConfig = require('git-config'),
+	curGitUser = gitConfig.sync().user,
+	curUserName = curGitUser.name,
+	curUserEmail = curGitUser.email;
 
 var AppGenerator = module.exports = function AppGenerator(args, options, config) {
 	// yeoman.generators.Base.apply(this, arguments);
@@ -70,9 +74,12 @@ AppGenerator.prototype.askFor = function askFor() {
 	this.combohtml = abcJSON.combohtml;
 	this.cssCompile = abcJSON.cssCompile;
 	this.fullfill = false;
+	this.author = curUserName;
+	this.email = curUserEmail;
 
     // welcome message
 	console.log(ClamLogo(this));
+	console.log('建议您在 src/pages 目录执行该命令！');
 
 	var prompts = [{
 			name: 'mojoName',

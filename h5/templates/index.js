@@ -1,6 +1,6 @@
 /**
  * @fileoverview <%= projectName %> - <%= modName %>.
- * @author 
+ * @author <%=author %><<%=email %>>.
  */
 /**
  * KISSY.use('<%= packageName %>/<%= mojoName %>/index',function(S,<%= modName %>){

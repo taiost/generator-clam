@@ -49,6 +49,7 @@ AppGenerator.prototype.askFor = function askFor() {
 		'AWP 命令',
 		'	awpp		在项目根目录执行，发布build/pages里的html文件',
 		'	awpp config	配置本地用户名和token',
+		'   awpp hist   查看和执行历史命令',
 		'	awpp --help	awpp命令帮助',
 		'',
 		'工具文档：https://github.com/jayli/generator-clam',
