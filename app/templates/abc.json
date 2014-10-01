@@ -18,11 +18,6 @@
 	"kmcOffline":[
 		"search/index.js"
 	],
-	"flexComboOfflineFilter":{
-		"(.+)/trip/<%= dirName %>/\(.+\\.\)html":"$1/pages/$2html",
-		"(.+)/trip/<%= dirName %>/\(.+\\.\)(css|js)":"$1/pages/$2$3",
-		"(.+)/trip/\(.+\\.\)(js|css|png|jpg|gif)":"$1/$2$3",
-	},
 	"htmlProxy": [{
 		"urlReg": "^http://trip.taobao.com/index$",
 		"demoPage": "http://trip.taobao.com/index.php",

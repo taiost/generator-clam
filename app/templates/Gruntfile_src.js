@@ -374,7 +374,12 @@ module.exports = function (grunt) {
 							script: 'proxy/webpage.js'
 						}
 					},
-					filter:'<%= abcpkg.flexComboOfflineFilter %>'
+					filter:{
+						//实际执行匹配类似于这句，将visa替换为url中的目录名称
+						//"(.+)/trip/visa/\(.+\\.\)(css|js)":"$1/pages/$2$3",
+						"(.+)/trip/\(widgets|libs|mods\)/\(.+\\.\)(js|css|png|jpg|gif)":"$1/$2/$3$4",
+						"(.+)/trip/[^\/]+/\(.+\\.\)(html|js|css|png|jpg|gif)":"$1/pages/$2$3",
+					}
 				}
 			}
 		},
@@ -819,7 +824,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('exec_build', '执行构建脚本', function () {
 		var actions = [
 			// 构建准备流程
-			'htmlhint',
+			//'htmlhint',
             'clean:build',
             'clean:offline',
 			'clean:map',
