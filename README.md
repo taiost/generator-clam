@@ -4,6 +4,17 @@
 
 [背景知识](https://github.com/jayli/generator-clam/blob/master/userguide.md)
 
+航旅 H5 页面的多种宿主环境示意，同一份源码通过 Clam 面向多终端构建不同的目标代码，目标代码有三类：
+
+1. 线上 URL 访问的 Wap 页面
+2. 带有虚拟域的 H5 离线包容器
+3. 不带虚拟域的 H5 离线包容器
+
+Clam 为每个项目生成**构建脚本**和**本地环境**，并最大程度保持开发和线上环境的一致性。开发、调试、测试、发布 过程均在命令行即可完成。
+
+
+![](http://gtms03.alicdn.com/tps/i3/TB17s4AGpXXXXaBXpXXckPrPpXX-688-478.png)
+
 ### 一，工具安装
 
 安装 TNPM（阿里工程师必备）
@@ -99,7 +110,32 @@ H5项目架子初始化完成（注意：这时只有结构，没有页面）,�
 
 如果在创建项目的时候设定是H5项目，则`grunt`会自动构建离线包，会生成目录`build_offline`和`build_offline.zip`
 
-### 五，Assets 的预发和上线
+### 五，离线包构建需手动配置的参数
+
+`grunt build`命令会构建好`build_offline`离线文件，为了减少H5容器读写本地文件的压力，clam 也多做了两件事情
+
+1. 生成`cache_info.json`
+1. kmc 合并 js 文件
+
+这两件事需要项目开发者手动配置
+
+生成`cache_info.json`时需要**手动指定**项目的首页地址，需要手动修改`abc.json`里的`basePath`和`baseUrl`，比如
+
+	...
+	"basePath": "pages/search/index.html",
+	"baseUrl": "/trip/test/search/index.html",
+	...
+
+合并js文件需要**手动指定**，修改`abc.json`中的`kmcOffline`字段，比如
+
+	"kmcOffline": [
+		"search/index.js",
+		"searchlist/index.js"
+	],
+
+
+
+### 六，Assets 的预发和上线
 
 航旅H5项目是完全前后端解耦，所有页面都是静态的，动态数据都是异步拉取。一个完整的项目包含两部分内容，**资源文件**和**HTML文件**。
 
@@ -141,7 +177,7 @@ H5项目架子初始化完成（注意：这时只有结构，没有页面）,�
 其中`x.y.z`是分支中`daily/x.y.z`版本
 
 
-### 六，H5 项目中的 HTML 的预发和上线
+### 七，H5 项目中的 HTML 的预发和上线
 
 执行`grunt`后生成的build目录里包含构建完成的js、css和html文件，如果当前的这个工程是一个H5工程（`abc.json`中的isH5是否为true），则可以通过awpp命令来发布`build/pages`里的html
 
@@ -161,7 +197,7 @@ H5项目架子初始化完成（注意：这时只有结构，没有页面）,�
 
 > TIP: 如果选择日常或者预发，需要注意，html里对线上资源文件的引用`http://g.tbcdn.cn`都应当修改成对预发资源的引用`http://g.assets.daily.taobao.net`，在执行awpp走预发流程之前，先执行`grunt daily`。
 
-### 七，开发模式、调试模式、离线模式服务的启动
+### 八，开发模式、调试模式、离线模式服务的启动
 
 Clam 工具提供一套本地调试环境，这套环境跟随代码一同携带，共有三个环境
 
@@ -228,7 +264,7 @@ Clam 工具提供一套本地调试环境，这套环境跟随代码一同携带
 filter中的key是一个字符串形式的正则表达式，value是被替换的字符串
 
 
-### 八，Juicer Mock 写法
+### 九，轻便的 Mock：Juicer Mock 写法
 
 > Clam的本地服务是基于[flex-combo](https://www.npmjs.org/package/grunt-flexcombo)来实现的，flexcombo支持Juicer Mock的语法来写带有数据的模板
 
@@ -270,7 +306,7 @@ filter中的key是一个字符串形式的正则表达式，value是被替换的
 
 即，数据和juicer模板混合输出了正确的结果。如果源文件中存在Mock数据字段`<!--#def ... -->`，则服务将会解析文件中的juicer模板
 
-### 九，Clam 项目中的HTML文件包含
+### 十，Clam 项目中的 HTML 文件引用
 
 本地服务支持标准SSI（[Server Side Include](http://man.chinaunix.net/newsoft/ApacheManual/howto/ssi.html)）。
 
@@ -280,7 +316,7 @@ filter中的key是一个字符串形式的正则表达式，value是被替换的
 
 	<!--#include virtual="http://www.taobao.com" -->
 
-### 十，TMS 标签的引用
+### 十一，TMS 标签的引用
 
 根据AWP规范，HTML页面中可以通过这种标示来引用外部静态文件
 
@@ -294,7 +330,9 @@ AWP平台和Clam自带的本地服务都支持这种解析
 
 > 需要注意的是，H5 项目的离线包的构建，会将这种格式的引用做过滤，[详情阅读这里](http://gitlab.alibaba-inc.com/mpi/tms-offline-parser/tree/master)
 
-### 十一，本地服务映射HTML片段
+### 十二，flexCombo 如何映射本地 HTML 片段
+
+我们经常使用 Fiddler 和 Charles 工具把线上 URL 映射到本地资源，那么，可否将线上页面里的一段 HTML 片段映射为本地文件呢？FlexCombo 就可以做到。
 
 本地服务的 debug 模式可以映射线上页面中的html片段到本地，配置方法见[html-proxy](http://cnpmjs.org/package/html-proxy)
 
@@ -323,38 +361,15 @@ AWP平台和Clam自带的本地服务都支持这种解析
 
 打开浏览器，绑定本机的8080端口，访问`http://trip.taobao.com/index.php`，看到首焦图片被替换了。done
 
-> 这种模式非常有用，特别对于跨团队协作、高模块化的项目中尤其有用，比如在淘宝首页便民中心，便民中心的代码就可以被拆出来，以一个HTML片段（非整个项目）作为一个独立的项目，Clam 工具的这个特性将提供非常方便的调试入口
+这种模式非常有用，特别对于跨团队协作、高模块化的项目中尤其有用，比如在淘宝首页便民中心，便民中心的代码就可以被拆出来，以一个HTML片段（非整个项目）作为一个独立的项目，Clam 工具的这个特性将提供非常方便的调试入口
 
-### 十二，组件安装
+### 十三，组件代码的安装
 
 如果要使用现成的组件，可以通过`bower`命令来安装，比如要使用[calendar](http://gitlab.alibaba-inc.com/mpi/calendar)组件，则需要在`src/widgets`目录中执行：
 
 	bower install mpi/calendar
 
 即可
-
-### 十三，离线包构建需手动配置的参数
-
-`grunt build`命令会构建好`build_offline`离线文件，为了减少H5容器读写本地文件的压力，clam 也多做了两件事情
-
-1. 生成`cache_info.json`
-1. kmc 合并 js 文件
-
-这两件事需要项目开发者手动配置
-
-生成`cache_info.json`时需要**手动指定**项目的首页地址，需要手动修改`abc.json`里的`basePath`和`baseUrl`，比如
-
-	...
-	"basePath": "pages/search/index.html",
-	"baseUrl": "/trip/test/search/index.html",
-	...
-
-合并js文件需要**手动指定**，修改`abc.json`中的`kmcOffline`字段，比如
-
-	"kmcOffline": [
-		"search/index.js",
-		"searchlist/index.js"
-	],
 
 ### 十四，其他重要资料
 
@@ -381,11 +396,11 @@ AWP平台和Clam自带的本地服务都支持这种解析
 1. [grunt-flexcombo](https://github.com/jayli/grunt-flexcombo)
 1. [flexcombo](https://github.com/wayfind/flex-combo)
 
-### Q & A
+### 十五，Q & A
 
 [参照这里](https://github.com/jayli/generator-clam/blob/master/userguide.md#q--a)
 
-### 更新记录
+### 十六，更新记录
 
 1. 0.1.x
 	1. 脚手架基础功能，代码片段整理
