@@ -158,7 +158,7 @@ function fullfill(){
 			setTimeout(function(){
 				console.log('\nInstalling KISSY-MINI, please wait...');
 			},500);
-			exec('cd '+ wp +';bower install kissy=kissy/m;', 
+			exec('cd '+ wp +';bower install kissy/m;', 
 				function(err,stdout,stderr,cb){
 					showLog(err,stdout,stderr,cb);
 					// 删除KISSY里的多余文件

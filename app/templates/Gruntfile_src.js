@@ -16,6 +16,7 @@ module.exports = function (grunt) {
 	var file = grunt.file;
 	var task = grunt.task;
 	var pathname = path.basename(__dirname);
+	// 根据后缀名采集 src 目录中所有文件列表
 	var source_files = clamUtil.walk('src',
 		clamUtil.NORMAL_FILTERS,
 		clamUtil.NORMAL_EXFILTERS);
@@ -43,15 +44,18 @@ module.exports = function (grunt) {
 
 	// 如果 Gruntfile.js 编码为 gbk，打开此注释
 	// grunt.file.defaultEncoding = 'gbk';
+
+	// 默认 CDN 根域名
 	var base = 'http://g.tbcdn.cn';
 	var Gpkg = grunt.file.readJSON('abc.json');
+	// 是否是 H5 项目
 	var isH5 = (Gpkg.isH5 === "true");
 	grunt.initConfig({
 
 		// 从 abc.json 中读取配置项
 		abcpkg: grunt.file.readJSON('abc.json'),
 
-		// 配置默认分支
+		// 配置默认 git 分支
 		currentBranch: 'master',
 
 		// 对build目录进行清理
@@ -61,6 +65,9 @@ module.exports = function (grunt) {
 			},
             offline: {
                 src: 'build_offline/*'  
+            },
+            map:{
+            	src:'src/map.js'
             },
 			zip:{
 				src: 'build_offline.zip'
@@ -74,9 +81,9 @@ module.exports = function (grunt) {
 			'offline_mods':{
 				src : 'build_offline/mods/**/*.html'
 			},
-            mods: {
-                src: 'src/map.js'
-            }
+			htmlFrag:{
+				src: 'build/html-fragments/'
+			}
 		},
 
 		/**
@@ -108,74 +115,62 @@ module.exports = function (grunt) {
             }
 		 */
 		kmc: {
-			options: {
-				packages: [
-					{
-						name: '<%= abcpkg.name %>',
-						path: './src/',
-						charset: 'utf-8',
-						ignorePackageNameInUri: true
-					}
-				],
-				depFilePath: 'build/map.js',// 生成的模块依赖表
-				comboOnly: true,
-				fixModuleName: true,
-				copyAssets: true,
-				comboMap: true
-			},
+			// 在线包构建
 			main: {
+				options: {
+					packages: [
+						{
+							name: '<%= abcpkg.name %>',
+							path: './src/',
+							charset: 'utf-8',
+							ignorePackageNameInUri: true
+						}
+					],
+					depFilePath: 'build/map.js',// 生成的模块依赖表
+					comboOnly: true, // 不需要静态合并
+					fixModuleName: true, // 补全ModuleName
+					copyAssets: true, // 将文件搬运至目标目录
+					comboMap: true // 生成Map文件
+				},
 				files: [
 					{
 						src: [ 'src/**/*.js', 
 								'!src/widgets/libs/seed.js',
 								'!src/libs/seed.js',
-								'!src/widgets/kissy/**/*',
+								'!src/widgets/kissy/**/*.js',
+								'!src/widgets/m/**/*.js',
 								'!src/**/*/Gruntfile.js'],
 						dest: 'build/'
 					}
 				]
-			}
-		},
-		'inline-assets':{
-			main:{
-				options:{
-					encoding:'utf8',
-					// 本地文件引用替换为线上地址
-					// KISSY Modules Maps File 地址
-					//comboMapFile: '../../map.js'
-					comboMapFile: false,
-					jsmin: true
-				},
-                files: [
-                    {
-                        expand: true,
-						cwd:'build',
-                        src: ['pages/**/*.html'],
-                        dest: 'build/'
-                    }
-                ]
 			},
+			// 离线包构建
 			offline:{
-				options:{
-					encoding:'utf8',
-					// 只替换绝对地址引用的文件 
-					onlineFileSSIOnly:true
-				},
+                options:{
+                    packages: [
+                        {
+                            name: '<%= abcpkg.name %>',
+                            path: '../',
+                            charset:'utf-8',
+                        },
+                    ],
+                    map: [['<%= abcpkg.name %>/src/', '<%= abcpkg.name %>/']],
+                    comboOnly: false,
+                    fixModuleName:false,
+                    comboMap: false
+                },
                 files: [
                     {
                         expand: true,
-						cwd:'build_offline',
-                        src: ['pages/**/*.html'],
-                        dest: 'build_offline/'
+                        cwd: 'src/pages',
+                        src: '<%= abcpkg.kmcOffline %>',
+                        dest: 'build_offline/pages'
                     }
                 ]
-
-			}
+            }
 		},
 
-		/*------------------------------------*\
-			# HTML标签规范检查
-		\*------------------------------------*/
+		// HTML标签规范检查
 		htmlhint: {
 			options: {
 				htmlhintrc: '.htmlhintrc'
@@ -188,6 +183,11 @@ module.exports = function (grunt) {
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
 		// https://npmjs.org/package/grunt-combohtml
 		combohtml: {
+			options:{
+				meta : {
+					'pageid' : 'on181.<%= abcpkg.name%>/${path|regexp,"build/",""}'
+				}
+			},
 			main: {
 				options: {
 					encoding: 'utf8',
@@ -207,57 +207,40 @@ module.exports = function (grunt) {
 					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
 					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
 					convert2vm: false,// 是否将juicer语法块转换为vm格式
-					convert2php: false, // 是否将juicer语法块转换为php格式
-					comboExt: '-combo', // 静态合并后的js和css后缀
+					convert2php: false // 是否将juicer语法块转换为php格式
 					//htmlProxy: '<%= abcpkg.htmlProxy %>',      // htmlProxy 配置，用于产出线上页面区块替换为本地模块页面
 					//htmlProxyDestDir: 'html-fragments',      // html 代理区块页面生成到的目标目录
-					meta : {
-						'pageid' : 'on181.<%= abcpkg.name%>/${path|regexp,"build/",""}'
-					}
+					
 				},
 				files: [
 					{
 						expand: true,
 						cwd: 'build',
-						// 对'*.html'文件进行HTML合并解析
 						src: ['pages/**/*.html','!pages/**/*.tms.html'],
 						dest: 'build/'
 					}
 				]
 			},
 			offline:{
-				options: {
-					encoding: 'utf8',
-					replacement: {
-						from: /src\//,
-						to: 'build_offline/'
-					},
-					assetseParser: false,
-					combineAssets: false, 
-					// KISSY Modules Maps File 地址
-					comboMapFile: false,
-					tidy: false,  // 是否重新格式化HTML
-					mockFilter: true, // 是否过滤Demo中的JuicerMock
-					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
-					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
-					convert2vm: false,// 是否将juicer语法块转换为vm格式
-					convert2php: false, // 是否将juicer语法块转换为php格式
-					meta : {
-						'pageid' : 'off181.<%= abcpkg.name%>/${path|regexp,"build_offline/",""}'
-					}
-				},
-				files: [
-					{
-						expand: true,
-						cwd: 'build_offline',
-						src: ['pages/**/*.html','!pages/**/*.tms.html'],
-						dest: 'build_offline/'
-					}
-				]
-
+				options:{
+                    comboJS:true, // 是否静态合并当前页面引用的本地js为一个文件
+                    comboCSS:true, // 是否静态合并当前页面引用的css为一个文件
+                    comboExt:'_combo',
+                    meta : {
+                        'pageid' : 'off181.<%= abcpkg.name%>/${path|regexp,"build_offline/",""}'
+                    }
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'build_offline',
+                        src: ['pages/**/*.html'],
+                        dest: 'build_offline/'
+                    }
+                ]
 			}
 		},
-		// convert juicer+mockdata to tms format
+		// 解析 Juicer 模板写的tms mock文件为TMS格式文件
 		// https://npmjs.org/package/grunt-tms
 		tms: {
 			options: {
@@ -280,13 +263,13 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		// FlexCombo服务配置
+		// FlexCombo 服务配置
 		// https://npmjs.org/package/grunt-flexcombo
 		//
 		// 注意：urls 字段末尾不能有'/'
 		flexcombo: {
 			// 源码调试服务
-			server: {
+			demo: {
 				options: {
 					proxyport: '<%= abcpkg.proxyPort %>',               // 本地反向代理端口
 					target: 'src/',                                     // flex-combo 要代理的目录
@@ -316,7 +299,7 @@ module.exports = function (grunt) {
 					}
 				}
 			},
-			// 目标代码调试服务
+			// 线上代码调试服务
 			debug: {
 				options: {
 					// 无线H5项目调试，可打开host配置，用法参照
@@ -364,8 +347,6 @@ module.exports = function (grunt) {
 			// 离线包调试模式 
 			offline: {
 				options: {
-					// 无线H5项目调试，可打开host配置，用法参照
-					// https://speakerdeck.com/lijing00333/grunt-flexcombo
 					target: 'build_offline/',
 					proxyport: '<%= abcpkg.proxyPort %>',
 					urls: '/<%= abcpkg.group %>/<%= abcpkg.name %>',
@@ -393,12 +374,7 @@ module.exports = function (grunt) {
 							script: 'proxy/webpage.js'
 						}
 					},
-					filter:{
-						// 将visa更换为你线上域名的目录名
-						'(.+)/trip/visa/\(.+\\.\)html':'$1/pages/$2html',
-						'(.+)/trip/visa/\(.+\\.\)(css|js)':'$1/pages/$2$3',
-						'(.+)/trip/\(.+\\.\)(js|css|png|jpg|gif)':'$1/$2$3',
-					}
+					filter:'<%= abcpkg.flexComboOfflineFilter %>'
 				}
 			}
 		},
@@ -434,7 +410,7 @@ module.exports = function (grunt) {
 			}
 		},
 
-		// 压缩JS https://github.com/gruntjs/grunt-contrib-uglify
+		// 压缩JS
 		uglify: {
 			options: {
 				banner: '/*! Generated by Clam: <%= abcpkg.name %> */\n',
@@ -465,7 +441,7 @@ module.exports = function (grunt) {
             }
 		},
 
-		// 压缩CSS https://github.com/gruntjs/grunt-contrib-cssmin
+		// 压缩CSS 
 		cssmin: {
 			main: {
 				files: [
@@ -506,6 +482,10 @@ module.exports = function (grunt) {
 					'!src/**/node_modules/**/*',
 					'!src/**/build/**/*'],
 				tasks: [ 'exec_build' ]
+			},
+			'dump':{
+				files:['*.dump'],
+				tasks:['kmc:main']
 			}
 		},
 
@@ -554,12 +534,19 @@ module.exports = function (grunt) {
 			cwd: 'src',
 			all: source_files.css
 		},
+		// 得到本地资源列表
         cacheinfo:{
             options:{
                 abc:"abc.json",
-                src:"src",
+                src:"build_offline",
                 dest:"build_offline/cache_info.json"
             }
+        },
+        // 清空map.js文件
+        empty:{
+            files: [
+                'build_offline/map.js'
+            ]
         },
 		// 拷贝文件
 		copy: {
@@ -584,7 +571,7 @@ module.exports = function (grunt) {
 					}
 				]
 			},
-            mods: {
+            map: {
                 files: [
                     {
                         expand:true,
@@ -594,14 +581,13 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            offline_jscss: {
+            offline: {
                 files: [
                     {
                         expand:true,
                         src: [
                             '**/*.js', '**/*.css', 
                             '!**/*-min.js', '!**/*-min.css', 
-                            //'!**/build/**/*.js', '!**/build/**/*.css', 
                             '!**/demo/**/*.js', '!**/demo/**/*.css', 
                             '!**/docs/**/*.js', '!**/docs/**/*.css'
                         ],
@@ -613,22 +599,28 @@ module.exports = function (grunt) {
 						src:['widgets/wlog/build/*.js'],
 						dest:'build_offline/',
 						cwd: 'src/'
-					}
-                ]
-            },
-            offline_html: {
-                files: [
-                    {
+					},
+					{
                         expand:true,
                         src: ['pages/**/*.html','mods/**/*.html'],
                         dest: 'build_offline/',
                         cwd:'src/'
                     }
                 ]
-            }
+            },
+            zip:{
+				files: [
+					{
+						expand:true,
+						src: 'build_offline.zip',
+						dest: 'build/',
+						cwd:'./'
+					}
+				]
+			}
 		},
-		// 替换config中的版本号@@version
 		replace: {
+			// 将资源文件引用域名替换为 g.assets.daily.taobao.net
 			daily: {
 				options: {
 					variables: {
@@ -645,7 +637,8 @@ module.exports = function (grunt) {
 					}
 				]
 			},
-			dist: {
+			// 替换 config 中的版本号 @@version
+			main: {
 				options: {
 					variables: {
 						'version': '<%= abcpkg.version %>'
@@ -657,10 +650,11 @@ module.exports = function (grunt) {
 						expand: true,
 						cwd: 'build/',
 						dest: 'build/',
-						src: ['*.js','mods/**/*','pages/**/*']
+						src: ['config.js','mods/**/*','pages/**/*']
 					}
 				]
 			},
+			// 离线包文件替换规则
 			offline:{
 				options: {
 					patterns: [
@@ -764,6 +758,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-inline-assets');
 	grunt.loadNpmTasks('grunt-tpl-compiler');
     grunt.loadNpmTasks('grunt-cacheinfo');
+    grunt.loadNpmTasks('grunt-empty');
+
 
 	// -------------------------------------------------------------
 	// 注册Grunt子命令
@@ -800,13 +796,13 @@ module.exports = function (grunt) {
 
 	// 启动offline调试时的本地服务
 	grunt.registerTask('offline', '开启offline离线包调试模式', function () {
-		task.run(['flexcombo:offline', 'watch:all']);
+		task.run(['flexcombo:offline', 'watch:dump']);
 	});
 
 
 	// 启动Demo调试时的本地服务
 	grunt.registerTask('demo', '开启Demo调试模式', function () {
-		task.run(['flexcombo:server', 'watch:all']);
+		task.run(['flexcombo:demo', 'watch:dump']);
 	});
 
 	// 启动Debug调试时的本地服务
@@ -826,18 +822,18 @@ module.exports = function (grunt) {
 			'htmlhint',
             'clean:build',
             'clean:offline',
-			'clean:mods',
+			'clean:map',
 			'clean:zip',
 			'tpl_compiler',
 			'copy:main',
 			'less',
 			'sass',
-			'kmc',
-			'copy:mods',
+			'kmc:main',
+			'copy:map',
 			'tms',
 			// 构建在线包
 			'combohtml:main',
-			'replace:dist',
+			'replace:main',
             'uglify:main',
             'cssmin:main',
 			'clean:main_tms_html'
@@ -856,17 +852,19 @@ module.exports = function (grunt) {
 		if(isH5){
 			actions = actions.concat([
 				// 构建离线包
-				'copy:offline_html',
-				'combohtml:offline',
+				'copy:offline',
+				'kmc:offline',
+				'empty',
 				'clean:offline_mods',
 				'clean:offline_tms_html',
-				'copy:offline_jscss',
+				'clean:htmlFrag',
+				'replace:offline',
+				'combohtml:offline',
 				'uglify:offline',
 				'cssmin:offline',
-				'inline-assets:offline',
-				'replace:offline',
 				'cacheinfo',
-				'exec:zip'
+				'exec:zip',
+				'copy:zip'
 			]);
 		}
 		task.run(actions);
