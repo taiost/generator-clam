@@ -4,13 +4,13 @@
 
 [背景知识](https://github.com/jayli/generator-clam/blob/master/userguide.md)
 
-### 工具安装
+### 一，工具安装
 
-安装TNPM
+安装 TNPM（阿里工程师必备）
 
 	npm install tnpm@1.0.4 -g --registry=http://registry.npm.alibaba-inc.com
 
-安装clam
+安装 clam
 
 	tnpm install -g generator-clam grunt-cli yo bower generator-kpm awpp
 
@@ -18,7 +18,7 @@
 
 	awpp config
 
-根据提示输入用户名（花名）和token
+根据提示输入用户名（花名）和token（从AWP平台中可查找到）
 
 ![](http://gtms03.alicdn.com/tps/i3/TB1tH16FVXXXXb5XVXX1hDC0FXX-630-82.png)
 
@@ -28,9 +28,9 @@
 
 Done!
 
-### 初始化一个 H5 项目架子
+### 二，初始化一个 H5 项目结构
 
-> 由于assets发布依赖git，html发布依赖awp，请务必保证拥有两者的权限
+> 由于 assets 发布依赖 git，html 发布依赖 awp，请务必保证拥有两者的权限
 
 在gitlab中新建项目(比如`h5-test`)，并在本地checkout出目录，进入到`h5-test`目录中，执行
 
@@ -72,7 +72,7 @@ H5项目架子初始化完成（注意：这时只有结构，没有页面）,�
 
 > H5项目以工程为单位，而非页面为单位，比如机票H5用工程`h5-flight`表示
 
-### 新建页面
+### 三，新建页面
 
 进入到`src/pages`
 
@@ -85,8 +85,9 @@ H5项目架子初始化完成（注意：这时只有结构，没有页面）,�
 根据提示完成
 
 > 新建PC的页面使用`yo clam:page`命令
+> 初始化页面时会提示安装依赖的包文件，通常选择Yes
 
-### H5 项目的本地包和离线包构建
+### 四，H5 项目的本地包和离线包构建
 
 在`h5-test`中执行
 
@@ -98,11 +99,16 @@ H5项目架子初始化完成（注意：这时只有结构，没有页面）,�
 
 如果在创建项目的时候设定是H5项目，则`grunt`会自动构建离线包，会生成目录`build_offline`和`build_offline.zip`
 
-### Assets 的预发和上线
+### 五，Assets 的预发和上线
 
-一个完整的项目包含两部分内容，资源文件和HTML文件。资源文件（CSS、JS）使用gitlab来推送发布，html使用awp平台来推送发布。这两类推送和发布实质上是通过`git`（若干）命令和`awpp`命令完成的，clam 所携带的 grunt 只对 git 命令做了封装。
+航旅H5项目是完全前后端解耦，所有页面都是静态的，动态数据都是异步拉取。一个完整的项目包含两部分内容，**资源文件**和**HTML文件**。
 
-首先，gitlab的发布必须基于`daily/x.y.z`的分支，首先我们新建新的分支，如果新建或升级小版本（x.y.z中的z）则可以使用命令
+- 资源文件（CSS、JS）使用gitlab来推送发布
+- html使用awp平台来推送发布。
+
+这两类推送和发布实质上是通过`git`（若干）命令和`awpp`命令完成的，为了简化git的发布，clam 所携带的 `gruntfile.js` 对 git 命令做了封装。
+
+首先，gitlab的发布必须基于`daily/x.y.z`的分支，第一步我们新建新的分支，如果新建或升级小版本（x.y.z中的z）则可以使用命令
 
 	grunt newbranch
 
@@ -124,9 +130,18 @@ H5项目架子初始化完成（注意：这时只有结构，没有页面）,�
 
 	grunt publish
 
-这时会基于当前代码分支生成名为`publish/x.y.z`的tag，并推送到线上，这会自动触发发布操作，发布操作会将远程`daily/x.y.z`分支删除，并将代码合并到`master`，发布完成后命令行提示会给出线上地址
+这时会基于当前代码分支生成名为`publish/x.y.z`的tag，并推送到线上 CDN，这会自动触发发布操作，发布操作会将远程`daily/x.y.z`分支删除，并将代码合并到`master`，发布完成后命令行提示会给出线上地址
 
-### H5 项目中的 HTML 的预发和上线
+**如何获得资源文件线上地址**
+
+当Git代码仓库名称确定后，线上地址也随之确定，如果仓库名为`h5-test`，那么资源文件线上路径是:
+
+	http://g.tbcdn.cn/trip/h5-test/x.y.z/
+
+其中`x.y.z`是分支中`daily/x.y.z`版本
+
+
+### 六，H5 项目中的 HTML 的预发和上线
 
 执行`grunt`后生成的build目录里包含构建完成的js、css和html文件，如果当前的这个工程是一个H5工程（`abc.json`中的isH5是否为true），则可以通过awpp命令来发布`build/pages`里的html
 
@@ -138,23 +153,35 @@ H5项目架子初始化完成（注意：这时只有结构，没有页面）,�
 
 ![](http://gtms04.alicdn.com/tps/i4/TB1AqXJFVXXXXavaXXXkocIWVXX-418-264.png)
 
-> 如果选择日常或者预发，需要注意，html里对线上资源文件的引用`http://g.tbcdn.cn`都应当修改成对预发资源的引用`http://g.assets.daily.taobao.net`，在执行awpp走预发流程之前，先执行`grunt daily`。
+如果git仓库名是`h5-test`，那么 HTML 的线上根路径是：
 
-### 开发模式、调试模式、离线模式服务的启动
+	http://h5.m.taobao.com/trip/test/
+
+只有在`pages`里的html文件才会被发布，比如`src/pages/search/index.html`会发布到`http://h5.m.taobao.com/trip/test/search/index.html`。
+
+> TIP: 如果选择日常或者预发，需要注意，html里对线上资源文件的引用`http://g.tbcdn.cn`都应当修改成对预发资源的引用`http://g.assets.daily.taobao.net`，在执行awpp走预发流程之前，先执行`grunt daily`。
+
+### 七，开发模式、调试模式、离线模式服务的启动
 
 Clam 工具提供一套本地调试环境，这套环境跟随代码一同携带，共有三个环境
 
-1. Demo 开发、调试 环境启动
+1). Demo 环境启动，是基于`src/`目录启动服务
 
 	grunt demo
 
-2. Debug 开发、调试 环境启动
+浏览器绑定本机`8080`端口后，访问`demo.com`即可
+
+2). Debug 环境启动，是基于`build/`目录启动服务
 
 	grunt debug
 
-3. 离线包 预览 环境启动
+浏览器绑定本机`8080`端口后，访问线上路径
+
+3). 离线包环境启动，是基于`build_offline/`目录启动服务
 
 	grunt offline
+
+绑定`8080`端口后，访问线上路径，同`debug`模式
 
 ![](http://gtms02.alicdn.com/tps/i2/TB1whllFVXXXXa0aXXXs5LXGFXX-456-432.png)
 
@@ -201,7 +228,7 @@ Clam 工具提供一套本地调试环境，这套环境跟随代码一同携带
 filter中的key是一个字符串形式的正则表达式，value是被替换的字符串
 
 
-### Juicer Mock 写法
+### 八，Juicer Mock 写法
 
 > Clam的本地服务是基于[flex-combo](https://www.npmjs.org/package/grunt-flexcombo)来实现的，flexcombo支持Juicer Mock的语法来写带有数据的模板
 
@@ -243,7 +270,7 @@ filter中的key是一个字符串形式的正则表达式，value是被替换的
 
 即，数据和juicer模板混合输出了正确的结果。如果源文件中存在Mock数据字段`<!--#def ... -->`，则服务将会解析文件中的juicer模板
 
-### Clam 项目中的HTML文件引用
+### 九，Clam 项目中的HTML文件包含
 
 本地服务支持标准SSI（[Server Side Include](http://man.chinaunix.net/newsoft/ApacheManual/howto/ssi.html)）。
 
@@ -253,7 +280,7 @@ filter中的key是一个字符串形式的正则表达式，value是被替换的
 
 	<!--#include virtual="http://www.taobao.com" -->
 
-### TMS 标签的引用
+### 十，TMS 标签的引用
 
 根据AWP规范，HTML页面中可以通过这种标示来引用外部静态文件
 
@@ -261,9 +288,13 @@ filter中的key是一个字符串形式的正则表达式，value是被替换的
 
 AWP平台和Clam自带的本地服务都支持这种解析
 
+此外，还支持TMS标签引用，比如
+
+	<!--TMS:/rgn/trip/smartbanner.php,gbk,181:TMS-->
+
 > 需要注意的是，H5 项目的离线包的构建，会将这种格式的引用做过滤，[详情阅读这里](http://gitlab.alibaba-inc.com/mpi/tms-offline-parser/tree/master)
 
-### 本地服务映射HTML片段
+### 十一，本地服务映射HTML片段
 
 本地服务的 debug 模式可以映射线上页面中的html片段到本地，配置方法见[html-proxy](http://cnpmjs.org/package/html-proxy)
 
@@ -294,7 +325,7 @@ AWP平台和Clam自带的本地服务都支持这种解析
 
 > 这种模式非常有用，特别对于跨团队协作、高模块化的项目中尤其有用，比如在淘宝首页便民中心，便民中心的代码就可以被拆出来，以一个HTML片段（非整个项目）作为一个独立的项目，Clam 工具的这个特性将提供非常方便的调试入口
 
-### 组件安装
+### 十二，组件安装
 
 如果要使用现成的组件，可以通过`bower`命令来安装，比如要使用[calendar](http://gitlab.alibaba-inc.com/mpi/calendar)组件，则需要在`src/widgets`目录中执行：
 
@@ -302,7 +333,30 @@ AWP平台和Clam自带的本地服务都支持这种解析
 
 即可
 
-### 重要资料
+### 十三，离线包构建需手动配置的参数
+
+`grunt build`命令会构建好`build_offline`离线文件，为了减少H5容器读写本地文件的压力，clam 也多做了两件事情
+
+1. 生成`cache_info.json`
+1. kmc 合并 js 文件
+
+这两件事需要项目开发者手动配置
+
+生成`cache_info.json`时需要**手动指定**项目的首页地址，需要手动修改`abc.json`里的`basePath`和`baseUrl`，比如
+
+	...
+	"basePath": "pages/search/index.html",
+	"baseUrl": "/trip/test/search/index.html",
+	...
+
+合并js文件需要**手动指定**，修改`abc.json`中的`kmcOffline`字段，比如
+
+	"kmcOffline": [
+		"search/index.js",
+		"searchlist/index.js"
+	],
+
+### 十四，其他重要资料
 
 每个项目的配置信息存放在`abc.json`中，组件代码仓库存放在[pi](http://pi.taobao.net)中。组件源码在（[mpi](http://gitlab.alibaba-inc.com/groups/mpi)和[tpi](http://gitlab.alibaba-inc.com/groups/tpi)中）。
 
@@ -320,10 +374,12 @@ AWP平台和Clam自带的本地服务都支持这种解析
 1. [yeoman](http://yeomanjs.org/)
 1. [bower](http://bower.io/)
 1. [kissy](http://docs.kissyui.com)
+1. [kissy-Mini](http://m.kissyui.com)
 1. [grunt-kmc](https://github.com/daxingplay/grunt-kmc)
 1. [Juicer](http://juicer.name)
 1. [Less](http://www.lesscss.net/article/home.html) 和 [Sass](http://www.sass-lang.com/)
 1. [grunt-flexcombo](https://github.com/jayli/grunt-flexcombo)
+1. [flexcombo](https://github.com/wayfind/flex-combo)
 
 ### Q & A
 
@@ -336,6 +392,10 @@ AWP平台和Clam自带的本地服务都支持这种解析
 	1. 完善flex-combo，gruntfile.js
 	1. 完善grunt demo 和grunt debug调试模式
 	1. 完成文档0.1版本，并确定工具的范围和中远期规划
+1. 0.1.73
+	1. 离线包构建功能完善
+	1. 更新flexcombo的离线包配置
+	1. 文档更新
 1. 0.2.x
 	1. H5 项目和PC项目独立区分
 	1. H5项目的在线包和离线包的区分和分别打包
