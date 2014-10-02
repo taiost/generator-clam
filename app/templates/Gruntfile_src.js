@@ -157,7 +157,8 @@ module.exports = function (grunt) {
                     map: [['<%= abcpkg.name %>/src/', '<%= abcpkg.name %>/']],
                     comboOnly: false,
                     fixModuleName:false,
-                    comboMap: false
+                    comboMap: false,
+					cleanUp: true
                 },
                 files: [
                     {
