@@ -223,12 +223,11 @@ module.exports = function (grunt) {
 			},
 			offline:{
 				options:{
-                    comboJS:true, // 是否静态合并当前页面引用的本地js为一个文件
-                    comboCSS:true, // 是否静态合并当前页面引用的css为一个文件
-                    comboExt:'_combo',
-                    meta : {
-                        'pageid' : 'off181.<%= abcpkg.name%>/${path|regexp,"build_offline/",""}'
-                    }
+                    comboJS:true,
+                    comboCSS:true,
+					convert2vm: false,
+					convert2php: false,
+                    comboExt:'_combo'
                 },
                 files: [
                     {
