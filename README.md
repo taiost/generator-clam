@@ -13,7 +13,7 @@
 Clam 为每个项目生成**构建脚本**和**本地环境**，并最大程度保持开发和线上环境的一致性。开发、调试、测试、发布 过程均在命令行即可完成。
 
 
-![](http://gtms03.alicdn.com/tps/i3/TB17s4AGpXXXXaBXpXXckPrPpXX-688-478.png)
+![](http://gtms01.alicdn.com/tps/i1/TB1H2lyGpXXXXaBXFXXIxK9PVXX-796-556.png)
 
 ### 一，工具安装
 
