@@ -183,11 +183,6 @@ module.exports = function (grunt) {
 		// 静态合并HTML和抽取JS/CSS，解析juicer语法到vm/php
 		// https://npmjs.org/package/grunt-combohtml
 		combohtml: {
-			options:{
-				meta : {
-					'pageid' : 'on181.<%= abcpkg.name%>/${path|regexp,"build/",""}'
-				}
-			},
 			main: {
 				options: {
 					encoding: 'utf8',
@@ -207,9 +202,12 @@ module.exports = function (grunt) {
 					comboJS: false, // 是否静态合并当前页面引用的本地js为一个文件
 					comboCSS: false, // 是否静态合并当前页面引用的css为一个文件
 					convert2vm: false,// 是否将juicer语法块转换为vm格式
-					convert2php: false // 是否将juicer语法块转换为php格式
+					convert2php: false, // 是否将juicer语法块转换为php格式
 					//htmlProxy: '<%= abcpkg.htmlProxy %>',      // htmlProxy 配置，用于产出线上页面区块替换为本地模块页面
 					//htmlProxyDestDir: 'html-fragments',      // html 代理区块页面生成到的目标目录
+					meta : {
+						'pageid' : 'on181.<%= abcpkg.name%>/${path|regexp,"build/",""}'
+					}
 					
 				},
 				files: [
@@ -227,7 +225,10 @@ module.exports = function (grunt) {
                     comboCSS:true,
 					convert2vm: false,
 					convert2php: false,
-                    comboExt:'_combo'
+                    comboExt:'_combo',
+					meta : {
+						'pageid' : 'on181.<%= abcpkg.name%>/${path|regexp,"build_offline/",""}'
+					}
                 },
                 files: [
                     {
