@@ -2,7 +2,12 @@
 
 ![](http://gtms03.alicdn.com/tps/i3/TB11GFPGpXXXXb3XXXXCZmQ1XXX-292-236.png)
 
+
+### 〇，背景 & 设计原理
+
 [背景知识](https://github.com/jayli/generator-clam/blob/master/userguide.md)
+
+#### 1. 航旅 H5 的多宿主环境
 
 航旅 H5 页面的多种宿主环境示意，同一份源码通过 Clam 面向多终端构建不同的目标代码，目标代码有三类：
 
@@ -13,13 +18,36 @@
 Clam 为每个项目生成**构建脚本**和**本地环境**，并最大程度保持开发和线上环境的一致性。开发、调试、测试、发布 过程均在命令行即可完成。
 
 
-![](http://gtms01.alicdn.com/tps/i1/TB1H2lyGpXXXXaBXFXXIxK9PVXX-796-556.png)
+![](http://gtms01.alicdn.com/tps/i1/TB1DZXOGpXXXXa0XFXXlR4gJpXX-782-554.png)
+
+#### 2. Clam 工具与线上环境的关系
+
+普通发布为 Wap 页的模式和传统的开发和发布一样，我们首先要区分：
+
+1. **项目源码**和**线上目标代码**，两者有一一对应关系
+2. 因为前后端完全解耦、所以套页面完全由前端负责
+3. `grunt-combohtml`和`grunt-flexcombo`一个负责构建、一个负责服务，原则上两者同构
+4. HTML覆盖式发布、js、css非覆盖发布，即时发布即时生效
+5. 性能需要考虑
+	1. 资源请求数
+	1. 懒惰加载
+	1. DomReady 时间提前
+
+![](http://gtms03.alicdn.com/tps/i3/TB1L_hPGpXXXXa6XpXXDe0VOVXX-720-538.png)
+
+### 3. Clam 工具与离线包环境的关系
+
+客户端容器以虚拟域形式加载离线包（在离线容器加载页面所用URL和线上地址完全一样），clam 在构建完成`build_offline.zip`后，所有资源文件均以相对目录存放。前端将zip包更新到CDN上（非覆盖），由QA或者推包管理员更新`config.json`配置，完成对客户端的推包操作。
+
+性能考虑除了请求数量、懒惰加载和DomReady时间之外，还需要考虑zip包的大小。
+
+![](http://gtms02.alicdn.com/tps/i2/TB1nu4YGpXXXXcyXXXXqWsgOXXX-716-532.png)
 
 ### 一，工具安装
 
 安装 TNPM（阿里工程师必备）
 
-	npm install tnpm@1.0.4 -g --registry=http://registry.npm.alibaba-inc.com
+	npm install tnpm -g --registry=http://registry.npm.alibaba-inc.com
 
 安装 clam
 
@@ -32,6 +60,7 @@ Clam 为每个项目生成**构建脚本**和**本地环境**，并最大程度�
 根据提示输入用户名（花名）和token（从AWP平台中可查找到）
 
 ![](http://gtms03.alicdn.com/tps/i3/TB1tH16FVXXXXb5XVXX1hDC0FXX-630-82.png)
+
 
 获取帮助（**重要**）
 
