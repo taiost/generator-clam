@@ -35,7 +35,7 @@ Clam 为每个项目生成**构建脚本**和**本地环境**，并最大程度�
 
 ![](http://gtms03.alicdn.com/tps/i3/TB1L_hPGpXXXXa6XpXXDe0VOVXX-720-538.png)
 
-### 3. Clam 工具与离线包环境的关系
+#### 3. Clam 工具与离线包环境的关系
 
 客户端容器以虚拟域形式加载离线包（在离线容器加载页面所用URL和线上地址完全一样），clam 在构建完成`build_offline.zip`后，所有资源文件均以相对目录存放。前端将zip包更新到CDN上（非覆盖），由QA或者推包管理员更新`config.json`配置，完成对客户端的推包操作。
 
