@@ -83,14 +83,14 @@ AppGenerator.prototype.files = function files() {
 
 
     // 创建目录
-    var fold = ['demo', 'build', 'guide'];
+    var fold = ['demo', 'build', 'doc'];
     for (var i = 0; i < fold.length; i++) {
         this.mkdir(fold[i]);
     }
 
     // 创建项目文件
     this.template('index.js', 'index.js');
-    this.template('index.md', path.join('guide', 'index.md'));
+    //this.template('index.md', path.join('guide', 'index.md'));
     this.template('index.html', path.join('demo', 'index.html'));
 
     // 全局文件
