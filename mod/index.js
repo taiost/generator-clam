@@ -4,6 +4,10 @@ var path = require('path');
 var ClamLogo = require('../app/logo').ClamLogo;
 var yeoman = require('yeoman-generator');
 var ABC = require('abc-generator');
+var gitConfig = require('git-config'),
+	curGitUser = gitConfig.sync().user,
+	curUserName = curGitUser.name,
+	curUserEmail = curGitUser.email;
 
 var AppGenerator = module.exports = function AppGenerator(args, options, config) {
 	// yeoman.generators.Base.apply(this, arguments);
@@ -70,6 +74,7 @@ AppGenerator.prototype.askFor = function askFor() {
 
     // welcome message
 	console.log(ClamLogo(this));
+	console.log('建议您在 src/mods 目录执行该命令！');
 
 	var prompts = [{
 			name: 'mojoName',
@@ -102,6 +107,8 @@ AppGenerator.prototype.askFor = function askFor() {
 		this.config = 'http://g.tbcdn.cn/'+this.groupName+'/'+this.packageName+'/'+abcJSON.version+'/config.js';
 		this.projectName = parseName(this.packageName); //PackageName
 		this.srcPath = this.modsPagesWidgets? '../../' : '../';
+	    this.author = curUserName;
+	    this.email = curUserEmail;
 
         cb();
     }.bind(this));

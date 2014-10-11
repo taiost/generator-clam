@@ -6,6 +6,10 @@ var yeoman = require('yeoman-generator');
 var ABC = require('abc-generator');
 var exec = require('child_process').exec;
 var	rmdir = require('rmdir');
+var gitConfig = require('git-config'),
+	curGitUser = gitConfig.sync().user,
+	curUserName = curGitUser.name,
+	curUserEmail = curGitUser.email;
 
 var AppGenerator = module.exports = function AppGenerator(args, options, config) {
 	// yeoman.generators.Base.apply(this, arguments);
@@ -70,9 +74,12 @@ AppGenerator.prototype.askFor = function askFor() {
 	this.combohtml = abcJSON.combohtml;
 	this.cssCompile = abcJSON.cssCompile;
 	this.fullfill = false;
+	this.author = curUserName;
+	this.email = curUserEmail;
 
     // welcome message
 	console.log(ClamLogo(this));
+	console.log('建议您在 src/pages 目录执行该命令！');
 
 	var prompts = [{
 			name: 'mojoName',
@@ -143,15 +150,15 @@ function fullfill(){
 	var wp = path.resolve(process.cwd(), '../widgets/');
 	var kp = path.resolve(process.cwd(), '../');
 	setTimeout(function(){
-		console.log('\nInstalling assets, please wait...');
+		console.log('\n正在安装依赖资源文件, 稍等...');
 	},500);
-	exec('cd ' + wp + ';bower install mpi/tracker;bower install mpi/tms-offline-parser;bower install mpi/jsbridge;',
+	exec('cd ' + wp + ';bower install mpi/tms-offline-parser;bower install mpi/jsbridge;bower install mpi/mpi_css;bower install mpi/wlog',
 		function(err,stdout,stderr,cb){
 			showLog(err,stdout,stderr,cb);
 			setTimeout(function(){
 				console.log('\nInstalling KISSY-MINI, please wait...');
 			},500);
-			exec('cd '+ wp +';bower install kissy=kissy/m;', 
+			exec('cd '+ wp +';bower install kissy/m;', 
 				function(err,stdout,stderr,cb){
 					showLog(err,stdout,stderr,cb);
 					// 删除KISSY里的多余文件

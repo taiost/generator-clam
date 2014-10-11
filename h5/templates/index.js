@@ -1,6 +1,6 @@
 /**
  * @fileoverview <%= projectName %> - <%= modName %>.
- * @author 
+ * @author <%=author %><<%=email %>>.
  */
 /**
  * KISSY.use('<%= packageName %>/<%= mojoName %>/index',function(S,<%= modName %>){
@@ -19,7 +19,7 @@ KISSY.add(function (S, require) {
 		initializer:function(){
 			var self = this;
 
-			// Your Code
+			// 从这里开始写你的代码
 			alert('ok');
 		}
 	},{

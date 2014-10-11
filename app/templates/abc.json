@@ -2,6 +2,8 @@
     "name": "<%= packageName %>",
     "desc": "description of your app",
     "type": "clam",
+	"dirName":"<%= dirName %>",
+	"packageNameMd5":"<%= packageNameMd5 %>",
 	"isH5":"<%= isH5 %>",
 	"port":"<%= port %>",
 	"proxyPort":"<%= proxyPort %>",
@@ -10,7 +12,12 @@
     "cssCompile":"<%= cssCompile %>",
 	"version":"<%= version %>",
 	"combohtml":"<%= combohtml %>",
+	"basePath":"pages/search/index.html",
+	"baseUrl":"/trip/<%= dirName %>/search/index.html",
 	"env":"publish",
+	"kmcOffline":[
+		"search/index.js"
+	],
 	"htmlProxy": [{
 		"urlReg": "^http://trip.taobao.com/index$",
 		"demoPage": "http://trip.taobao.com/index.php",
